@@ -1,0 +1,20 @@
+[
+  {
+    "id": "juan",
+    "name": "Juan",
+    "description": "A fast and brave barangay tanod volunteer.",
+    "speed": 60,
+    "max_health": 100,
+    "ability": "sprint",
+    "color": [255, 200, 60]
+  },
+  {
+    "id": "maria",
+    "name": "Maria",
+    "description": "A calm first-aid trained student.",
+    "speed": 50,
+    "max_health": 120,
+    "ability": "first_aid",
+    "color": [230, 90, 140]
+  }
+]

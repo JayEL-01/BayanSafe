@@ -1,0 +1,31 @@
+{
+  "name": "Typhoon",
+  "map_size": [640, 360],
+  "player_start": [30, 30],
+  "walls": [
+    [200, 100, 16, 200], [350, 250, 200, 16], [450, 60, 16, 150], [120, 240, 100, 30]
+  ],
+  "npcs": [
+    {"id": "aling_nena", "name": "Aling Nena", "pos": [300, 80], "color": [230, 130, 90],
+     "dialogue": [
+       "A typhoon is coming! Please help me board my windows.",
+       "Find the emergency supplies first, then come back to me."
+     ],
+     "after_dialogue": ["Thank you, hijo! Now get to the evacuation center."]}
+  ],
+  "items": [
+    {"id": "go_bag", "name": "Go-bag", "pos": [100, 180], "color": [80, 200, 120]},
+    {"id": "flashlight", "name": "Flashlight", "pos": [380, 180], "color": [240, 240, 120]},
+    {"id": "radio", "name": "Radio", "pos": [520, 100], "color": [120, 170, 250]}
+  ],
+  "areas": [
+    {"id": "evac_center", "name": "Evacuation Center", "rect": [570, 290, 50, 50], "color": [90, 200, 240]}
+  ],
+  "quests": [
+    {"id": "supplies", "title": "Find emergency supplies", "type": "collect", "target": "go_bag"},
+    {"id": "flashlight", "title": "Find the flashlight", "type": "collect", "target": "flashlight"},
+    {"id": "talk_nena", "title": "Talk to Aling Nena", "type": "talk", "target": "aling_nena"},
+    {"id": "evac", "title": "Reach the evacuation center", "type": "reach", "target": "evac_center"}
+  ],
+  "mascot_hint": "Talk to people and collect supplies. Check the checklist at the top right!"
+}

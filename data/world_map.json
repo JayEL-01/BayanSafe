@@ -1,0 +1,34 @@
+{
+  "size": [480, 270],
+  "background": "assets/images/world/world_map.png",
+  "nodes": [
+    {"id": "typhoon", "name": "Typhoon", "pos": [75, 75], "radius": 48, "seed": 1,
+     "land": [75, 110, 95], "accent": [200, 215, 240],
+     "blurb": "Prepare, survive the storm, and help your barangay recover."},
+    {"id": "flood", "name": "Flood", "pos": [135, 150], "radius": 50, "seed": 2,
+     "land": [70, 120, 100], "accent": [100, 170, 240],
+     "blurb": "Rising water! Rescue neighbors and reach higher ground."},
+    {"id": "earthquake", "name": "Earthquake", "pos": [215, 105], "radius": 52, "seed": 3,
+     "land": [150, 115, 75], "accent": [200, 160, 100],
+     "blurb": "Drop, cover, hold. Escape falling debris and cracked roads."},
+    {"id": "volcano", "name": "Volcanic Eruption", "pos": [295, 170], "radius": 52, "seed": 4,
+     "land": [95, 65, 60], "accent": [255, 110, 40],
+     "blurb": "Evacuate before the ash and lava reach the community."},
+    {"id": "wildfire", "name": "Wildfire", "pos": [365, 110], "radius": 48, "seed": 5,
+     "land": [120, 125, 55], "accent": [255, 180, 40],
+     "blurb": "Stay ahead of spreading fire and guide people to safety."}
+  ],
+  "routes": [
+    [[100, 115]],
+    [[175, 125]],
+    [[255, 140]],
+    [[330, 140]]
+  ],
+  "decor_islands": [
+    {"pos": [35, 225], "radius": 22, "seed": 11, "land": [70, 130, 80]},
+    {"pos": [225, 235], "radius": 18, "seed": 12, "land": [75, 135, 85]},
+    {"pos": [440, 220], "radius": 24, "seed": 13, "land": [70, 125, 80]},
+    {"pos": [440, 28], "radius": 16, "seed": 14, "land": [80, 140, 90]},
+    {"pos": [150, 22], "radius": 14, "seed": 15, "land": [80, 140, 90]}
+  ]
+}

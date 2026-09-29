@@ -246,3 +246,52 @@ git restore path/to/file
 | `git log --oneline -5` | Show the last 5 commits |
 | `git diff` | Show uncommitted changes |
 | `git restore file` | Discard changes to a file |
+
+### Get one file from another branch
+
+```powershell
+git fetch
+git checkout origin/dev -- README.md
+git commit -m "add README from dev"
+git push
+```
+
+| Command | What it does |
+|---|---|
+| `git fetch` | Download the latest info from GitHub |
+| `git checkout origin/dev -- path/to/file` | Copy one file from `dev` into your current branch |
+| `git checkout origin/dev -- src/states` | Copy a whole folder from `dev` |
+| `git show origin/dev:README.md` | Read a file from `dev` without copying it |
+| `git ls-tree --name-only origin/dev` | List the files on `dev` |
+| `git diff main origin/dev -- file` | Compare a file between `main` and `dev` |
+
+### Merge branches
+
+```powershell
+git checkout main
+git pull
+git merge dev
+git push
+```
+
+| Command | What it does |
+|---|---|
+| `git merge dev` | Bring `dev` changes into the current branch |
+| `git merge --abort` | Cancel a merge that went wrong |
+| `git checkout --ours file` | On conflict, keep the version from your current branch |
+| `git checkout --theirs file` | On conflict, keep the version from the branch you merged in |
+| `git log main..dev --oneline` | Preview commits `dev` has that `main` doesn't |
+
+### Fix `__pycache__` problems
+
+```powershell
+Remove-Item -Recurse -Force src/states/__pycache__
+git rm -r --cached src/states/__pycache__
+```
+
+Add a `.gitignore` in the project root containing:
+
+```
+__pycache__/
+*.pyc
+```

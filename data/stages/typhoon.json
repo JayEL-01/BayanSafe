@@ -27,5 +27,13 @@
     {"id": "talk_nena", "title": "Talk to Aling Nena", "type": "talk", "target": "aling_nena"},
     {"id": "evac", "title": "Reach the evacuation center", "type": "reach", "target": "evac_center"}
   ],
-  "mascot_hint": "Talk to people and collect supplies. Check the checklist at the top right!"
+   "mascot": {
+    "intro": "Hi, I'm Tarsi! A typhoon is coming. Check the quest list at the top right. Press H if you need a hint!",
+    "quests": {
+      "supplies": "Look for the green go-bag. Every family needs one ready for an emergency.",
+      "flashlight": "A flashlight is important when the power goes out. Look for the yellow item.",
+      "talk_nena": "Aling Nena needs help. Walk up to the orange person and press E.",
+      "evac": "Head to the blue Evacuation Center in the bottom-right corner."
+    }
+  }
 }

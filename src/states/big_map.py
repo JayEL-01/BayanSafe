@@ -1,5 +1,7 @@
 import pygame
 
+from src.entities.mascot import Mascot
+from src.entities.npc import NPC
 from src.core import settings
 from src.core.event_bus import EventBus
 from src.entities.player import Player
@@ -32,8 +34,7 @@ class BigMap(BaseState):
         self.player.color = tuple(character["color"])
         self.camera = Camera(w, h)
 
-        self.npcs = [
-            {**n, "rect": pygame.Rect(n["pos"][0], n["pos"][1], 12, 12), "talked": False}
+        self.npcs = [NPC(n) for n in self.data["npcs"]
             for n in self.data["npcs"]
         ]
         self.items = [
@@ -46,6 +47,11 @@ class BigMap(BaseState):
         self.quests = QuestSystem(self.data["quests"], self.events)
         self.events.subscribe("quest_completed", self.on_quest_completed)
         self.dialogue = DialogueBox(self.font)
+        mascot_config = load_json("data/mascot.json")
+        self.mascot = Mascot(
+            mascot_config, self.data["mascot"], self.events,
+            self.quests, self.font, self.player.rect.center,
+        )
 
         self.toast = ""
         self.toast_timer = 0.0
@@ -58,22 +64,21 @@ class BigMap(BaseState):
         self.toast_timer = 3.0
 
     def nearby_npc(self):
-        reach = self.player.rect.inflate(20, 20)
         for npc in self.npcs:
-            if reach.colliderect(npc["rect"]):
+            if npc.is_near(self.player.rect):
                 return npc
         return None
 
     def talk(self, npc):
-        lines = npc["after_dialogue"] if npc["talked"] else npc["dialogue"]
-        first_time = not npc["talked"]
-        npc["talked"] = True
+        lines = npc.get_lines()
+        first_time = not npc.talked
+        npc.talked = True
 
         def finish():
             if first_time:
-                self.events.emit("npc_talked", npc_id=npc["id"])
+                self.events.emit("npc_talked", npc_id=npc.id)
 
-        self.dialogue.open(npc["name"], lines, finish)
+        self.dialogue.open(npc.name, lines, finish)
 
     def handle_event(self, event):
         if event.type != pygame.KEYDOWN:
@@ -88,7 +93,8 @@ class BigMap(BaseState):
             npc = self.nearby_npc()
             if npc:
                 self.talk(npc)
-
+        elif event.key == pygame.K_h:
+            self.mascot.ask_hint()
     # ---------- update ----------
     def update(self, dt):
         self.dialogue.update(dt)
@@ -98,6 +104,7 @@ class BigMap(BaseState):
         if self.finished:
             self.finish_timer -= dt
             if self.finish_timer <= 0:
+                self.mascot.update(dt, self.player.rect)
                 self.game.session.complete_stage(self.stage_id)
                 self.game.state_manager.pop()
             return
@@ -149,15 +156,14 @@ class BigMap(BaseState):
             pygame.draw.rect(surface, (255, 255, 255), cam.apply(item["rect"]), 1)
 
         for npc in self.npcs:
-            r = cam.apply(npc["rect"])
-            pygame.draw.rect(surface, tuple(npc["color"]), r)
-            pygame.draw.rect(surface, (255, 255, 255), r, 1)
+            npc.draw(surface, cam)
 
         self.player.draw(surface, cam)
+        self.mascot.draw(surface, cam, show_bubble=not self.dialogue.active)
 
         npc = self.nearby_npc()
         if npc and not self.dialogue.active:
-            r = cam.apply(npc["rect"])
+            r = cam.apply(npc.rect)
             tip = self.font.render("E: TALK", False, (255, 255, 120))
             surface.blit(tip, tip.get_rect(midbottom=(r.centerx, r.y - 2)))
 

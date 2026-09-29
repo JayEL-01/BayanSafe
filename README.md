@@ -1,131 +1,213 @@
 # BayanSafe
-Disaster Preparedness Game
 
-# BayanSafe: Group Guide to Working on the `dev` Branch
+A disaster preparedness game that teaches players what to do before, during, and after a disaster.
 
-Repo: https://github.com/JayEL-01/BayanSafe
-
-**Golden rule:** work only in `dev`. Never push to `main`. The owner merges `dev` into `main` when it is ready.
+Repository: https://github.com/JayEL-01/BayanSafe
 
 ---
 
-## Part 1: One-time setup
+## Contents
 
-### 1. Install Git
-Download from https://git-scm.com/download/win and install with the default options. Then open **PowerShell** and check:
+- [About the project](#about-the-project)
+- [Getting started](#getting-started)
+- [Working with Git as a team](#working-with-git-as-a-team)
+- [Dealing with `__pycache__` files](#dealing-with-__pycache__-files)
+- [Troubleshooting](#troubleshooting)
+- [Team rules](#team-rules)
+- [Cheat sheet](#cheat-sheet)
+
+---
+
+## About the project
+
+BayanSafe is a game about staying safe when disasters happen. Players pick a character, move around the map, and work through stages that build practical safety knowledge.
+
+### Project structure
+
+```
+BayanSafe/
+├── data/          Game data, such as characters.json
+├── save/          Save files
+├── stages/        Game stages
+├── src/
+│   └── states/    Game screens: main menu, character select, world map, and so on
+├── README.md
+└── .gitignore
+```
+
+---
+
+## Getting started
+
+These steps are for Windows. Do them in order.
+
+### 1. Download the tools
+
+| Tool | Where to get it | Notes |
+|---|---|---|
+| Visual Studio Code | https://code.visualstudio.com | The code editor |
+| Python 3.14 | https://www.python.org/downloads | On the first installer screen, tick **Add python.exe to PATH** |
+| Git | https://git-scm.com/download/win | The default options are fine |
+
+Restart VS Code (or your PC) after installing so everything gets picked up.
+
+### 2. Check that everything installed
+
+Open PowerShell and run:
 
 ```powershell
+python --version
 git --version
 ```
 
-### 2. Set your identity
-Use your own name and the email of your GitHub account:
+Both should print a version number.
+
+### 3. Install the VS Code extensions
+
+In VS Code, press `Ctrl+Shift+X` and install:
+
+- **Python** and **Pylance** (both by Microsoft), for running code and getting hints
+- **GitLens** (optional), to see who changed each line
+- **Git Graph** (optional), to see the branch history visually
+
+### 4. Set your Git identity
+
+You only need to do this once. Use your own name and the email on your GitHub account:
 
 ```powershell
 git config --global user.name "Your Name"
 git config --global user.email "you@example.com"
 ```
 
-### 3. Accept the invitation
-The owner invites you as a collaborator. Accept it from your email or at https://github.com/notifications. Without this you cannot push.
+### 5. Accept the collaborator invitation
 
-### 4. Clone the project and switch to `dev`
+The owner will invite you on GitHub. Accept it from your email or at https://github.com/notifications. You can't push until you do.
+
+### 6. Clone the project and switch to `dev`
+
+Pick any folder where you keep your projects, such as Documents or Desktop. Open PowerShell there (or use `cd` to move into it), then run:
 
 ```powershell
-cd C:\CODING
 git clone https://github.com/JayEL-01/BayanSafe.git
 cd BayanSafe
 git checkout dev
+code .
 ```
 
-Check which branch you are on (the one with `*`):
+This creates a `BayanSafe` folder inside whichever folder you were in.
+
+Check that you're on `dev`. The current branch is the one marked with `*`:
 
 ```powershell
 git branch
 ```
 
-### 5. Sign in
-The first time you push, Git asks you to sign in. Choose **Sign in with your browser** and approve. If it asks for a password, use a **Personal Access Token** (GitHub > Settings > Developer settings > Personal access tokens > Tokens (classic) > tick `repo`).
+If VS Code asks whether you trust the authors of the folder, choose Yes.
+
+### 7. Create a virtual environment
+
+Open a terminal in VS Code (Terminal, then New Terminal) and run:
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+```
+
+You should now see `(.venv)` at the start of the terminal line.
+
+<details>
+<summary>PowerShell says scripts are disabled</summary>
+
+Run this once, then try activating again:
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+```
+
+</details>
+
+### 8. Select the interpreter
+
+Press `Ctrl+Shift+P`, type **Python: Select Interpreter**, and choose the one that shows `.venv`.
+
+### 9. Install the packages
+
+If the project has a `requirements.txt`:
+
+```powershell
+pip install -r requirements.txt
+```
+
+If not, install pygame directly:
+
+```powershell
+pip install pygame
+```
+
+### 10. Run the game
+
+```powershell
+python main.py
+```
+
+If the main file has a different name or location, use that instead, for example `python src/main.py`. You can also open the file in VS Code and press the Run button at the top right.
+
+### 11. Sign in to GitHub
+
+The first time you push, Git will ask you to sign in. Choose **Sign in with your browser** and approve it. If it asks for a password instead, use a Personal Access Token: GitHub, then Settings, Developer settings, Personal access tokens, Tokens (classic), with the `repo` scope ticked.
 
 ---
 
-## Part 2: How to commit and push your changes
+## Working with Git as a team
 
-Run everything from inside the project folder.
+> **Work only in `dev`, and never push to `main`.**
+> The owner merges `dev` into `main` once it's ready.
 
-### Step 1: Get the latest work from your group
+### The everyday routine
 
-```powershell
-git pull
-```
-
-### Step 2: Edit your code
-Make your changes in your editor and save the files.
-
-### Step 3: See what changed
+Run these from inside the project folder:
 
 ```powershell
-git status
+git pull                          # get the latest work from the group
+# ...make your changes...
+git add .                         # stage them
+git commit -m "what I changed"    # save a snapshot on your computer
+git push                          # upload it to GitHub
 ```
 
-- **Red** files are changed but not staged yet.
-- **Green** files are staged and ready to commit.
+After pushing, open the repo on GitHub, switch the branch dropdown from `main` to `dev`, and check that your commit is there.
 
-### Step 4: Stage your changes
-Stage everything:
+### What each step does
 
-```powershell
-git add .
-```
+| Command | What it does |
+|---|---|
+| `git pull` | Downloads the latest changes |
+| `git status` | Shows what changed. Red files aren't staged yet, green ones are |
+| `git add .` | Stages all your changes. Use `git add path/to/file` for a single file |
+| `git commit -m "message"` | Saves a snapshot on your computer |
+| `git push` | Uploads your commits to GitHub |
 
-Or stage only specific files:
+Two things that trip people up:
 
-```powershell
-git add src/states/main_menu.py
-```
+- Always include `-m "message"` when committing. If you type just `git commit`, a text editor opens and it looks like Git is stuck.
+- A commit only lives on your computer until you push it. If you committed but nothing shows on GitHub, you probably forgot `git push`.
 
-### Step 5: Commit (save a snapshot on your computer)
-
-```powershell
-git commit -m "describe what you changed"
-```
-
-**Always include `-m "message"`.** If you type only `git commit`, a text editor opens and it can look like Git is stuck. Good messages: `"add emergency contact form"`, `"fix map marker bug"`. Bad messages: `"stuff"`, `"changes"`.
-
-### Step 6: Push (upload to GitHub)
-
-```powershell
-git push
-```
-
-A commit is saved only on your PC until you push. If you commit but do not push, nothing shows on GitHub.
-
-### Step 7: Check on GitHub
-Open the repo, switch the branch dropdown from `main` to `dev`, and confirm your commit is listed.
-
-### The whole routine in one block
-
-```powershell
-git pull
-# ...edit your code...
-git add .
-git commit -m "what I changed"
-git push
-```
+Write commit messages that say what the change does, like `"add emergency contact form"` or `"fix map marker bug"`. Avoid vague ones like `"stuff"` or `"changes"`.
 
 ---
 
-## Part 3: Python `__pycache__` files (important)
+## Dealing with `__pycache__` files
 
-When you run the game, Python creates `__pycache__` folders with `.pyc` files. These are auto-generated and **must not be committed**. They cause errors like:
+Whenever you run the game, Python creates `__pycache__` folders full of `.pyc` files. They're generated automatically and shouldn't be committed. If one gets committed, you'll see errors like this when switching branches:
 
 ```
 error: The following untracked working tree files would be overwritten by checkout:
         src/states/__pycache__/big_map.cpython-314.pyc
 ```
 
-### Fix the error when switching branches or pulling
-Delete the local cache folder (Python recreates it), then retry:
+### Fixing the error
+
+Delete your local cache folder (Python will recreate it) and try again:
 
 ```powershell
 Remove-Item -Recurse -Force src/states/__pycache__
@@ -133,15 +215,17 @@ git checkout dev
 git pull
 ```
 
-### Stop it for good with a `.gitignore`
-Create a file named `.gitignore` in the project root with these lines:
+### Preventing it
+
+Make sure there's a `.gitignore` file in the project root containing:
 
 ```
 __pycache__/
 *.pyc
+.venv/
 ```
 
-Commit it:
+Then commit it:
 
 ```powershell
 git add .gitignore
@@ -149,8 +233,9 @@ git commit -m "add gitignore"
 git push
 ```
 
-### If `.pyc` files are already committed
-Remove them from Git (this does not delete them from your PC):
+### If `.pyc` files were already committed
+
+Remove them from Git. This doesn't delete them from your computer:
 
 ```powershell
 git rm -r --cached src/states/__pycache__
@@ -158,7 +243,7 @@ git commit -m "remove pycache from repo"
 git push
 ```
 
-If Git only shows them as `deleted:` in `git status`, stage the deletions with:
+If `git status` only lists them as `deleted:`, stage the deletions first:
 
 ```powershell
 git add src/states/__pycache__
@@ -166,34 +251,82 @@ git commit -m "remove pycache from repo"
 git push
 ```
 
-After that, everyone runs `git pull`.
+Once that's pushed, everyone should run `git pull`.
 
 ---
 
-## Part 4: Common problems and fixes
+## Troubleshooting
 
-**"Author identity unknown"**
-Do Part 1, Step 2, then commit again.
+<details>
+<summary>"python" or "git" is not recognized</summary>
 
-**"nothing added to commit" or "no changes added to commit"**
-You forgot `git add .`. Stage your files first, then commit.
+Reinstall it (for Python, tick **Add python.exe to PATH**) and restart VS Code.
 
-**"I committed but nothing shows on GitHub"**
-Run `git push`. Also make sure the GitHub branch dropdown is set to `dev`.
+</details>
 
-**"Updates were rejected" or "failed to push some refs"**
-A teammate pushed before you. Run:
+<details>
+<summary>ModuleNotFoundError: No module named 'pygame'</summary>
+
+Activate the virtual environment and install it:
+
+```powershell
+.venv\Scripts\Activate.ps1
+pip install pygame
+```
+
+</details>
+
+<details>
+<summary>VS Code shows import errors, but the game runs</summary>
+
+Select the `.venv` interpreter: press `Ctrl+Shift+P` and choose **Python: Select Interpreter**.
+
+</details>
+
+<details>
+<summary>"Author identity unknown"</summary>
+
+Set your name and email (Getting started, step 4), then commit again.
+
+</details>
+
+<details>
+<summary>"nothing added to commit"</summary>
+
+You haven't staged anything yet. Run `git add .` and commit again.
+
+</details>
+
+<details>
+<summary>I committed, but nothing shows on GitHub</summary>
+
+Run `git push`. Also check that the branch dropdown on GitHub is set to `dev`.
+
+</details>
+
+<details>
+<summary>"Updates were rejected" or "failed to push some refs"</summary>
+
+Someone pushed before you did. Pull their changes, then push again:
 
 ```powershell
 git pull
 git push
 ```
 
-**"Permission denied" or 403 error**
-You have not accepted the invitation, or you are signed in to the wrong GitHub account.
+</details>
 
-**"Your local changes would be overwritten"**
-Commit your work first, or set it aside temporarily:
+<details>
+<summary>"Permission denied" or a 403 error</summary>
+
+Either you haven't accepted the invitation yet, or you're signed in to the wrong GitHub account.
+
+</details>
+
+<details>
+<summary>"Your local changes would be overwritten"</summary>
+
+Commit your work first, or set it aside for a moment:
 
 ```powershell
 git stash
@@ -201,8 +334,12 @@ git pull
 git stash pop
 ```
 
-**Merge conflict (Git says CONFLICT)**
-Two people edited the same lines. Open the file, find the markers `<<<<<<<`, `=======`, `>>>>>>>`, keep the correct code, delete the markers, then:
+</details>
+
+<details>
+<summary>Merge conflict (Git says CONFLICT)</summary>
+
+Two people edited the same lines. Open the file and look for the markers `<<<<<<<`, `=======`, and `>>>>>>>`. Keep the code you want, delete the markers, then:
 
 ```powershell
 git add .
@@ -210,29 +347,44 @@ git commit -m "resolve merge conflict"
 git push
 ```
 
-**"I accidentally worked on `main`"**
-Do not push. Tell the owner, or commit your work, run `git checkout dev`, and redo your changes there.
+In VS Code you can also click Accept Current, Accept Incoming, or Accept Both above the conflict. To cancel a merge that went wrong, run `git merge --abort`.
 
-**"I want to undo my changes to a file"** (not yet committed)
+</details>
+
+<details>
+<summary>I accidentally worked on <code>main</code></summary>
+
+Don't push. Tell the owner, or commit your work, run `git checkout dev`, and redo the changes there.
+
+</details>
+
+<details>
+<summary>I want to undo my changes to a file</summary>
+
+If you haven't committed yet:
 
 ```powershell
 git restore path/to/file
 ```
 
+</details>
+
 ---
 
-## Part 5: Team rules
+## Team rules
 
-- Run `git pull` before you start and before you push.
+- Run `git pull` before you start working and again before you push.
 - Commit small and often, with clear messages.
-- Tell the group which files you are editing to avoid conflicts.
+- Let the group know which files you're editing so you don't overwrite each other.
 - Never commit passwords, API keys, or `.env` files.
 - Never use `git push --force`.
 - Never push to `main`.
 
 ---
 
-## Quick cheat sheet
+## Cheat sheet
+
+### Everyday commands
 
 | Command | What it does |
 |---|---|
@@ -241,13 +393,13 @@ git restore path/to/file
 | `git add .` | Stage all changes |
 | `git commit -m "msg"` | Save a snapshot locally |
 | `git push` | Upload commits to GitHub |
-| `git branch` | Show current branch |
+| `git branch` | Show the current branch |
 | `git checkout dev` | Switch to the `dev` branch |
 | `git log --oneline -5` | Show the last 5 commits |
 | `git diff` | Show uncommitted changes |
 | `git restore file` | Discard changes to a file |
 
-### Get one file from another branch
+### Getting one file from another branch
 
 ```powershell
 git fetch
@@ -265,7 +417,7 @@ git push
 | `git ls-tree --name-only origin/dev` | List the files on `dev` |
 | `git diff main origin/dev -- file` | Compare a file between `main` and `dev` |
 
-### Merge branches
+### Merging branches (owner only)
 
 ```powershell
 git checkout main
@@ -280,18 +432,4 @@ git push
 | `git merge --abort` | Cancel a merge that went wrong |
 | `git checkout --ours file` | On conflict, keep the version from your current branch |
 | `git checkout --theirs file` | On conflict, keep the version from the branch you merged in |
-| `git log main..dev --oneline` | Preview commits `dev` has that `main` doesn't |
-
-### Fix `__pycache__` problems
-
-```powershell
-Remove-Item -Recurse -Force src/states/__pycache__
-git rm -r --cached src/states/__pycache__
-```
-
-Add a `.gitignore` in the project root containing:
-
-```
-__pycache__/
-*.pyc
-```
+| `git log main..dev --oneline` | Preview commits that `dev` has and `main` doesn't |

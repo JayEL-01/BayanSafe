@@ -1,18 +1,18 @@
 import pygame
-
+from src.ui import theme
 from src.core import settings
 from src.states.base_state import BaseState
-from src.states.placeholder_state import PlaceholderState
-from src.ui.button import Button
 from src.states.character_select import CharacterSelect
+from src.states.placeholder_state import PlaceholderState
+from src.ui import theme
+from src.ui.button import Button
+
 
 class MainMenu(BaseState):
     def __init__(self, game):
         super().__init__(game)
-        self.title_font = pygame.font.Font(None, 44)
-        self.sub_font = pygame.font.Font(None, 16)
-        self.button_font = pygame.font.Font(None, 20)
-
+        self.backdrop = theme.CozyBackdrop()
+        self.time = 0.0
         self.buttons = []
         self.selected = 0
         self._build_buttons()
@@ -26,13 +26,11 @@ class MainMenu(BaseState):
         ]
         width, height, gap = 110, 20, 6
         x = (settings.INTERNAL_WIDTH - width) // 2
-        y = 78
         for i, (text, callback) in enumerate(entries):
-            rect = (x, y + i * (height + gap), width, height)
-            self.buttons.append(Button(text, rect, callback, self.button_font))
+            rect = (x, 76 + i * (height + gap), width, height)
+            self.buttons.append(Button(text, rect, callback))
         self._update_selection()
 
-    # ---- button actions (placeholders for now) ----
     def new_game(self):
         self.game.session.reset()
         self.game.state_manager.push(CharacterSelect(self.game))
@@ -43,7 +41,6 @@ class MainMenu(BaseState):
     def options(self):
         self.game.state_manager.push(PlaceholderState(self.game, "OPTIONS"))
 
-    # ---- selection ----
     def _update_selection(self):
         for i, button in enumerate(self.buttons):
             button.selected = (i == self.selected)
@@ -72,23 +69,14 @@ class MainMenu(BaseState):
                 if button.contains(pos):
                     button.activate()
 
+    def update(self, dt):
+        self.time += dt
+
     def draw(self, surface):
-        surface.fill((15, 25, 55))
-
-        # simple skyline decoration
-        for x, h in [(10, 30), (40, 45), (70, 25), (230, 40), (260, 28), (290, 50)]:
-            pygame.draw.rect(surface, (25, 40, 80), (x, 180 - h, 22, h))
-
-        # title with a shadow
-        shadow = self.title_font.render("BAYANSAFE", False, (0, 0, 0))
-        title = self.title_font.render("BAYANSAFE", False, (255, 200, 60))
-        surface.blit(shadow, shadow.get_rect(center=(162, 32)))
-        surface.blit(title, title.get_rect(center=(160, 30)))
-
-        sub = self.sub_font.render(
-            "Disaster Preparedness Adventure", False, (180, 200, 240)
-        )
-        surface.blit(sub, sub.get_rect(center=(160, 52)))
-
+        self.backdrop.draw(surface, self.time)
+        bob = int(round(pygame.math.Vector2(0, 1.5).y * 0))  # keep title steady
+        theme.draw_text(surface, "BAYANSAFE", (160, 28 + bob), "title", theme.HONEY, anchor="center")
+        theme.draw_text(surface, "Disaster Preparedness Adventure", (160, 48),
+                        "tiny", theme.CREAM, anchor="center")
         for button in self.buttons:
             button.draw(surface)

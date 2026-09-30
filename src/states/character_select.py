@@ -4,6 +4,7 @@ import pygame
 
 from src.states.base_state import BaseState
 from src.states.world_map import WorldMap
+from src.ui import theme
 from src.utils.data_loader import load_json
 from src.utils.helpers import wrap_text
 
@@ -17,12 +18,9 @@ class CharacterSelect(BaseState):
         self.trivia_index = 0
         self.trivia_timer = 0.0
 
-        self.title_font = pygame.font.Font(None, 22)
-        self.name_font = pygame.font.Font(None, 18)
-        self.small = pygame.font.Font(None, 12)
-
+        self.font = theme.get_font("tiny")
         self.selected = 0
-        self.cards = [pygame.Rect(50, 26, 100, 84), pygame.Rect(170, 26, 100, 84)]
+        self.cards = [pygame.Rect(50, 24, 100, 84), pygame.Rect(170, 24, 100, 84)]
 
     def confirm(self):
         self.game.session.character = self.characters[self.selected]
@@ -59,49 +57,37 @@ class CharacterSelect(BaseState):
             self.trivia_index = (self.trivia_index + 1) % len(self.trivia)
 
     def draw_card(self, surface, card, character, selected):
-        fill = (50, 75, 130) if selected else (30, 45, 90)
-        border = (255, 220, 80) if selected else (90, 110, 170)
-        pygame.draw.rect(surface, fill, card)
-        pygame.draw.rect(surface, border, card, 2 if selected else 1)
+        accent = theme.HONEY if selected else theme.LAVENDER
+        theme.draw_panel(surface, card, accent=accent)
 
-        # Placeholder portrait (replace with portrait.png later)
         portrait = pygame.Rect(0, 0, 30, 30)
         portrait.midtop = (card.centerx, card.y + 8)
         pygame.draw.rect(surface, tuple(character["color"]), portrait)
-        pygame.draw.rect(surface, (255, 255, 255), portrait, 1)
+        pygame.draw.rect(surface, theme.CREAM, portrait, 1)
 
-        name = self.name_font.render(character["name"].upper(), False, (255, 255, 255))
-        surface.blit(name, name.get_rect(center=(card.centerx, card.y + 48)))
+        theme.draw_text(surface, character["name"], (card.centerx, card.y + 41),
+                        "button", theme.CREAM, anchor="midtop")
 
-        ability = character["ability"].replace("_", " ").upper()
-        lines = [
-            f"SPEED {character['speed']}   HP {character['max_health']}",
-            f"ABILITY: {ability}",
-        ]
-        for i, line in enumerate(lines):
-            text = self.small.render(line, False, (190, 205, 240))
-            surface.blit(text, text.get_rect(center=(card.centerx, card.y + 62 + i * 10)))
+        ability = character["ability"].replace("_", " ").title()
+        theme.draw_text(surface, f"Speed {character['speed']}  HP {character['max_health']}",
+                        (card.centerx, card.y + 58), self.font, theme.CREAM_DIM, anchor="midtop")
+        theme.draw_text(surface, f"Ability: {ability}",
+                        (card.centerx, card.y + 68), self.font, theme.HONEY, anchor="midtop")
 
     def draw(self, surface):
-        surface.fill((15, 25, 55))
-
-        title = self.title_font.render("SELECT YOUR CHARACTER", False, (255, 200, 60))
-        surface.blit(title, title.get_rect(center=(160, 13)))
+        theme.fill_bg(surface)
+        theme.draw_text(surface, "Select Your Character", (160, 5), "heading",
+                        theme.HONEY, anchor="midtop")
 
         for i, card in enumerate(self.cards):
             self.draw_card(surface, card, self.characters[i], i == self.selected)
 
-        hint = self.small.render(
-            "A/D or arrows: choose   ENTER: confirm   ESC: back", False, (150, 170, 210)
-        )
-        surface.blit(hint, hint.get_rect(center=(160, 118)))
+        theme.draw_text(surface, "A/D: choose   ENTER: confirm   ESC: back",
+                        (160, 112), self.font, theme.CREAM_DIM, anchor="midtop")
 
-        # Trivia panel
-        panel = pygame.Rect(20, 128, 280, 46)
-        pygame.draw.rect(surface, (20, 35, 70), panel)
-        pygame.draw.rect(surface, (255, 200, 60), panel, 1)
-        label = self.small.render("DID YOU KNOW?", False, (255, 200, 60))
-        surface.blit(label, (panel.x + 6, panel.y + 4))
-        for i, line in enumerate(wrap_text(self.trivia[self.trivia_index], self.small, 268)[:3]):
-            text = self.small.render(line, False, (255, 255, 255))
-            surface.blit(text, (panel.x + 6, panel.y + 15 + i * 10))
+        panel = pygame.Rect(20, 126, 280, 50)
+        theme.draw_panel(surface, panel, title="DID YOU KNOW?")
+        lines = wrap_text(self.trivia[self.trivia_index], self.font, 268)[:3]
+        for i, line in enumerate(lines):
+            theme.draw_text(surface, line, (panel.x + 6, panel.y + 18 + i * 10),
+                            self.font, theme.CREAM)

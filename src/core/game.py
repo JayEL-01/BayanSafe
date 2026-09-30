@@ -1,5 +1,5 @@
 import pygame
-
+from src.ui import theme
 from src.core import settings
 from src.core.state_manager import StateManager
 from src.core.session import GameSession
@@ -36,24 +36,25 @@ class Game:
             state = self.state_manager.current()
             if state is None:
                 break
-            
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.quit()
                 else:
                     state.handle_event(event)
 
-            state.update(dt)
+            state.update(dt)   # <-- this line was missing
 
+            theme.TEXT_QUEUE.clear()
             self.canvas.fill((0, 0, 0))
             state.draw(self.canvas)
 
-            # Scale the small canvas up to the window.
+            # Scale the small canvas up to the window (pixel art)...
             pygame.transform.scale(
                 self.canvas, self.window.get_size(), self.window
             )
+            # ...then draw smooth text on top, at full resolution.
+            theme.flush_text(self.window)
             pygame.display.flip()
-            
 
         pygame.quit()
-        

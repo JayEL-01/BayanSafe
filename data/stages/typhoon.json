@@ -11,7 +11,22 @@
        "A typhoon is coming! Please help me board my windows.",
        "Find the emergency supplies first, then come back to me."
      ],
-     "after_dialogue": ["Thank you, hijo! Now get to the evacuation center."]}
+     "after_dialogue": ["Thank you, hijo! Now get to the evacuation center."],
+     "choice": {
+       "prompt": "Should we board up the windows now? It takes time, and the storm is getting closer.",
+       "options": [
+         {"text": "Board the windows (costs about 10 seconds)",
+          "flag": "boarded", "time_cost": 10, "points": 200,
+          "result": "Windows boarded! +10s of storm time.",
+          "mascot": "Good thinking! Boarded windows protect the home, but the storm got closer.",
+          "consequence": "You boarded the windows. It cost time, but the glass stayed intact and the house was protected."},
+         {"text": "Skip it and rush to the evacuation center",
+          "flag": "skipped", "time_cost": 0, "points": 0,
+          "result": "You skipped the windows.",
+          "mascot": "Saving time helps, but unprotected windows can break in strong wind.",
+          "consequence": "You skipped the windows. You saved time, but strong wind broke the glass and damaged the house."}
+       ]
+     }}
   ],
   "items": [
     {"id": "go_bag", "name": "Go-bag", "pos": [100, 180], "color": [80, 200, 120]},
@@ -27,7 +42,7 @@
     {"id": "talk_nena", "title": "Talk to Aling Nena", "type": "talk", "target": "aling_nena"},
     {"id": "evac", "title": "Reach the evacuation center", "type": "reach", "target": "evac_center"}
   ],
-   "mascot": {
+  "mascot": {
     "intro": "Hi, I'm Tarsi! A typhoon is coming. Check the quest list at the top right. Press H if you need a hint!",
     "quests": {
       "supplies": "Look for the green go-bag. Every family needs one ready for an emergency.",
@@ -35,5 +50,18 @@
       "talk_nena": "Aling Nena needs help. Walk up to the orange person and press E.",
       "evac": "Head to the blue Evacuation Center in the bottom-right corner."
     }
-  }
+  },
+  "hazards": {
+    "danger_ramp_seconds": 150,
+    "hazard_start_seconds": 12,
+    "rain": {"drops": 60},
+    "wind": {"strength": 45},
+    "debris": {"damage": 15, "min_interval": 1.2, "max_interval": 3.5}
+  },
+  "lessons": [
+    "Prepare a go-bag with water, food, a flashlight, a radio, first aid and documents before a storm.",
+    "Follow PAGASA warnings and evacuate early when local officials tell you to.",
+    "Stay away from flooded areas and falling objects. Never wade through floodwater.",
+    "Keep a battery-powered radio and charged phone for updates when the power goes out."
+  ]
 }

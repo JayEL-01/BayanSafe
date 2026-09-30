@@ -2,12 +2,17 @@ import pygame
 
 
 class Player:
-    def __init__(self, x, y, speed=60):
+    def __init__(self, x, y, speed=60, max_health=100):
         self.size = 12
         self.rect = pygame.Rect(x, y, self.size, self.size)
-        self.pos = pygame.Vector2(x, y)  # exact position (decimals allowed)
-        self.speed = speed               # pixels per second
+        self.pos = pygame.Vector2(x, y)
+        self.speed = speed
         self.color = (255, 200, 60)
+
+        self.max_health = max_health
+        self.health = max_health
+        self.invuln = 0.0        # seconds of protection after a hit
+        self.damage_taken = 0    # used later for achievements
 
     def get_direction(self):
         keys = pygame.key.get_pressed()
@@ -20,37 +25,49 @@ class Player:
             direction.y -= 1
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             direction.y += 1
-
-        # Stops diagonal movement from being faster.
         if direction.length_squared() > 0:
             direction = direction.normalize()
         return direction
 
-    def update(self, dt, walls):
-        direction = self.get_direction()
+    def take_damage(self, amount):
+        """Returns True if the hit counted."""
+        if self.invuln > 0:
+            return False
+        self.health = max(0, self.health - amount)
+        self.damage_taken += amount
+        self.invuln = 1.0
+        return True
 
-        # Move on the X axis, then fix collisions.
-        self.pos.x += direction.x * self.speed * dt
+    def update(self, dt, walls, push=(0, 0)):
+        if self.invuln > 0:
+            self.invuln -= dt
+
+        # Walking plus wind push.
+        velocity = self.get_direction() * self.speed + pygame.Vector2(push)
+
+        self.pos.x += velocity.x * dt
         self.rect.x = round(self.pos.x)
         for wall in walls:
             if self.rect.colliderect(wall):
-                if direction.x > 0:
+                if velocity.x > 0:
                     self.rect.right = wall.left
-                elif direction.x < 0:
+                elif velocity.x < 0:
                     self.rect.left = wall.right
                 self.pos.x = self.rect.x
 
-        # Move on the Y axis, then fix collisions.
-        self.pos.y += direction.y * self.speed * dt
+        self.pos.y += velocity.y * dt
         self.rect.y = round(self.pos.y)
         for wall in walls:
             if self.rect.colliderect(wall):
-                if direction.y > 0:
+                if velocity.y > 0:
                     self.rect.bottom = wall.top
-                elif direction.y < 0:
+                elif velocity.y < 0:
                     self.rect.top = wall.bottom
                 self.pos.y = self.rect.y
 
     def draw(self, surface, camera=None):
+        # Blink while protected.
+        if self.invuln > 0 and int(self.invuln * 10) % 2 == 0:
+            return
         rect = camera.apply(self.rect) if camera else self.rect
         pygame.draw.rect(surface, self.color, rect)

@@ -132,16 +132,46 @@ Press `Ctrl+Shift+P`, type **Python: Select Interpreter**, and choose the one th
 
 ### 9. Install the packages
 
-If the project has a `requirements.txt`:
+This project uses **pygame-ce** (the community edition of pygame). Make sure the virtual environment is active (you should see `(.venv)` in the terminal), then install it:
+
+```powershell
+pip install pygame-ce
+```
+
+If the project has a `requirements.txt`, you can install everything in one go instead:
 
 ```powershell
 pip install -r requirements.txt
 ```
 
-If not, install pygame directly:
+A few things to know about pygame-ce:
+
+- In the code you still write `import pygame`. The package name is `pygame-ce`, but the module name is the same as regular pygame.
+- **Don't install both `pygame` and `pygame-ce`.** They use the same module name and will conflict. If you already installed regular pygame, remove it first:
+
+  ```powershell
+  pip uninstall pygame
+  pip install pygame-ce
+  ```
+
+- To check that it worked, run:
+
+  ```powershell
+  python -c "import pygame; print(pygame.version.ver, pygame.IS_CE)"
+  ```
+
+  It should print a version number followed by `True`.
+
+If the install fails, make sure you're using a Python version that pygame-ce supports (check the version with `python --version`) and that `pip` is up to date:
 
 ```powershell
-pip install pygame
+python -m pip install --upgrade pip
+```
+
+For the project owner: to save the dependency list so everyone gets the same versions, run this once with the virtual environment active, then commit the file:
+
+```powershell
+pip freeze > requirements.txt
 ```
 
 ### 10. Run the game
@@ -267,11 +297,18 @@ Reinstall it (for Python, tick **Add python.exe to PATH**) and restart VS Code.
 <details>
 <summary>ModuleNotFoundError: No module named 'pygame'</summary>
 
-Activate the virtual environment and install it:
+The module is called `pygame` in code, but the package to install is `pygame-ce`. Activate the virtual environment and install it:
 
 ```powershell
 .venv\Scripts\Activate.ps1
-pip install pygame
+pip install pygame-ce
+```
+
+If you get strange errors after installing, you may have both `pygame` and `pygame-ce`. Remove both and reinstall only the CE version:
+
+```powershell
+pip uninstall pygame pygame-ce
+pip install pygame-ce
 ```
 
 </details>

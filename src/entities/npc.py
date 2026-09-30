@@ -10,6 +10,7 @@ class NPC:
         self.dialogue = data["dialogue"]
         self.after_dialogue = data.get("after_dialogue", data["dialogue"])
         self.talked = False
+        self.choice = data.get("choice")  
 
     def get_lines(self):
         return self.after_dialogue if self.talked else self.dialogue

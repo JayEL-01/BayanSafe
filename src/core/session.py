@@ -19,3 +19,13 @@ class GameSession:
         index = self.STAGE_ORDER.index(stage_id)
         if index + 1 < len(self.STAGE_ORDER):
             self.unlocked.add(self.STAGE_ORDER[index + 1])
+            self.records = {}
+    
+    def record_run(self, stage_id, stats):
+        best = self.records.setdefault(
+            stage_id, {"best_time": None, "best_score": 0, "perfect": False}
+        )
+        if best["best_time"] is None or stats["time"] < best["best_time"]:
+            best["best_time"] = stats["time"]
+        best["best_score"] = max(best["best_score"], stats["score"])
+        best["perfect"] = best["perfect"] or stats["perfect"]

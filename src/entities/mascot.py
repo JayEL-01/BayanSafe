@@ -3,9 +3,8 @@ import math
 import pygame
 
 from src.core import settings
+from src.ui import pixel_art, theme
 from src.utils.helpers import wrap_text
-
-
 class Mascot:
     IDLE_DELAY = 20  # seconds without progress before it offers a hint
 
@@ -27,6 +26,10 @@ class Mascot:
         events.subscribe("quest_completed", self.on_quest_completed)
         events.subscribe("item_collected", self.on_progress)
         self.say(stage_hints["intro"], 7)
+        self.sprite = pixel_art.mascot_sprite(self.color)
+        self.wind_warned = False
+        events.subscribe("wind_warning", self.on_wind)
+        events.subscribe("danger_level", self.on_danger)
 
     # ---------- speech ----------
     def say(self, text, seconds=5):
@@ -46,6 +49,14 @@ class Mascot:
     # ---------- event reactions ----------
     def on_progress(self, **_):
         self.idle_timer = 0.0
+
+    def on_wind(self, **_):
+        if not self.wind_warned:          # only warn the first time
+            self.wind_warned = True
+            self.say("Strong wind! It will push you. Keep moving!", 4)
+    def on_danger(self, level, **_):
+        if level in ("WARNING", "CRITICAL"):
+            self.say(f"Danger is {level}! Hurry and finish your quests!", 5)
 
     def on_quest_completed(self, **_):
         if self.quests.all_done():
@@ -72,11 +83,7 @@ class Mascot:
         bob = int(math.sin(self.time * 4) * 1.5)
         r = camera.apply(self.rect.move(0, bob))
 
-        pygame.draw.ellipse(surface, self.color, r)
-        pygame.draw.ellipse(surface, (255, 255, 255), r, 1)
-        for ex in (r.x + 3, r.x + 7):  # big round eyes
-            pygame.draw.circle(surface, (255, 255, 255), (ex, r.y + 4), 2)
-            pygame.draw.circle(surface, (0, 0, 0), (ex, r.y + 4), 1)
+        surface.blit(self.sprite, r.topleft)
 
         if self.bubble_timer > 0 and show_bubble:
             lines = wrap_text(self.bubble, self.font, 110)[:4]
@@ -88,4 +95,5 @@ class Mascot:
             pygame.draw.rect(surface, (250, 250, 240), box)
             pygame.draw.rect(surface, self.color, box, 1)
             for i, line in enumerate(lines):
-                surface.blit(self.font.render(line, False, (30, 30, 50)), (x + 4, y + 3 + i * 10))
+                theme.draw_text(surface, line, (x + 4, y + 3 + i * 10),
+                                self.font, (30, 30, 50), shadow=False)

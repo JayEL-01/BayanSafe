@@ -1,5 +1,5 @@
 import pygame
-
+from src.ui import theme
 from src.core import settings
 from src.utils.helpers import wrap_text
 
@@ -41,18 +41,14 @@ class DialogueBox:
     def draw(self, surface):
         if not self.active:
             return
-        box = pygame.Rect(8, settings.INTERNAL_HEIGHT - 52, settings.INTERNAL_WIDTH - 16, 46)
-        panel = pygame.Surface(box.size, pygame.SRCALPHA)
-        panel.fill((15, 25, 55, 235))
-        surface.blit(panel, box.topleft)
-        pygame.draw.rect(surface, (255, 200, 60), box, 1)
-
-        name = self.font.render(self.speaker.upper(), False, (255, 200, 60))
-        surface.blit(name, (box.x + 6, box.y + 4))
+        box = pygame.Rect(8, settings.INTERNAL_HEIGHT - 62, settings.INTERNAL_WIDTH - 16, 56)
+        theme.draw_panel(surface, box, title=self.speaker.upper(), accent=theme.HONEY)
 
         shown = self.lines[self.index][:int(self.chars)]
-        for i, line in enumerate(wrap_text(shown, self.font, box.w - 12)[:3]):
-            surface.blit(self.font.render(line, False, (255, 255, 255)), (box.x + 6, box.y + 15 + i * 10))
+        for i, line in enumerate(wrap_text(shown, self.font, box.w - 14)[:3]):
+            theme.draw_text(surface, line, (box.x + 7, box.y + 19 + i * 11),
+                            self.font, theme.CREAM, shadow=False)
 
-        hint = self.font.render("E / ENTER", False, (150, 170, 210))
-        surface.blit(hint, (box.right - hint.get_width() - 5, box.bottom - 11))
+        if self.chars >= len(self.lines[self.index]) and (pygame.time.get_ticks() // 400) % 2 == 0:
+            x, y = box.right - 12, box.bottom - 9
+            pygame.draw.polygon(surface, theme.HONEY, [(x, y), (x + 6, y), (x + 3, y + 4)])

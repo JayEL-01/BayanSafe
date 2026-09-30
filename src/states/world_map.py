@@ -2,7 +2,7 @@ import math
 
 import pygame
 import random
-
+from src.ui import theme
 from src.core import settings
 from src.states.base_state import BaseState
 from src.states.big_map import BigMap
@@ -146,8 +146,8 @@ class WorldMap(BaseState):
         self.travel = None
         self.time = 0.0
 
-        self.med = pygame.font.Font(None, 16)
-        self.small = pygame.font.Font(None, 12)
+        self.med = theme.get_font("button")
+        self.small = theme.get_font("tiny")
         self.message = ""
         self.message_timer = 0.0
 
@@ -324,8 +324,8 @@ class WorldMap(BaseState):
                 pygame.draw.lines(surface, DARK, False,
                                   [(px - 3, py), (px - 1, py + 3), (px + 4, py - 3)], 2)
             elif unlocked:
-                num = self.small.render(str(i + 1), False, DARK)
-                surface.blit(num, num.get_rect(center=(px, py)))
+                theme.draw_text(surface, str(i + 1), (px, py), self.small, DARK,
+                                shadow=False, anchor="center")
             else:  # padlock
                 pygame.draw.rect(surface, DARK, (px - 3, py - 1, 7, 5))
                 pygame.draw.rect(surface, DARK, (px - 2, py - 5, 5, 5), 1)
@@ -335,11 +335,8 @@ class WorldMap(BaseState):
                 pygame.draw.circle(surface, (255, 255, 255), (px, py), pulse, 1)
 
             label_color = (255, 255, 255) if unlocked else (170, 175, 190)
-            name = node["name"].upper()
-            shadow = self.small.render(name, False, (0, 0, 0))
-            text = self.small.render(name, False, label_color)
-            surface.blit(shadow, shadow.get_rect(center=(px + 1, py + 15)))
-            surface.blit(text, text.get_rect(center=(px, py + 14)))
+            theme.draw_text(surface, node["name"], (px, py + 16), self.small,
+                            label_color, anchor="center")
 
     def _draw_marker(self, surface):
         character = self.game.session.character
@@ -362,36 +359,34 @@ class WorldMap(BaseState):
         surface.blit(strip, (0, 0))
         character = session.character
         who = character["name"].upper() if character else "?"
-        surface.blit(self.small.render(f"WORLD MAP  -  {who}", False, (255, 200, 60)), (6, 3))
+        theme.draw_text(surface, f"WORLD MAP  -  {who}", (6, 2), self.small, theme.HONEY)
 
         x = 180
         for label, color in (("OPEN", GOLD), ("LOCKED", GRAY), ("DONE", GREEN)):
             pygame.draw.circle(surface, color, (x, 7), 3)
-            text = self.small.render(label, False, (220, 228, 245))
-            surface.blit(text, (x + 6, 3))
-            x += text.get_width() + 16
+            r = theme.draw_text(surface, label, (x + 6, 2), self.small, theme.CREAM)
+            x += r.width + 16
 
         # bottom info panel
         node = self.nodes[self.current]
         accent = tuple(node["accent"])
-        box = pygame.Rect(6, 138, 308, 38)
-        panel = pygame.Surface(box.size, pygame.SRCALPHA)
-        panel.fill((15, 25, 55, 225))
-        surface.blit(panel, box.topleft)
-        pygame.draw.rect(surface, accent, box, 1)
+        box = pygame.Rect(6, 132, 308, 44)
+        theme.draw_panel(surface, box, accent=accent)
 
-        name = self.med.render(node["name"].upper(), False, accent)
-        surface.blit(name, (box.x + 6, box.y + 3))
+        name = theme.draw_text(surface, node["name"], (box.x + 6, box.y + 3),
+                               self.med, accent)
         if node["id"] in session.completed:
-            done = self.small.render("DONE", False, GREEN)
-            surface.blit(done, (box.x + 12 + name.get_width(), box.y + 5))
+            theme.draw_text(surface, "DONE", (box.x + 12 + name.width, box.y + 5),
+                            self.small, theme.SAGE)
 
-        hint = self.small.render("A/D: TRAVEL  ENTER: PLAY  Z: ZOOM", False, (150, 170, 210))
-        surface.blit(hint, (box.right - hint.get_width() - 6, box.y + 5))
+        theme.draw_text(surface, "A/D: TRAVEL  ENTER: PLAY  Z: ZOOM",
+                        (box.right - 6, box.y + 5), self.small, theme.CREAM_DIM,
+                        anchor="topright")
 
         if self.message_timer > 0:
-            text, color = self.message, (255, 120, 120)
+            text, color = self.message, theme.CORAL
         else:
-            text, color = node["blurb"], (255, 255, 255)
+            text, color = node["blurb"], theme.CREAM
         for n, line in enumerate(wrap_text(text, self.small, 292)[:2]):
-            surface.blit(self.small.render(line, False, color), (box.x + 6, box.y + 17 + n * 10))
+            theme.draw_text(surface, line, (box.x + 6, box.y + 19 + n * 10),
+                            self.small, color)

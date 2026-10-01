@@ -1,4 +1,4 @@
-"theme design"
+# theme design
 import math
 import random
 
@@ -10,12 +10,9 @@ from src.utils.data_loader import BASE_DIR
 # ------------------------------------------------------------------
 # COLORS
 # ------------------------------------------------------------------
-WOOD       = (120, 78, 44)     # plank
-WOOD_DARK  = (84, 52, 32)      # unselected plank
-WOOD_LIGHT = (168, 114, 64)    # plank highlight
 NIGHT      = (36, 28, 44)      # deepest background
 PLUM       = (52, 40, 60)      # panel fill
-PLUM_LIGHT = (72, 57, 80)      # panel highlight / unselected button
+PLUM_LIGHT = (72, 57, 80)      # panel highlight
 CREAM      = (255, 244, 224)   # main text
 CREAM_DIM  = (196, 180, 170)   # secondary text
 HONEY      = (247, 195, 90)    # accent, selection, titles
@@ -24,6 +21,10 @@ SAGE       = (140, 196, 132)   # good, done
 SKY        = (124, 178, 204)   # info, water
 LAVENDER   = (168, 140, 200)   # locked / special
 SHADOW     = (20, 14, 26)      # text and panel shadows
+
+WOOD       = (120, 78, 44)     # plank
+WOOD_DARK  = (84, 52, 32)      # unselected plank
+WOOD_LIGHT = (168, 114, 64)    # plank highlight
 
 LEVEL_COLORS = {               # Danger Meter levels
     "NORMAL": SAGE,
@@ -190,7 +191,10 @@ def draw_bar(surface, rect, value, maximum, color):
     _notched_border(surface, rect, CREAM_DIM)
 
 
-ICONS = {   # 8x8 pixel icons
+# ------------------------------------------------------------------
+# PIXEL ICONS (8x8) and the wooden-plank button
+# ------------------------------------------------------------------
+ICONS = {
     "house": ["...##...", "..####..", ".######.", "########",
               ".#.##.#.", ".#.##.#.", ".######.", "........"],
     "clip":  ["..####..", ".######.", ".#....#.", ".#.##.#.",
@@ -199,21 +203,36 @@ ICONS = {   # 8x8 pixel icons
               "##....##", "###..###", ".######.", "..#..#.."],
     "door":  [".######.", ".#....#.", ".#....#.", ".#..#.#.",
               ".#....#.", ".#....#.", ".#....#.", "########"],
+    "book":  ["########", "#..##..#", "#..##..#", "#..##..#",
+              "#..##..#", "#..##..#", "########", "........"],
+    "light": ["..####..", ".######.", "..####..", "..####..",
+              "..####..", "..####..", "..####..", "...##..."],
+    "water": ["...##...", "...##...", "..####..", ".######.",
+              ".######.", ".######.", "..####..", "........"],
+    "radio": ["......#.", ".....#..", "########", "#......#",
+              "#.##.#.#", "#.##...#", "#......#", "########"],
+    "aid":   ["########", "#..##..#", "#..##..#", "#.####.#",
+              "#.####.#", "#..##..#", "#..##..#", "########"],
 }
 
 
-def _draw_icon(surface, name, pos, color):
+def draw_icon(surface, name, pos, color):
     for j, row in enumerate(ICONS[name]):
         for i, ch in enumerate(row):
             if ch == "#":
                 surface.set_at((pos[0] + i, pos[1] + j), color)
 
 
-def draw_button(surface, rect, text, selected=False, font=None, icon=None, t=None):
+def draw_button(surface, rect, text, selected=False, font=None, icon=None, t=None, disabled=False):
     rect = pygame.Rect(rect)
     t = pygame.time.get_ticks() / 1000 if t is None else t
+    hot = selected and not disabled
 
-    if selected:
+    if disabled:
+        fill = mix(WOOD_DARK, NIGHT, 0.55)
+        border = mix(WOOD_DARK, CREAM_DIM, 0.3)
+        text_color = mix(CREAM_DIM, NIGHT, 0.45)
+    elif selected:
         fill, border, text_color = HONEY, CREAM, NIGHT
     else:
         fill, border, text_color = WOOD_DARK, mix(WOOD_DARK, WOOD_LIGHT, 0.6), CREAM
@@ -232,7 +251,7 @@ def draw_button(surface, rect, text, selected=False, font=None, icon=None, t=Non
             pygame.draw.line(surface, grain, (rect.x + x0, rect.y + gy),
                              (min(rect.right - 4, rect.x + x1), rect.y + gy))
 
-    if selected:
+    if hot:
         # scrolling hazard stripes on both ends
         shift = int(t * 10)
         for x0 in (rect.x + 2, rect.right - 10):
@@ -249,15 +268,17 @@ def draw_button(surface, rect, text, selected=False, font=None, icon=None, t=Non
     _notched_border(surface, rect, border)
 
     if icon:
-        _draw_icon(surface, icon, (rect.x + 14, rect.centery - 4), NIGHT if selected else HONEY)
+        icon_color = NIGHT if hot else (text_color if disabled else HONEY)
+        draw_icon(surface, icon, (rect.x + 14, rect.centery - 4), icon_color)
     draw_text(surface, text, (rect.centerx + (5 if icon else 0), rect.centery),
-              font or "button", text_color, shadow=not selected, anchor="center")
+              font or "button", text_color, shadow=not selected and not disabled, anchor="center")
 
     if selected:  # pointer arrows that bounce
         b = int(round(math.sin(t * 8) * 1.5))
         cy = rect.centery
-        pygame.draw.polygon(surface, HONEY, [(rect.x - 7 - b, cy - 3), (rect.x - 7 - b, cy + 3), (rect.x - 3 - b, cy)])
-        pygame.draw.polygon(surface, HONEY, [(rect.right + 6 + b, cy - 3), (rect.right + 6 + b, cy + 3), (rect.right + 2 + b, cy)])
+        arrow = HONEY if hot else CREAM_DIM
+        pygame.draw.polygon(surface, arrow, [(rect.x - 7 - b, cy - 3), (rect.x - 7 - b, cy + 3), (rect.x - 3 - b, cy)])
+        pygame.draw.polygon(surface, arrow, [(rect.right + 6 + b, cy - 3), (rect.right + 6 + b, cy + 3), (rect.right + 2 + b, cy)])
 
 
 # ------------------------------------------------------------------

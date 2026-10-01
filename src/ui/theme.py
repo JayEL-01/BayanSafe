@@ -10,6 +10,9 @@ from src.utils.data_loader import BASE_DIR
 # ------------------------------------------------------------------
 # COLORS
 # ------------------------------------------------------------------
+WOOD       = (120, 78, 44)     # plank
+WOOD_DARK  = (84, 52, 32)      # unselected plank
+WOOD_LIGHT = (168, 114, 64)    # plank highlight
 NIGHT      = (36, 28, 44)      # deepest background
 PLUM       = (52, 40, 60)      # panel fill
 PLUM_LIGHT = (72, 57, 80)      # panel highlight / unselected button
@@ -187,27 +190,74 @@ def draw_bar(surface, rect, value, maximum, color):
     _notched_border(surface, rect, CREAM_DIM)
 
 
-def draw_button(surface, rect, text, selected=False, font=None):
+ICONS = {   # 8x8 pixel icons
+    "house": ["...##...", "..####..", ".######.", "########",
+              ".#.##.#.", ".#.##.#.", ".######.", "........"],
+    "clip":  ["..####..", ".######.", ".#....#.", ".#.##.#.",
+              ".#....#.", ".#.##.#.", ".#....#.", ".######."],
+    "gear":  ["..#..#..", ".######.", "###..###", "##....##",
+              "##....##", "###..###", ".######.", "..#..#.."],
+    "door":  [".######.", ".#....#.", ".#....#.", ".#..#.#.",
+              ".#....#.", ".#....#.", ".#....#.", "########"],
+}
+
+
+def _draw_icon(surface, name, pos, color):
+    for j, row in enumerate(ICONS[name]):
+        for i, ch in enumerate(row):
+            if ch == "#":
+                surface.set_at((pos[0] + i, pos[1] + j), color)
+
+
+def draw_button(surface, rect, text, selected=False, font=None, icon=None, t=None):
     rect = pygame.Rect(rect)
+    t = pygame.time.get_ticks() / 1000 if t is None else t
+
     if selected:
         fill, border, text_color = HONEY, CREAM, NIGHT
     else:
-        fill, border, text_color = PLUM_LIGHT, mix(PLUM_LIGHT, CREAM_DIM, 0.6), CREAM
+        fill, border, text_color = WOOD_DARK, mix(WOOD_DARK, WOOD_LIGHT, 0.6), CREAM
 
+    # plank body + drop shadow
     pygame.draw.rect(surface, SHADOW, rect.move(0, 2))
     pygame.draw.rect(surface, fill, rect.inflate(-2, 0))
     pygame.draw.rect(surface, fill, rect.inflate(0, -2))
     pygame.draw.line(surface, mix(fill, CREAM, 0.25),
                      (rect.x + 2, rect.y + 1), (rect.right - 3, rect.y + 1))
+
+    # wood grain
+    grain = mix(fill, SHADOW, 0.25)
+    for gy, x0, x1 in ((5, 14, 60), (11, 40, rect.w - 14), (16, 20, 70)):
+        if rect.y + gy < rect.bottom - 2:
+            pygame.draw.line(surface, grain, (rect.x + x0, rect.y + gy),
+                             (min(rect.right - 4, rect.x + x1), rect.y + gy))
+
+    if selected:
+        # scrolling hazard stripes on both ends
+        shift = int(t * 10)
+        for x0 in (rect.x + 2, rect.right - 10):
+            for x in range(x0, x0 + 8):
+                for y in range(rect.y + 2, rect.bottom - 2):
+                    if ((x + y - shift) // 3) % 2 == 0:
+                        surface.set_at((x, y), NIGHT)
+    else:
+        # nails in the corners
+        for nx, ny in ((rect.x + 3, rect.y + 3), (rect.right - 4, rect.y + 3),
+                       (rect.x + 3, rect.bottom - 4), (rect.right - 4, rect.bottom - 4)):
+            surface.set_at((nx, ny), CREAM_DIM)
+
     _notched_border(surface, rect, border)
 
-    draw_text(surface, text, rect.center, font or "button",
-              text_color, shadow=not selected, anchor="center")
+    if icon:
+        _draw_icon(surface, icon, (rect.x + 14, rect.centery - 4), NIGHT if selected else HONEY)
+    draw_text(surface, text, (rect.centerx + (5 if icon else 0), rect.centery),
+              font or "button", text_color, shadow=not selected, anchor="center")
 
-    if selected:  # little pointer arrows on both sides
+    if selected:  # pointer arrows that bounce
+        b = int(round(math.sin(t * 8) * 1.5))
         cy = rect.centery
-        pygame.draw.polygon(surface, HONEY, [(rect.x - 7, cy - 3), (rect.x - 7, cy + 3), (rect.x - 3, cy)])
-        pygame.draw.polygon(surface, HONEY, [(rect.right + 6, cy - 3), (rect.right + 6, cy + 3), (rect.right + 2, cy)])
+        pygame.draw.polygon(surface, HONEY, [(rect.x - 7 - b, cy - 3), (rect.x - 7 - b, cy + 3), (rect.x - 3 - b, cy)])
+        pygame.draw.polygon(surface, HONEY, [(rect.right + 6 + b, cy - 3), (rect.right + 6 + b, cy + 3), (rect.right + 2 + b, cy)])
 
 
 # ------------------------------------------------------------------

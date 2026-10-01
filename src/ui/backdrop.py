@@ -48,7 +48,7 @@ SHINE_FRAMES = 18
 # ------------------------------------------------------------------
 # DAY / NIGHT
 # ------------------------------------------------------------------
-PHASE_SECONDS = 15
+PHASE_SECONDS = 6
 DAY_SECONDS = PHASE_SECONDS * 4        # one full day = one hazard
 BLEND_STEPS = 6
 START_PHASE = 1           # 0 morning, 1 day, 2 evening, 3 night

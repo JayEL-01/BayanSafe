@@ -13,19 +13,6 @@ MENU_DIR = BASE_DIR / "assets" / "images" / "menu"
 MAX_TITLE_WIDTH = 200
 SIZE = (settings.INTERNAL_WIDTH, settings.INTERNAL_HEIGHT)
 
-# ------------------------------------------------------------------
-# FILES (in assets/images/menu/, all the same canvas ratio as the scene)
-#   bg_clean.png  scene with the palms and grass layer erased
-#                 (use the VOLCANO version so the cone is always visible)
-#   trees.png     only the palms, transparent background
-#   grass.png     only the foreground grass (optional)
-#   clouds.png    only the clouds (optional)
-#   title.png     logo
-# ------------------------------------------------------------------
-
-# ------------------------------------------------------------------
-# MOTION (edit freely)
-# ------------------------------------------------------------------
 TREE_STRENGTH = 2.5       # sway at the crown, in pixels (1.5 = subtle, 3.5 = strong)
 TREE_PERIOD = 8.0         # seconds per full loop (bigger = calmer)
 TREE_FRAMES = 40          # more = smoother, uses more RAM at startup

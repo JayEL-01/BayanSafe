@@ -13,6 +13,9 @@ STRINGS = {
         "NORMAL": "NORMAL", "WATCH": "WATCH", "WARNING": "WARNING", "CRITICAL": "CRITICAL",
         "h_typhoon": "TYPHOON", "h_flood": "FLOOD", "h_earthquake": "EARTHQUAKE",
         "h_volcano": "ERUPTION", "h_wildfire": "WILDFIRE",
+        "banner_typhoon": "TYPHOON INCOMING", "banner_flood": "FLOOD WARNING",
+        "banner_earthquake": "EARTHQUAKE!", "banner_volcano": "VOLCANO ERUPTING",
+        "banner_wildfire": "WILDFIRE SPREADING", "hint_click": "CLICK THE TITLE",
     },
     "fil": {
         "new_game": "BAGONG LARO", "continue": "ITULOY", "guide": "GABAY",
@@ -25,6 +28,9 @@ STRINGS = {
         "NORMAL": "NORMAL", "WATCH": "BANTAY", "WARNING": "BABALA", "CRITICAL": "KRITIKAL",
         "h_typhoon": "BAGYO", "h_flood": "BAHA", "h_earthquake": "LINDOL",
         "h_volcano": "PAGSABOG", "h_wildfire": "SUNOG",
+        "banner_typhoon": "PAPARATING ANG BAGYO", "banner_flood": "BABALA: BAHA",
+        "banner_earthquake": "LUMILINDOL!", "banner_volcano": "SUMASABOG ANG BULKAN",
+        "banner_wildfire": "LUMALAGANAP ANG SUNOG", "hint_click": "I-CLICK ANG TITULO",
     },
 }
 
@@ -39,6 +45,7 @@ TIPS = {
         "TIP: Never burn trash in dry grass. One spark can start a wildfire.",
         "TIP: Stay out of the volcano's Permanent Danger Zone.",
         "TIP: Check for cracks and gas leaks after an earthquake.",
+        "TIP: Click the BayanSafe title to repair it. Stay ready, stay safe!",
         "BAYANSAFE v0.1 - Made for disaster awareness",
     ],
     "fil": [
@@ -51,6 +58,7 @@ TIPS = {
         "TIP: Huwag magsunog ng basura sa tuyong damo. Isang siklab, sunog na.",
         "TIP: Lumayo sa Permanent Danger Zone ng bulkan.",
         "TIP: Suriin ang bitak at gas leak pagkatapos ng lindol.",
+        "TIP: I-click ang titulo ng BayanSafe para ayusin ito. Laging handa!",
         "BAYANSAFE v0.1 - Para sa kamalayan sa sakuna",
     ],
 }

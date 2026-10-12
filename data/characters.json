@@ -1,7 +1,9 @@
 [
   {
-    "id": "Amir",
-    "name": "Amir",
+    "portrait": "assets/images/characters/juan_portrait.png",
+    "walk": "assets/images/characters/juan_walk.png",
+    "id": "juan",
+    "name": "Juan",
     "description": "A fast and brave barangay tanod volunteer.",
     "speed": 60,
     "max_health": 100,
@@ -9,6 +11,8 @@
     "color": [255, 200, 60]
   },
   {
+    "portrait": "assets/images/characters/maria_portrait.png",
+    "walk": "assets/images/characters/maria_walk.png",
     "id": "maria",
     "name": "Maria",
     "description": "A calm first-aid trained student.",

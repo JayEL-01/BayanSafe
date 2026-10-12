@@ -1,8 +1,8 @@
 """Tiny settings store (language, sound) saved to prefs.json next to main.py."""
 import json
-
+from src.ui import menu_fx, theme
 from src.utils.data_loader import BASE_DIR
-
+from src.core import audio
 PATH = BASE_DIR / "prefs.json"
 SAVE_DIR = BASE_DIR / "saves"          # change this if your save files live elsewhere
 

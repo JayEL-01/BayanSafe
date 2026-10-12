@@ -13,8 +13,9 @@ import pygame
 
 from src.core import settings
 from src.core.strings import tips, tr
-from src.ui import theme
-
+from src.ui import menu_fx, theme
+from src.utils.data_loader import BASE_DIR
+from src.core import audio
 W, H = settings.INTERNAL_WIDTH, settings.INTERNAL_HEIGHT
 
 HAZARDS = ["typhoon", "flood", "earthquake", "volcano", "wildfire"]
@@ -40,6 +41,11 @@ FIRE_SPOTS = [(10, 150, 1), (300, 142, 1), (40, 128, 0), (262, 126, 0), (128, 11
               (250, 118, 0), (28, 140, 1), (272, 124, 0)]
 FIRE_STEP = 0.05                      # each fire lights up this much later than the one before
 
+SHOW_BANNER = False                   # True brings back the "ALERT" banner and its siren
+BANNER_TIME = 3.8                     # seconds the "incoming" banner stays
+BANNER_Y = 98                         # top of the banner strip (canvas pixels)
+BANNER_COLORS = {"typhoon": (124, 178, 204), "flood": (95, 150, 205), "earthquake": (215, 165, 100),
+                 "volcano": (232, 118, 104), "wildfire": (245, 150, 60)}
 RAIN_COUNT = 120
 STORM_CYCLE = 7.0                     # seconds between lightning strikes at peak typhoon
 FLOOD_RISE = 135                      # pixels the water climbs at the peak (135 reaches the title)
@@ -160,6 +166,8 @@ class MenuFX:
         self.flash = 0.0
         self.water_top = H        # flood surface y (the title reads this)
         self.zap = None           # seconds since the last typhoon lightning strike (title reads this)
+        self.banner = None        # seconds since the "incoming" banner appeared (None = hidden)
+        self._announced = False
 
     # ---------- time ----------
     def update(self, dt, level, hazard="typhoon"):
@@ -170,9 +178,22 @@ class MenuFX:
             self.flash = 0.0
             self.erupt_in = 1.5
             self.next_snd.clear()
+            self._announced = False
+            self.banner = None
         self.t += dt
         t = self.t
         self.level = level
+        if level < 0.1:                                 # calm again: the next hazard can be announced
+            self._announced = False
+        elif level >= 0.3 and not self._announced:      # danger is building: announce it with a siren
+            self._announced = True
+            if SHOW_BANNER:
+                self.banner = 0.0
+                self.sounds.append(("siren", 0.35))
+        if self.banner is not None:
+            self.banner += dt
+            if self.banner > BANNER_TIME:
+                self.banner = None
         self.storm = level if hazard == "typhoon" else 0.0
         self.sway = {"typhoon": level, "earthquake": 0.6 * level,
                      "wildfire": 0.5 * level}.get(hazard, 0.0)
@@ -378,11 +399,7 @@ class MenuFX:
             s = self._sprite(CHICKEN, self.chicken_dir < 0)
             bob = 1 if int(self.t * 4) % 2 else 0
             surface.blit(s, (int(self.chicken_x), CHICKEN_LANE[2] - s.get_height() + bob))
-        if self.hazard == "flood" and self.level > 0.55:  # the kid evacuates when water is high
-            return
-        leg = int(self.t * (6 + 10 * self.level)) % 2
-        s = self._sprite(KID + KID_LEGS[leg], self.kid_dir < 0)
-        surface.blit(s, (int(self.kid_x), KID_LANE[2] - s.get_height()))
+        # (the walking kid was removed on purpose)
 
     # ---------- earthquake ----------
     def _quake_ground(self, surface):
@@ -590,8 +607,185 @@ class MenuFX:
 _footer = None
 
 
+UI_DIR = BASE_DIR / "assets" / "images" / "ui"      # sprites made from your AI sheets
+_ui_cache = {}
+_silhouettes = {}
+
+# where things sit on the 54x33 wooden sign (its dark middle is x 5..48, y 13..27)
+SIGN_POS = (1, 0)                     # top-left of the sign on the canvas (the ropes hang off the top edge)
+SIGN_ICON = (6, 13)                   # hazard icon inside the sign
+SIGN_TEXT = (20, 12)                  # level / hazard name
+SIGN_LAMPS = (20, 20)                 # four 7px lamps in a row
+SIGN_TEXT_W = 28                      # text wider than this is skipped
+GOBAG_RECT = (268, 4, 50, 31)         # go-bag panel (x, y, w, h)
+GOBAG_ORDER = ("light", "water", "radio", "medkit")   # fill order; sprite names are bag_<name>
+LAMP_COLORS = ("green", "yellow", "orange", "red")
+LAMP_GLOW = ((40, 110, 40), (120, 95, 20), (130, 70, 15), (130, 40, 35))
+_last_filled = [0]
+
+
+def _ui(name):
+    """Loads assets/images/ui/<name>.png once. Returns None if it is missing."""
+    if name not in _ui_cache:
+        path = UI_DIR / (name + ".png")
+        img = None
+        try:
+            if path.exists():
+                img = pygame.image.load(str(path)).convert_alpha()
+        except (pygame.error, OSError):
+            img = None
+        _ui_cache[name] = img
+    return _ui_cache[name]
+
+
+def _silhouette(name):
+    """A dim, empty-slot version of a sprite."""
+    if name not in _silhouettes:
+        spr = _ui(name)
+        _silhouettes[name] = (pygame.mask.from_surface(spr).to_surface(
+            setcolor=(*theme.PLUM_LIGHT, 255), unsetcolor=(0, 0, 0, 0)) if spr else None)
+    return _silhouettes[name]
+
+
+_glows = {}
+
+
+def _glow(i):
+    """A soft round glow for lit lamp i (cached, drawn additively)."""
+    if i not in _glows:
+        g = pygame.Surface((13, 13))
+        r, gr, b = LAMP_GLOW[i]
+        for rad, f in ((6, 0.3), (5, 0.55), (4, 0.85)):
+            pygame.draw.circle(g, (int(r * f), int(gr * f), int(b * f)), (6, 6), rad)
+        _glows[i] = g
+    return _glows[i]
+
+
+def _fit(text, width):
+    return theme.get_font("tiny").size(text)[0] <= width
+
+
 def draw_alert_chip(surface, t, level, hazard="typhoon"):
-    """Danger Meter preview: hazard icon, danger level and hazard name."""
+    """Danger Meter: a wooden sign hanging from the top edge. It shows the hazard icon,
+    the danger level (name + four signal lamps) and swings harder as the danger rises."""
+    sign = _ui("sign")
+    if sign is None:
+        return _old_chip(surface, t, level, hazard)
+    name, signal = level_for(level)
+    color = theme.LEVEL_COLORS[name]
+
+    dx = dy = 0
+    if level > 0.15:
+        dx = int(round(math.sin(t * (1.6 + 2.5 * level)) * min(1.0, level * 1.2)))      # swings in the wind
+    if hazard == "earthquake" and level > 0.3 or name == "CRITICAL":
+        r = random.Random(int(t * 18))
+        dx, dy = r.randint(-1, 1), r.randint(0, 1) if hazard == "earthquake" else 0     # rattles
+    px, py = SIGN_POS[0] + dx, SIGN_POS[1] + dy
+    surface.blit(sign, (px, py))
+
+    icon = _ui("hz_" + hazard)
+    if icon is not None:
+        ix, iy = SIGN_ICON
+        surface.blit(icon, (px + ix + (14 - icon.get_width()) // 2, py + iy + (14 - icon.get_height()) // 2))
+
+    label = tr(name)                                    # alternate: danger level, then hazard name
+    other = tr("h_" + hazard)
+    if int(t / 2.5) % 2 == 1 and _fit(other, SIGN_TEXT_W):
+        label, tint = other, theme.CREAM_DIM
+    else:
+        tint = color
+    if not _fit(label, SIGN_TEXT_W):
+        label = "LV" + str(signal + 1)                 # too wide for the sign: show a short level number
+    theme.draw_text(surface, label, (px + SIGN_TEXT[0], py + SIGN_TEXT[1]), "tiny", tint, shadow=False)
+
+    lx, ly = SIGN_LAMPS
+    for i, c in enumerate(LAMP_COLORS):                 # one more lamp lights per danger level
+        lit = i <= signal
+        if lit and name == "CRITICAL" and i == 3 and int(t * 3) % 2:
+            lit = False                                 # the red lamp blinks
+        lamp = _ui("lamp_" + c if lit else "lamp_off")
+        if lamp is None:
+            continue
+        if lit:
+            surface.blit(_glow(i), (px + lx + i * 7 - 3, py + ly - 3), special_flags=pygame.BLEND_RGB_ADD)
+        surface.blit(lamp, (px + lx + i * 7, py + ly))
+
+
+_banner_bg = None
+
+
+def draw_banner(surface, fx):
+    """Alert strip that sweeps across the screen when a hazard starts ("TYPHOON INCOMING")."""
+    global _banner_bg
+    age = fx.banner
+    if age is None:
+        return
+    if _banner_bg is None:
+        _banner_bg = pygame.Surface((W, 18), pygame.SRCALPHA)
+        _banner_bg.fill((*theme.SHADOW, 210))
+    fly = 0.35
+    if age < fly:                                       # slides in from the left
+        x = int(-W * (1 - age / fly) ** 3)
+    elif age > BANNER_TIME - fly:                       # and leaves to the right
+        x = int(W * ((age - (BANNER_TIME - fly)) / fly) ** 3)
+    else:
+        x = 0
+    y = BANNER_Y + (random.Random(int(age * 25)).randint(-1, 1) if fx.level > 0.85 else 0)
+    col = BANNER_COLORS.get(fx.hazard, theme.HONEY)
+    surface.blit(_banner_bg, (x, y))
+    shift = int(age * 36) % 16
+    for sy in (y, y + 15):                              # hazard stripes crawl along both edges
+        for xx in range(-16 + shift, W, 16):
+            pygame.draw.rect(surface, col, (xx + x, sy, 8, 3))
+    text = tr("banner_" + fx.hazard)
+    theme.draw_text(surface, text, (W // 2 + x, y + 9), "small", col, anchor="center")
+    icon = _ui("hz_" + fx.hazard)
+    if icon is not None:                                # the hazard icon on both sides of the text
+        half = theme.get_font("small").size(text)[0] // 2 + 6
+        iy = y + 9 - icon.get_height() // 2
+        surface.blit(icon, (W // 2 + x - half - icon.get_width(), iy))
+        surface.blit(icon, (W // 2 + x + half, iy))
+
+
+def draw_gobag(surface, t):
+    """Go-bag: a backpack and four items. Items drop into slots one by one."""
+    bag = _ui("bag_backpack")
+    if bag is None or any(_ui("bag_" + n) is None for n in GOBAG_ORDER):
+        return _old_gobag(surface, t)
+    rect = pygame.Rect(GOBAG_RECT)
+    theme.draw_panel(surface, rect, alpha=215, accent=theme.SKY)
+    step = t / 1.4
+    filled = min(int(step) % 7, 4)
+    if filled != _last_filled[0]:
+        if filled > _last_filled[0]:
+            audio.play("ding", 0.3)
+        _last_filled[0] = filled
+    done = filled == 4
+    bob = 1 if (done and int(t * 4) % 2) else 0
+    surface.blit(bag, (rect.x + 3, rect.y + (rect.h - bag.get_height()) // 2 - bob))
+    if done:                                            # ready: twinkles on the backpack
+        for k, (sx, sy) in enumerate(((3, 4), (16, 8), (6, 24))):
+            if int(t * 3 + k) % 3 == 0:
+                surface.set_at((rect.x + sx, rect.y + sy), theme.CREAM)
+                surface.set_at((rect.x + sx + 1, rect.y + sy), theme.HONEY)
+    for i, n in enumerate(GOBAG_ORDER):
+        spr = _ui("bag_" + n)
+        x = rect.x + 21 + (i % 2) * 14 + (13 - spr.get_width()) // 2
+        y = rect.y + 3 + (i // 2) * 13 + (13 - spr.get_height()) // 2
+        if i < filled:
+            drop = 0
+            if i == filled - 1:                         # the newest item drops in
+                u = min(1.0, (step % 1.0) / 0.2)
+                drop = int(round(-8 * (1 - u) ** 2))
+            surface.blit(spr, (x, y + drop))
+        else:
+            sil = _silhouette("bag_" + n)
+            if sil:
+                surface.blit(sil, (x, y))
+
+
+def _old_chip(surface, t, level, hazard="typhoon"):
+    """Fallback used when the sprites are not installed."""
     name, _ = level_for(level)
     color = theme.LEVEL_COLORS[name]
     rect = pygame.Rect(4, 4, 66, 22)
@@ -603,8 +797,7 @@ def draw_alert_chip(surface, t, level, hazard="typhoon"):
                     theme.CREAM_DIM, shadow=False)
 
 
-def draw_gobag(surface, t):
-    """Four go-bag items that fill in one by one."""
+def _old_gobag(surface, t):
     rect = pygame.Rect(268, 4, 48, 13)
     theme.draw_panel(surface, rect, alpha=215, accent=theme.SKY)
     filled = min(int(t / 1.4) % 7, 4)

@@ -17,6 +17,7 @@ from src.ui.choice_box import ChoiceBox
 from src.ui.dialogue_box import DialogueBox
 from src.utils.data_loader import load_json
 from src.world.camera import Camera
+from src.core import audio
 
 TILE = 16
 
@@ -46,7 +47,10 @@ class BigMap(BaseState):
         character = game.session.character
         sx, sy = self.data["player_start"]
         self.player = Player(
-            sx, sy, speed=character["speed"], max_health=character["max_health"]
+            sx, sy,
+            speed=character["speed"],
+            max_health=character["max_health"],
+            walk_path=character.get("walk"),
         )
         self.player.color = tuple(character["color"])
         self.camera = Camera(w, h)

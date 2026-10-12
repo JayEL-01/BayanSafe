@@ -1,13 +1,18 @@
 import pygame
 
+from src.entities.walk_sheet import WalkSheet
+
 
 class Player:
-    def __init__(self, x, y, speed=60, max_health=100):
+    def __init__(self, x, y, speed=60, max_health=100, walk_path=None):
         self.size = 12
         self.rect = pygame.Rect(x, y, self.size, self.size)
         self.pos = pygame.Vector2(x, y)
         self.speed = speed
         self.color = (255, 200, 60)
+
+        # Character sprite (walking sheet). None = yellow square fallback.
+        self.sheet = WalkSheet(walk_path, height=24) if walk_path else None
 
         self.max_health = max_health
         self.health = max_health
@@ -42,8 +47,11 @@ class Player:
         if self.invuln > 0:
             self.invuln -= dt
 
+        start = self.pos.copy()
+        direction = self.get_direction()
+
         # Walking plus wind push.
-        velocity = self.get_direction() * self.speed + pygame.Vector2(push)
+        velocity = direction * self.speed + pygame.Vector2(push)
 
         self.pos.x += velocity.x * dt
         self.rect.x = round(self.pos.x)
@@ -65,9 +73,21 @@ class Player:
                     self.rect.top = wall.bottom
                 self.pos.y = self.rect.y
 
+        # Animation: face where the player WANTS to go, walk only if really moving.
+        if self.sheet:
+            moved = (self.pos - start).length_squared() > 0.01
+            if direction.length_squared() > 0 and moved:
+                self.sheet.update(dt, direction.x, direction.y)
+            else:
+                self.sheet.update(dt, 0, 0)
+
     def draw(self, surface, camera=None):
         # Blink while protected.
         if self.invuln > 0 and int(self.invuln * 10) % 2 == 0:
             return
         rect = camera.apply(self.rect) if camera else self.rect
-        pygame.draw.rect(surface, self.color, rect)
+        if self.sheet:
+            img = self.sheet.image()
+            surface.blit(img, img.get_rect(midbottom=(rect.centerx, rect.bottom + 2)))
+        else:
+            pygame.draw.rect(surface, self.color, rect)

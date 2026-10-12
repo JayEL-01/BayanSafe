@@ -26,6 +26,8 @@ WOOD       = (120, 78, 44)     # plank
 WOOD_DARK  = (84, 52, 32)      # unselected plank
 WOOD_LIGHT = (168, 114, 64)    # plank highlight
 
+STRIPE     = NIGHT             # hazard stripes on the selected button (the menu tints this per hazard)
+
 LEVEL_COLORS = {               # Danger Meter levels
     "NORMAL": SAGE,
     "WATCH": HONEY,
@@ -114,6 +116,12 @@ def mix(a, b, t):
     return tuple(int(a[i] + (b[i] - a[i]) * t) for i in range(3))
 
 
+def set_stripe(color):
+    """The main menu calls this so the selected button's stripes match the current hazard."""
+    global STRIPE
+    STRIPE = color
+
+
 def fill_bg(surface, color=NIGHT):
     surface.fill(color)
 
@@ -128,7 +136,12 @@ def dim(surface, alpha=150):
 def draw_text(surface, text, pos, size="small", color=CREAM, shadow=True, anchor="topleft"):
     """Queue smooth text. It is drawn on top of the scaled canvas.
     `size` is a name from SIZES or a font from get_font()."""
-    font = get_font(size) if isinstance(size, str) else size
+    if isinstance(size, str):
+        font = get_font(size)
+    elif isinstance(size, TextFont):
+        font = size
+    else:
+        font = get_font("small")   # an old raw pygame font was passed in: use the theme font
     w, h = font.size(text)
     rect = pygame.Rect(0, 0, w, h)
     setattr(rect, anchor, pos)
@@ -258,7 +271,7 @@ def draw_button(surface, rect, text, selected=False, font=None, icon=None, t=Non
             for x in range(x0, x0 + 8):
                 for y in range(rect.y + 2, rect.bottom - 2):
                     if ((x + y - shift) // 3) % 2 == 0:
-                        surface.set_at((x, y), NIGHT)
+                        surface.set_at((x, y), STRIPE)
     else:
         # nails in the corners
         for nx, ny in ((rect.x + 3, rect.y + 3), (rect.right - 4, rect.y + 3),

@@ -4,8 +4,9 @@ import random
 import pygame
 
 from src.core import settings
+from src.core.strings import tr
 from src.ui import theme
-from src.ui.menu_fx import FIRE_FRAMES, HAZARDS, MenuFX
+from src.ui.menu_fx import FIRE_FRAMES, HAZARDS, MenuFX, QUAKE_SHAKE
 from src.utils.data_loader import BASE_DIR
 
 MENU_DIR = BASE_DIR / "assets" / "images" / "menu"
@@ -48,7 +49,7 @@ SHINE_FRAMES = 18
 # ------------------------------------------------------------------
 # DAY / NIGHT
 # ------------------------------------------------------------------
-PHASE_SECONDS = 6
+PHASE_SECONDS = 5
 DAY_SECONDS = PHASE_SECONDS * 4        # one full day = one hazard
 BLEND_STEPS = 6
 START_PHASE = 1           # 0 morning, 1 day, 2 evening, 3 night
@@ -71,9 +72,19 @@ HAZARD_TINTS = {
 }
 HAZARD_K = {"typhoon": 0.5, "flood": 0.5, "earthquake": 0.35, "volcano": 0.75, "wildfire": 0.6}
 
-TITLE_GAP = 7             # earthquake: how far the two logo halves drift apart (pixels)
-TITLE_STAGES = 8          # volcano ash / wildfire burn steps baked for the logo
-SWAY_PAD = 6              # typhoon: extra room around the logo so the sway is not clipped
+# the casing: a rubber shell that hugs the letters of the logo (it only fits the title)
+CASE_BODY = (74, 128, 92)      # rubber body
+CASE_LIGHT = (150, 205, 150)   # highlights
+CASE_DARK = (40, 78, 56)       # outline and shadows
+CASE_T = 4                     # how far the casing reaches out from the letters (pixels)
+TITLE_STAGES = 8               # ash / burn / crack steps baked for the casing
+ENTRANCE_DELAY = 0.15          # seconds before the title drops in when the menu opens
+ENTRANCE_TIME = 1.3            # how long the drop, bounce and settle take
+SHOW_HINT = False             # True shows the small "click to repair" text under the logo
+HINT_FROM, HINT_TO = 3.0, 11.0 # seconds on screen during which "CLICK THE TITLE" shows
+# stripe color of the selected button (blended in as the danger rises)
+HAZARD_STRIPE = {"typhoon": (40, 90, 130), "flood": (30, 70, 140), "earthquake": (120, 80, 40),
+                 "volcano": (150, 40, 40), "wildfire": (170, 70, 20)}
 
 
 # ------------------------------------------------------------------
@@ -132,47 +143,142 @@ def _build_shine(title):
     return frames
 
 
-def _bake_split(title):
-    """Cuts the logo along a jagged line into a left and right half (done once)."""
-    w, h = title.get_size()
-    rng = random.Random(8)
-    left = pygame.Surface((w, h), pygame.SRCALPHA)
-    right = pygame.Surface((w, h), pygame.SRCALPHA)
-    x, cuts = w // 2, []
-    for y in range(h):
-        x = max(w // 2 - 14, min(w // 2 + 14, x + rng.randint(-2, 2)))
-        cuts.append(x)
-        left.blit(title, (0, y), (0, y, x, 1))
-        right.blit(title, (x, y), (x, y, w - x, 1))
-    return left, right, cuts
-
-
-def _bake_decay(title, mode):
-    """Pre-bakes the logo getting covered in ash ('ash', settles from the top) or
-    charred and glowing ('burn', spreads up from the bottom). Returns TITLE_STAGES+1 images."""
-    w, h = title.get_size()
+def _bake_decay(base, cells, h, mode):
+    """The casing getting covered in ash ('ash', settles from the top) or charred and
+    glowing ('burn', spreads up from the bottom). TITLE_STAGES+1 images."""
     rng = random.Random(14 if mode == "ash" else 15)
-    noise = [[rng.random() for _ in range(w)] for _ in range(h)]
-    stages = [title]
+    ranked = [(x, y, rgb, rng.random() * 0.6 + (y / h if mode == "ash" else 1 - y / h) * 0.4)
+              for x, y, rgb in cells]
+    stages = [base]
     for n in range(1, TITLE_STAGES + 1):
         p = n / TITLE_STAGES
-        frame = title.copy()
-        for y in range(h):
-            bias = y / h if mode == "ash" else 1 - y / h
-            for x in range(w):
-                r, g, b, a = title.get_at((x, y))
-                if a == 0:
-                    continue
-                v = noise[y][x] * 0.6 + bias * 0.4
-                if mode == "ash":
-                    if v < p:
-                        frame.set_at((x, y), (*theme.mix((r, g, b), (150, 142, 138), 0.75), a))
-                elif v < p - 0.12:
-                    frame.set_at((x, y), (*theme.mix((r, g, b), (28, 20, 20), 0.85), a))
-                elif v < p:
-                    frame.set_at((x, y), (*theme.mix((r, g, b), (255, 130, 30), 0.7), a))
-        stages.append(frame)
+        img = base.copy()
+        for x, y, rgb, v in ranked:
+            if mode == "ash":
+                if v < p:
+                    img.set_at((x, y), (*theme.mix(rgb, (150, 142, 138), 0.75), 255))
+            elif v < p - 0.12:
+                img.set_at((x, y), (*theme.mix(rgb, (28, 20, 20), 0.85), 255))
+            elif v < p:
+                img.set_at((x, y), (*theme.mix(rgb, (255, 130, 30), 0.7), 255))
+        stages.append(img)
     return stages
+
+
+def _bake_cracks(size, edge, shell_alpha):
+    """Cracks that start on the outer edge of the casing and creep in, revealed step by step.
+    They are clipped to the casing, so they never touch the logo."""
+    rng = random.Random(23)
+    cracks = []
+    for _ in range(14):
+        x, y = edge[rng.randrange(len(edge))]
+        ang = rng.uniform(0, 6.28)
+        pts = [(x, y)]
+        for _ in range(rng.randint(4, 7)):
+            ang += rng.uniform(-0.7, 0.7)
+            step = rng.uniform(2.5, 4.5)
+            x, y = x + math.cos(ang) * step, y + math.sin(ang) * step
+            pts.append((x, y))
+        cracks.append(pts)
+    stages = [None]
+    for n in range(1, TITLE_STAGES + 1):
+        p = n / TITLE_STAGES
+        ov = pygame.Surface(size, pygame.SRCALPHA)
+        for i, pts in enumerate(cracks):
+            f = max(0.0, min(1.0, (p - 0.7 * i / len(cracks)) / 0.3))
+            m = int(len(pts) * f)
+            if m >= 2:
+                pygame.draw.lines(ov, (18, 12, 22, 255), False, pts[:m], 1)
+                pygame.draw.lines(ov, (225, 238, 240, 255), False, [(x + 1, y) for x, y in pts[:m]], 1)
+        ov.blit(shell_alpha, (0, 0), special_flags=pygame.BLEND_RGBA_MIN)
+        stages.append(ov)
+    return stages
+
+
+def _bake_case(title):
+    """Builds the casing once. It is the silhouette of the letters grown outward by CASE_T
+    pixels, painted like rubber, so it fits the title exactly and nothing else."""
+    P = CASE_T + 2
+    tw, th = title.get_size()
+    size = (tw + 2 * P, th + 2 * P)
+    letters = pygame.mask.from_surface(title, 40)
+    shell = pygame.mask.Mask(size)
+    for dy in range(-CASE_T, CASE_T + 1):
+        for dx in range(-CASE_T, CASE_T + 1):
+            if dx * dx + dy * dy <= CASE_T * CASE_T + 1:
+                shell.draw(letters, (P + dx, P + dy))
+    ring = shell.copy()
+    ring.erase(letters, (P, P))
+
+    def has(x, y):
+        return 0 <= x < size[0] and 0 <= y < size[1] and bool(shell.get_at((x, y)))
+
+    base = pygame.Surface(size, pygame.SRCALPHA)
+    cells, edge, up_edge = [], [], []
+    mid = theme.mix(CASE_BODY, CASE_DARK, 0.5)
+    for y in range(size[1]):
+        for x in range(size[0]):
+            if not shell.get_at((x, y)):
+                continue
+            if not (has(x - 1, y) and has(x + 1, y) and has(x, y - 1) and has(x, y + 1)):
+                rgb = CASE_DARK
+                edge.append((x, y))
+                if not has(x, y - 1):
+                    up_edge.append((x, y))
+            elif not has(x, y - 2) or not has(x - 2, y):
+                rgb = CASE_LIGHT
+            elif not has(x, y + 2) or not has(x + 2, y):
+                rgb = mid
+            else:
+                rgb = CASE_BODY
+            base.set_at((x, y), (*rgb, 255))
+            cells.append((x, y, rgb))
+    if not edge:
+        edge = up_edge = [(P, P)]
+    up_edge = up_edge or edge
+    up_edge.sort()
+    tops = {}
+    for x, y in up_edge:
+        tops[x] = min(y, tops.get(x, 999))
+
+    shell_alpha = shell.to_surface(setcolor=(255, 255, 255, 255), unsetcolor=(0, 0, 0, 0))
+    return {
+        "size": size, "P": P, "base": base, "edge": edge, "up": up_edge,
+        "tops": sorted(tops.items()),
+        "shell_alpha": shell_alpha,
+        "shell_rgb": shell.to_surface(setcolor=(255, 255, 255, 255), unsetcolor=(0, 0, 0, 255)),
+        "ring_rgb": ring.to_surface(setcolor=(255, 255, 255, 255), unsetcolor=(0, 0, 0, 255)),
+        "ash": _bake_decay(base, cells, size[1], "ash"),
+        "burn": _bake_decay(base, cells, size[1], "burn"),
+        "cracks": _bake_cracks(size, edge, shell_alpha),
+    }
+
+
+def _bake_vignette():
+    """Darker screen edges, in a few pixel-art steps (not a smooth gradient)."""
+    w, h = SIZE
+    s = pygame.Surface(SIZE, pygame.SRCALPHA)
+    cx, cy = w / 2, h / 2
+    for y in range(h):
+        for x in range(w):
+            d = math.hypot((x - cx) / cx, (y - cy) / cy * 0.9)
+            v = round(min(1.0, max(0.0, (d - 0.62) / 0.8)) * 6) / 6
+            if v > 0:
+                s.set_at((x, y), (20, 14, 26, int(150 * v)))
+    return s
+
+
+def _bake_glow():
+    """Warm lamp light that sits behind the buttons at night."""
+    gw, gh = 150, 112
+    s = pygame.Surface((gw, gh), pygame.SRCALPHA)
+    for y in range(gh):
+        for x in range(gw):
+            d = math.hypot((x - gw / 2) / (gw / 2), (y - gh / 2) / (gh / 2))
+            v = round(max(0.0, 1 - d) * 5) / 5
+            if v > 0:
+                s.set_at((x, y), (255, 170, 90, int(70 * v)))
+    return s
 
 
 # ------------------------------------------------------------------
@@ -308,9 +414,6 @@ class MenuBackdrop:
             title = _strip_magenta(title)
         self.title = title
         self.shine = _build_shine(title) if title else []
-        self.title_split = _bake_split(title) if title else None
-        self.title_ash = _bake_decay(title, "ash") if title else None
-        self.title_burn = _bake_decay(title, "burn") if title else None
 
         # STATUS LINE: tells you exactly what loaded
         yes = lambda v: "yes" if v else "NO"
@@ -336,6 +439,19 @@ class MenuBackdrop:
         self.hazard = HAZARDS[START_HAZARD % len(HAZARDS)]
         self.level = 0.0          # current hazard strength 0..1
         self.storm = 0.0          # typhoon strength only (kept for old code)
+        self._case_cache = None   # baked phone case for the logo
+        self._sweep = None        # time the last hit-shine started
+        self._prev_hit = 0.0
+        self._title_rect = None   # clickable area of the logo + casing (set while drawing)
+        self._hover = False
+        self._repair = 0.0        # 0..1: clicking repairs the casing for a while
+        self._taps = []           # recent clicks on the title: (x, y, time)
+        self._poked = False       # has the player clicked the title yet (hides the hint)
+        self._landed = False      # has the title finished its entrance drop
+        self._vig = _bake_vignette()
+        self._glow = _bake_glow()
+        if self.title:
+            self._ensure_case()   # bake the casing now so the entrance does not stutter
         self.look = 0.0           # mouse parallax, -1..1 (smoothed)
         self._look_target = 0.0
 
@@ -436,6 +552,7 @@ class MenuBackdrop:
         adt = dt * (BOOST_SPEED if self.boost else 1.0)
         self.anim += adt
         a = self.anim
+        self._repair = max(0.0, self._repair - adt * 0.12)      # the repair slowly wears off
         self.look += (self._look_target - self.look) * 0.08
 
         tint, night, level, hazard = self._state(t)
@@ -468,6 +585,14 @@ class MenuBackdrop:
         self.fx.draw_lights(surface, night)
         self.fx.draw_weather(surface)
 
+        if night > 0.3:                                  # warm light behind the buttons at night
+            self._glow.set_alpha(int(255 * min(1.0, (night - 0.3) / 0.7)))
+            surface.blit(self._glow, (SIZE[0] // 2 - 75, 59))
+        self._vig.set_alpha(int(255 * min(1.0, 0.6 + 0.3 * night + 0.25 * level)))
+        surface.blit(self._vig, (0, 0))                  # darker edges, stronger at night and in danger
+        if hasattr(theme, "set_stripe"):                 # the selected button's stripes follow the hazard
+            theme.set_stripe(theme.mix(theme.NIGHT, HAZARD_STRIPE[hazard], min(1.0, level * 1.3)))
+
         ox, oy = self.fx.shake_offset()                  # earthquake: shake the whole scene
         if ox or oy:
             surface.blit(surface.copy(), (ox, oy))
@@ -480,134 +605,281 @@ class MenuBackdrop:
                 pygame.draw.rect(surface, (60, 255, 60), rect, 1)
             self.fx.draw_debug(surface)
 
-    # ---------- the logo reacts to the hazard ----------
     @staticmethod
-    def _wind_sway(image, t, amp):
-        """Typhoon: the logo bends in the wind (rows shift by a travelling wave)."""
-        w, h = image.get_size()
-        out = pygame.Surface((w + 2 * SWAY_PAD, h), pygame.SRCALPHA)
-        for y in range(h):
-            dx = round(amp * (0.7 * math.sin(t * 3.2 - y * 0.07) + 0.5 * math.sin(t * 1.3)))
-            out.blit(image, (SWAY_PAD + dx, y), (0, y, w, 1))
-        return out
+    def _drop(u):
+        """Entrance offset in pixels (negative = above its place): fall, bounce, settle."""
+        if u < 0.55:
+            return -46 * (1 - (u / 0.55) ** 2)
+        if u < 0.8:
+            return -7 * math.sin(math.pi * (u - 0.55) / 0.25)
+        if u < 0.92:
+            return -2 * math.sin(math.pi * (u - 0.8) / 0.12)
+        return 0.0
 
-    @staticmethod
-    def _arcs(surface, rect, t):
-        """Electric arcs crawling down the logo."""
-        r = random.Random(int(t * 40))
-        for n in range(5):
-            x, y = rect.x + r.randint(0, rect.w), rect.y + r.randint(0, rect.h // 3)
-            pts = [(x, y)]
-            for _ in range(6):
-                x += r.randint(-9, 9)
-                y += r.randint(4, 10)
-                pts.append((x, y))
-            pygame.draw.lines(surface, (255, 255, 210) if n % 2 else (130, 210, 255), False, pts, 1)
+    def draw_hint(self, surface):
+        """Small "CLICK THE TITLE" hint under the logo for a few seconds, until the player tries it."""
+        t = self.clock
+        if not SHOW_HINT or self._poked or self._hover or self.title is None or not (HINT_FROM < t < HINT_TO):
+            return
+        bob = 1 if math.sin(t * 5) > 0 else 0
+        theme.draw_text(surface, tr("hint_click"), (SIZE[0] // 2, 63 + bob), "tiny",
+                        theme.CREAM, anchor="center")
+
+    # ---------- mouse: the casing reacts to the pointer ----------
+    def _on_title(self, pos):
+        r = self._title_rect
+        return r is not None and r.collidepoint(pos)
+
+    def hover_at(self, pos):
+        """Feed the mouse position (canvas pixels). Hovering makes the casing shine."""
+        on = self._on_title(pos)
+        if on and not self._hover:
+            self._sweep = self.anim                     # a gloss streak sweeps in when the pointer arrives
+        self._hover = on
+
+    def poke(self, pos):
+        """Feed a left click. Clicking the title flares the casing, throws sparks and repairs it
+        for a while. Returns True if the title was hit."""
+        if not self._on_title(pos):
+            return False
+        self._poked = True
+        self._taps = (self._taps + [(pos[0], pos[1], self.anim)])[-6:]
+        self._repair = min(1.0, self._repair + 0.35)
+        self._sweep = self.anim
+        self.fx.sounds.append(("tink", 0.45))
+        return True
+
+    # ---------- the phone case: disasters hit it, the logo inside stays safe ----------
+    def _hit(self):
+        """0..1 strength of the current impact on the case (each hit makes it shine)."""
+        fx, hz = self.fx, self.hazard
+        if hz == "typhoon":
+            z = fx.zap
+            return 0.0 if z is None or z > 0.5 else 1 - z / 0.5
+        if hz == "volcano":
+            h = fx.flash / 0.18
+            if fx.ring is not None and fx.ring < 0.4:
+                h = max(h, 1 - fx.ring / 0.4)
+            return min(1.0, h)
+        if hz == "earthquake":
+            return min(1.0, fx.shake_amp / QUAKE_SHAKE)
+        if self.level < 0.3:
+            return 0.0
+        if hz == "wildfire":                                # a flame flare every 2.4 s
+            return max(0.0, 1 - (self.anim % 2.4) / 0.4)
+        return max(0.0, 1 - (self.anim % 3.2) / 0.5)        # a wave slams in every 3.2 s
+
+    def _ensure_case(self):
+        if self._case_cache is None:
+            self._case_cache = _bake_case(self.title)
+        return self._case_cache
+
+    def _fall_onto(self, surface, pos, c, n, color, speed, splash):
+        """Particles fall onto the tops of the letters (and splash if asked)."""
+        tops, a = c["tops"], self.anim
+        for i in range(n):
+            x, y0 = tops[int(((i * 0.7548776) % 1.0) * len(tops))]
+            px, py = pos[0] + x, pos[1] + y0
+            age = (a * speed * 0.5 + (i * 0.6180339) % 1.0) % 1.0
+            if age < 0.8:
+                y = py - 14 + int(age / 0.8 * 14)
+                surface.set_at((px, y), color)
+                surface.set_at((px, y - 1), color)
+            elif splash:
+                d = int((age - 0.8) / 0.2 * 2)
+                surface.set_at((px - 1 - d, py - 1 - d), color)
+                surface.set_at((px + 1 + d, py - 1 - d), color)
+
+    def _case_water(self, surface, pos, c):
+        """The flood drowns the casing: it goes under water and bubbles leak out, the logo stays dry."""
+        w, h = c["size"]
+        top = self.fx.water_top
+        if top >= pos[1] + h:
+            return
+        ov = pygame.Surface((w, h), pygame.SRCALPHA)
+        for x in range(0, w, 2):
+            wy = max(0, self.fx.water_y(pos[0] + x) - pos[1])
+            if wy < h:
+                pygame.draw.rect(ov, (75, 125, 180, 165), (x, wy, 2, h - wy))
+                pygame.draw.rect(ov, (190, 225, 245, 210), (x, wy, 2, 1))
+        ov.blit(c["shell_alpha"], (0, 0), special_flags=pygame.BLEND_RGBA_MIN)
+        surface.blit(ov, pos)
+        edge = c["edge"]
+        for i in range(10):                                 # bubbles leaking out of the casing
+            ex, ey = edge[(i * 37) % len(edge)]
+            if pos[1] + ey < top:
+                continue
+            age = (self.anim * 0.5 + i * 0.1) % 1.0
+            y = pos[1] + ey - age * (pos[1] + ey - top)
+            pygame.draw.circle(surface, (200, 230, 250), (pos[0] + ex + int(math.sin(age * 9 + i) * 2), int(y)), 1)
+
+    def _flame(self, surface, x, y, i, scale):
+        spr = self.fx._sprite(FIRE_FRAMES[(int(self.anim * 8) + i) % 3], False, scale)
+        box = spr.get_rect(midbottom=(int(x), int(y)))
+        surface.fill((34, 12, 0), box.inflate(10, 8), special_flags=pygame.BLEND_RGB_ADD)
+        surface.blit(spr, box)
 
     def draw_title(self, surface, center):
         image = self.title
         rect = image.get_rect(center=center)
         hz, k, a = self.hazard, self.level, self.anim
+        active = k >= 0.12
+        hit = self._hit() if active else 0.0
+        u = (self.clock - ENTRANCE_DELAY) / ENTRANCE_TIME      # entrance: the title drops in and bounces
+        if u < 1.0:
+            rect = rect.move(0, -90 if u < 0 else int(round(self._drop(u))))
+            if not self._landed and u >= 0.55:                 # it lands: the casing flashes, a thud
+                self._landed = True
+                self._sweep = a
+                self.fx.sounds.append(("thud", 0.45))
+        c = self._ensure_case()
+        P = c["P"]
+        w, h = c["size"]
+        rep = self._repair
+        self._title_rect = pygame.Rect(rect.x - P, rect.y - P, w, h)
 
-        # TYPHOON: sways in the wind, gets electrocuted when lightning strikes
-        if hz == "typhoon" and k > 0.1:
-            img = self._wind_sway(image, a, k * 3.0)
-            pos = (rect.x - SWAY_PAD, rect.y)
-            zap = self.fx.zap
-            shocked = zap is not None and zap < 0.5
-            if shocked:
+        if hit > 0.6 and self._prev_hit <= 0.6:             # every big hit starts a shine sweep
+            self._sweep = a
+        self._prev_hit = hit
+
+        zap = self.fx.zap if hz == "typhoon" else None
+        shocked = active and zap is not None and zap < 0.5
+        m = 2 if shocked else (int(round(self.fx.shake_amp / 2)) if (active and hz == "earthquake") else 0)
+        pos = (rect.x - P, rect.y - P)
+        if m:                                               # the casing buzzes, the logo inside holds still
+            r = random.Random(int(a * 40))
+            pos = (pos[0] + r.randint(-m, m), pos[1] + r.randint(-(m // 2), m // 2))
+
+        frame, p = c["base"], 0.0
+        if active and hz == "volcano":
+            p = max(0.0, min(1.0, (k - 0.25) / 0.65)) * (1 - rep)      # a repaired casing is cleaner
+            frame = c["ash"][int(p * TITLE_STAGES)]
+        elif active and hz == "wildfire":
+            p = max(0.0, min(1.0, (k - 0.2) / 0.7)) * (1 - rep)
+            frame = c["burn"][int(p * TITLE_STAGES)]
+        if shocked and int(a * 30) % 2 == 0:                # white-hot flash while electrocuted
+            frame = frame.copy()
+            frame.fill((120, 120, 60, 0), special_flags=pygame.BLEND_RGB_ADD)
+        surface.blit(frame, pos)
+
+        # ----- damage that sits ON the casing (clipped to it) -----
+        crack = 0.0
+        if active and hz == "earthquake":
+            crack = max(0.0, min(1.0, (k - 0.3) / 0.6))
+        elif active and hz == "volcano":
+            crack = 0.6 * max(0.0, min(1.0, (k - 0.45) / 0.5))
+        crack *= (1 - rep)
+        if crack > 0.02 and c["cracks"][int(crack * TITLE_STAGES)] is not None:
+            surface.blit(c["cracks"][int(crack * TITLE_STAGES)], pos)
+        if active and hz == "flood":
+            self._case_water(surface, pos, c)
+
+        # ----- the logo itself is never damaged -----
+        if hit > 0.4:                                       # it soaks up the energy and glows gold
+            image = image.copy()
+            image.fill((int(60 * hit), int(45 * hit), int(10 * hit)), special_flags=pygame.BLEND_RGB_ADD)
+        elif self.shine:                                    # calm shine sweep
+            q = (self.clock % SHINE_EVERY) / SHINE_LENGTH
+            if q < 1:
+                image = self.shine[min(len(self.shine) - 1, int(q * len(self.shine)))]
+        squash = bool(self._taps) and a - self._taps[-1][2] < 0.12          # the logo hops when tapped
+        surface.blit(image, rect.move(0, 1) if squash else rect)
+
+        # ----- hazard effects around the casing -----
+        edge, up = c["edge"], c["up"]
+        if active and hz == "typhoon":
+            self._fall_onto(surface, pos, c, 16, (150, 180, 220), 2.2, True)
+            if shocked:                                     # electric arcs crawl over the casing
                 r = random.Random(int(a * 40))
-                pos = (pos[0] + r.randint(-2, 2), pos[1] + r.randint(-1, 1))
-                if int(a * 30) % 2 == 0:                       # white-hot flash
-                    img = img.copy()
-                    img.fill((120, 120, 50), special_flags=pygame.BLEND_RGB_ADD)
-            surface.blit(img, pos)
-            if shocked:
-                self._arcs(surface, rect.move(pos[0] + SWAY_PAD - rect.x, pos[1] - rect.y), a)
-            elif k > 0.6:                                      # stray sparks while the storm builds
+                for n in range(8):
+                    ex, ey = edge[r.randrange(len(edge))]
+                    x, y = pos[0] + ex, pos[1] + ey
+                    pts = [(x, y)]
+                    for _ in range(4):
+                        x += r.randint(-4, 4)
+                        y += r.randint(-4, 4)
+                        pts.append((x, y))
+                    pygame.draw.lines(surface, (255, 255, 210) if n % 2 else (130, 210, 255), False, pts, 1)
+            elif k > 0.6:                                   # stray sparks while the storm builds
                 r = random.Random(int(a * 12))
                 for _ in range(4):
-                    surface.set_at((rect.x + r.randint(0, rect.w), rect.y + r.randint(0, rect.h)),
-                                   (255, 240, 150))
-            return
+                    ex, ey = edge[r.randrange(len(edge))]
+                    surface.set_at((pos[0] + ex, pos[1] + ey), (255, 240, 150))
+        elif active and hz == "volcano":
+            self._fall_onto(surface, pos, c, 14, (160, 152, 146), 1.0, False)
+            if self.fx.ring is not None:                    # lava splatters cooling on the casing
+                f = 1 - self.fx.ring / 0.8
+                tops = c["tops"]
+                for i in range(8):
+                    x, y = tops[(i * 41) % len(tops)]
+                    surface.fill(theme.mix((60, 40, 30), (255, 150, 40), f), (pos[0] + x, pos[1] + y, 2, 2))
+        elif active and hz == "earthquake":
+            self._fall_onto(surface, pos, c, 14, (170, 145, 110), 1.6, False)
+        elif active and hz == "wildfire" and p > 0.02:
+            front = h - p * h                               # burn front, from the bottom up
+            cand = [e for e in up if e[1] >= front - 2] or up
+            n = 3 + int(p * 9)
+            for i in range(n):                              # flames sit on the burning edges
+                ex, ey = cand[min(len(cand) - 1, int((i + 0.5) * len(cand) / n))]
+                self._flame(surface, pos[0] + ex, pos[1] + ey + 2, i, 2 if (hit > 0.5 and i % 2 == 0) else 1)
+            for i in range(10):                             # embers lifting off
+                ex, ey = cand[(i * 17) % len(cand)]
+                age = (a * 0.5 + i * 0.1) % 1.0
+                surface.set_at((pos[0] + ex + int(math.sin(a * 2 + i) * 2), int(pos[1] + ey - age * 30)),
+                               theme.mix((255, 200, 80), (160, 40, 20), age))
 
-        # FLOOD: the water reaches the logo, which floats, bobs and sinks into it
-        if hz == "flood":
-            top = self.fx.water_top
-            r2 = rect
-            if top < rect.bottom:
-                r2 = rect.move(0, int(round(math.sin(a * 2.2) * 1.5)))
-            surface.blit(image, r2)
-            if top < r2.bottom:
-                over = pygame.Surface(r2.size, pygame.SRCALPHA)
-                for x in range(0, r2.w, 2):
-                    wy = max(0, self.fx.water_y(r2.x + x) - r2.y)
-                    if wy < r2.h:
-                        pygame.draw.rect(over, (75, 125, 180, 150), (x, wy, 2, r2.h - wy))
-                        pygame.draw.rect(over, (190, 225, 245, 200), (x, wy, 2, 1))
-                surface.blit(over, r2.topleft)
-                for i in range(6):                             # bubbles rising off the logo
-                    age = (a * 0.6 + i * 0.17) % 1.0
-                    bx = r2.x + (i * 47 + 13) % r2.w
-                    by = r2.bottom - age * max(1, r2.bottom - top)
-                    if by > r2.y:
-                        pygame.draw.circle(surface, (200, 230, 250), (bx, int(by)), 1)
-            return
+        # ----- shine: the casing flares and a gloss streak sweeps over the title on every hit -----
+        sw = None
+        if self._sweep is not None:
+            u = (a - self._sweep) / 0.45
+            if u >= 1:
+                self._sweep = None
+            else:
+                sw = u
+        gl = hit * (0.45 if hz == "earthquake" else 1.0)       # a quake is constant, so keep its glow calmer
+        if self._hover:
+            gl = max(gl, 0.28 + 0.07 * math.sin(a * 6))         # pointer on the title: the casing glows
+        if gl > 0.05:
+            glow = pygame.Surface((w, h))
+            glow.fill((int(120 * gl), int(150 * gl), int(110 * gl)))
+            glow.blit(c["ring_rgb"], (0, 0), special_flags=pygame.BLEND_RGB_MULT)
+            surface.blit(glow, pos, special_flags=pygame.BLEND_RGB_ADD)
+        if sw is not None:
+            streak = pygame.Surface((w, h))
+            xc = int(-20 + (w + 40) * sw)
+            pygame.draw.polygon(streak, (110, 110, 90), [(xc, 0), (xc + 14, 0), (xc + 14 - h // 2, h), (xc - h // 2, h)])
+            pygame.draw.polygon(streak, (60, 60, 50), [(xc + 20, 0), (xc + 24, 0), (xc + 24 - h // 2, h), (xc + 20 - h // 2, h)])
+            streak.blit(c["shell_rgb"], (0, 0), special_flags=pygame.BLEND_RGB_MULT)
+            surface.blit(streak, pos, special_flags=pygame.BLEND_RGB_ADD)
 
-        # VOLCANO: ash settles on the logo, which shudders on every blast
-        if hz == "volcano" and self.title_ash:
-            p = max(0.0, min(1.0, (k - 0.25) / 0.65))
-            pos = rect.topleft
-            if self.fx.flash > 0 or (self.fx.ring is not None and self.fx.ring < 0.25):
-                r = random.Random(int(a * 40))
-                pos = (pos[0] + r.randint(-1, 1), pos[1] + r.randint(-1, 1))
-            surface.blit(self.title_ash[int(p * TITLE_STAGES)], pos)
-            return
+        # ----- taps: a ripple runs over the casing and sparks fly from the click -----
+        live = []
+        for tx, ty, t0 in self._taps:
+            age = a - t0
+            if age >= 0.6:
+                continue
+            live.append((tx, ty, t0))
+            if age < 0.45:
+                f = 1 - age / 0.45
+                ring = pygame.Surface((w, h))
+                pygame.draw.circle(ring, (int(130 * f), int(190 * f), int(120 * f)),
+                                   (tx - pos[0], ty - pos[1]), int(4 + age / 0.45 * 34), 2)
+                ring.blit(c["shell_rgb"], (0, 0), special_flags=pygame.BLEND_RGB_MULT)
+                surface.blit(ring, pos, special_flags=pygame.BLEND_RGB_ADD)
+            for i in range(7):                              # sparks fly out, then fall
+                ang = i * 0.9 + (t0 * 7 % 1.0) * 3
+                spd = 34 + (i * 13) % 22
+                sx = tx + math.cos(ang) * spd * age
+                sy = ty + math.sin(ang) * spd * age + 90 * age * age
+                col = theme.mix((255, 245, 200), (247, 195, 90), min(1.0, age / 0.5))
+                surface.set_at((int(sx), int(sy)), col)
+                if age < 0.25:
+                    surface.set_at((int(sx) + 1, int(sy)), col)
+        self._taps = live
 
-        # WILDFIRE: the logo chars from the bottom up, with flames on the burn front
-        if hz == "wildfire" and self.title_burn:
-            p = max(0.0, min(1.0, (k - 0.2) / 0.7))
-            surface.blit(self.title_burn[int(p * TITLE_STAGES)], rect)
-            if p > 0.02:
-                front = rect.bottom - p * rect.h
-                n = 3 + int(p * 8)
-                for i in range(n):
-                    fx_x = rect.x + int((i + 0.5) * rect.w / n) + int(math.sin(a * 2 + i) * 3)
-                    scale = 2 if (p > 0.6 and i % 3 == 0) else 1
-                    spr = self.fx._sprite(FIRE_FRAMES[(int(a * 8) + i) % 3], False, scale)
-                    box = spr.get_rect(midbottom=(fx_x, int(front) + 2))
-                    surface.fill((34, 12, 0), box.inflate(10, 8), special_flags=pygame.BLEND_RGB_ADD)
-                    surface.blit(spr, box)
-                for i in range(10):                            # embers lifting off the logo
-                    age = (a * 0.5 + i * 0.1) % 1.0
-                    ex = rect.x + (i * 53) % rect.w + math.sin(a * 2 + i) * 2
-                    surface.set_at((int(ex), int(front - age * 28)),
-                                   theme.mix((255, 200, 80), (160, 40, 20), age))
-            return
-
-        # EARTHQUAKE: a crack grows, then the logo splits in two
-        c = 0.0
-        if hz == "earthquake":
-            c = max(0.0, min(1.0, (k - 0.35) / 0.5))
-        if c > 0 and self.title_split:
-            r = random.Random(int(self.clock * 30))
-            jx, jy = r.randint(-1, 1), r.randint(0, 1)          # the logo trembles
-            left, right, cuts = self.title_split
-            if c < 0.5:                                         # stage 1: crack grows downward
-                surface.blit(image, rect.move(jx, jy))
-                n = int(len(cuts) * c * 2)
-                if n >= 2:
-                    pts = [(rect.x + jx + cuts[y], rect.y + jy + y) for y in range(n)]
-                    pygame.draw.lines(surface, (30, 20, 26), False, pts, 1)
-            else:                                               # stage 2: halves drift apart
-                gap = int(round((c - 0.5) * 2 * TITLE_GAP))
-                surface.blit(left, rect.move(jx - gap, jy + gap // 2))
-                surface.blit(right, rect.move(jx + gap, jy - gap // 3))
-            return
-
-        # calm: the normal shine sweep
-        if self.shine:
-            p = (self.clock % SHINE_EVERY) / SHINE_LENGTH
-            if p < 1:
-                image = self.shine[min(len(self.shine) - 1, int(p * len(self.shine)))]
-        surface.blit(image, rect)
+        # ----- repaired: green twinkles run along the casing while the repair lasts -----
+        if rep > 0.05:
+            r = random.Random(int(a * 10))
+            for _ in range(int(2 + rep * 12)):
+                ex, ey = c["edge"][r.randrange(len(c["edge"]))]
+                surface.set_at((pos[0] + ex, pos[1] + ey), theme.mix(CASE_LIGHT, (255, 255, 255), 0.6))

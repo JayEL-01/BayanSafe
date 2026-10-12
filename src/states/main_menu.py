@@ -1,13 +1,13 @@
 import pygame
 
-from src.core import prefs, settings
+from src.core import audio, prefs, settings
 from src.core.strings import tr
 from src.states.base_state import BaseState
 from src.states.character_select import CharacterSelect
 from src.states.guide_state import GuideState
 from src.states.options_state import OptionsState
 from src.states.placeholder_state import PlaceholderState
-from src.ui import menu_fx, sfx, theme
+from src.ui import menu_fx, theme
 from src.ui.backdrop import MenuBackdrop
 from src.ui.button import Button
 
@@ -30,15 +30,23 @@ class MainMenu(BaseState):
         self.time = 0.0
         self.buttons = []
         self.selected = 0
+        self._slid = set()             # buttons that already played their slide-in sound
         self._lang = prefs.get("language")
         self._save_check = -1
         self._build_buttons()
-        sfx.warm()
+        audio.warm()
 
     # ---------- setup ----------
     def _build_buttons(self):
-        actions = {"new_game": self.new_game, "continue": self.continue_game,
-                   "guide": self.guide, "options": self.options, "exit": self.game.quit}
+        def sounded(fn):
+            def run():
+                audio.play("confirm")
+                fn()
+            return run
+
+        actions = {"new_game": sounded(self.new_game), "continue": sounded(self.continue_game),
+                   "guide": sounded(self.guide), "options": sounded(self.options),
+                   "exit": self.game.ask_quit}          # opens the "Leave BayanSafe?" box (in Game)
         width, height, gap = 110, 16, 3
         x = (settings.INTERNAL_WIDTH - width) // 2
         for i, (key, icon) in enumerate(ENTRIES):
@@ -81,12 +89,15 @@ class MainMenu(BaseState):
         if index != self.selected:
             self.selected = index
             self._update_selection()
-            sfx.play("tock", 0.35)
+            audio.play("tick")
 
     # ---------- state API ----------
     def handle_event(self, event):
+        # (while the exit box is open, Game sends the events to the box, not here)
         if event.type == pygame.KEYDOWN:
-            if event.key in (pygame.K_UP, pygame.K_w):
+            if event.key == pygame.K_ESCAPE:
+                self.game.ask_quit()
+            elif event.key in (pygame.K_UP, pygame.K_w):
                 self._select((self.selected - 1) % len(self.buttons))
             elif event.key in (pygame.K_DOWN, pygame.K_s):
                 self._select((self.selected + 1) % len(self.buttons))
@@ -94,22 +105,24 @@ class MainMenu(BaseState):
                 self.buttons[self.selected].activate()
             elif event.key == pygame.K_t:
                 self.backdrop.next_time()
+            elif event.key == pygame.K_h:
+                self.backdrop.next_hazard()
             elif event.key == pygame.K_F2:
                 self.backdrop.toggle_debug()
             elif event.key == pygame.K_F3:
                 self.backdrop.toggle_boost()
-            elif event.key == pygame.K_h:
-                self.backdrop.next_hazard()
 
         elif event.type == pygame.MOUSEMOTION:
             pos = self.game.to_canvas_pos(event.pos)
             self.backdrop.look_at(pos[0])
+            self.backdrop.hover_at(pos)
             for i, button in enumerate(self.buttons):
                 if button.contains(pos):
                     self._select(i)
 
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             pos = self.game.to_canvas_pos(event.pos)
+            self.backdrop.poke(pos)                  # clicking the title repairs its casing
             for button in self.buttons:
                 if button.contains(pos):
                     button.activate()
@@ -124,22 +137,26 @@ class MainMenu(BaseState):
 
         for i, button in enumerate(self.buttons):
             p = max(0.0, min(1.0, (self.time - SLIDE_DELAY - i * SLIDE_STAGGER) / SLIDE_TIME))
+            if p > 0 and i not in self._slid:                # a soft whoosh as each button slides in
+                self._slid.add(i)
+                audio.play("whoosh", 0.4)
             button.offset_x = -int((1 - p) ** 3 * 150)       # ease-out slide from the left
             button.update(dt)
 
         for name, volume in self.backdrop.consume_sounds():
-            sfx.play(name, volume)
+            audio.play(name, volume)
 
     def draw(self, surface):
         self.backdrop.draw(surface, self.time)
         if self.backdrop.has_title:
             self.backdrop.draw_title(surface, (160, 34))
         else:
-            theme.draw_text(surface, "BAYANSAFE", (160, 28), "title",
-                            theme.HONEY, anchor="center")
+            theme.draw_text(surface, "BAYANSAFE", (160, 28), "title", theme.HONEY, anchor="center")
+        self.backdrop.draw_hint(surface)
         for button in self.buttons:
             button.draw(surface, self.time)
 
         menu_fx.draw_alert_chip(surface, self.time, self.backdrop.level, self.backdrop.hazard)
         menu_fx.draw_gobag(surface, self.time)
         menu_fx.draw_footer(surface, self.time)
+        menu_fx.draw_banner(surface, self.backdrop.fx)

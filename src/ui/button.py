@@ -1,8 +1,8 @@
 import pygame
 
-from src.ui import sfx, theme
+from src.ui import menu_fx, theme
 
-
+from src.core import audio
 class Button:
     """Backward compatible: Button(text, rect, callback) still works everywhere.
 
@@ -34,12 +34,12 @@ class Button:
         if self._pending:
             return
         if not self.enabled:
-            sfx.play("tock", 0.25)
+            audio.play( "tock", 0.25)
             return
         if self.press_delay <= 0:
             self.callback()
             return
-        sfx.play("thud", 0.6)
+        audio.play("thud", 0.6)
         self._pending = True
         self._timer = self.press_delay
 

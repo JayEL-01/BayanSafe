@@ -1,0 +1,316 @@
+{
+  "name": "Severe Flooding at the Harbor",
+  "map_size": [
+    640,
+    360
+  ],
+  "player_start": [
+    320,
+    180
+  ],
+  "walls": [
+    [
+      100,
+      65,
+      14,
+      135
+    ],
+    [
+      150,
+      180,
+      120,
+      14
+    ],
+    [
+      305,
+      65,
+      14,
+      130
+    ],
+    [
+      355,
+      180,
+      155,
+      14
+    ],
+    [
+      535,
+      200,
+      14,
+      95
+    ],
+    [
+      190,
+      275,
+      14,
+      48
+    ]
+  ],
+  "npcs": [
+    {
+      "id": "nanay_luz",
+      "name": "Mang Lito",
+      "pos": [
+        578,
+        2
+      ],
+      "color": [
+        235,
+        150,
+        100
+      ],
+      "dialogue": [
+        "The flash flood and typhoon have left the harbor water rising. The lower road is underwater.",
+        "Use the marked high route and do not enter the current to reach the warehouse."
+      ],
+      "after_dialogue": [
+        "We are on high ground. Keep away from damaged docks and any water near power lines."
+      ],
+      "rescue_item": "water",
+      "rescue_dialogue": [
+        "I am stranded and need the drinking water. Please bring it, then help me get to the marked high ground, away from floodwater."
+      ],
+      "rescue_success_dialogue": [
+        "Thank you. I can follow you to the marked high ground, away from floodwater now."
+      ],
+      "rescue_hint": "Find the drinking water, then speak with Mang Lito again.",
+      "choice": {
+        "prompt": "The lower harbor is submerged. Which rescue plan?",
+        "options": [
+          {
+            "text": "Use confirmed high routes and call responders",
+            "flag": "harbor_severe_flood_safe",
+            "time_cost": 0,
+            "points": 100,
+            "result": "The team uses accessible high routes.",
+            "consequence": "You followed the confirmed evacuation route.",
+            "mascot": "Following official warnings and protecting people is the safer choice."
+          },
+          {
+            "text": "Enter the current to reach the warehouse",
+            "flag": "harbor_severe_flood_risk",
+            "time_cost": 0,
+            "points": -50,
+            "property_damage": 140,
+            "result": "Strong currents and unseen hazards make entry unsafe.",
+            "consequence": "You entered dangerous floodwater.",
+            "mascot": "Taking a shortcut through a hazard can injure people and damage resources."
+          }
+        ]
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "go_bag",
+      "name": "Emergency go-bag",
+      "pos": [
+        592,
+        0
+      ],
+      "color": [
+        80,
+        200,
+        120
+      ]
+    },
+    {
+      "id": "water",
+      "name": "Drinking water",
+      "pos": [
+        520,
+        0
+      ],
+      "color": [
+        80,
+        170,
+        250
+      ]
+    },
+    {
+      "id": "first_aid",
+      "name": "First-aid kit",
+      "pos": [
+        568,
+        0
+      ],
+      "color": [
+        230,
+        90,
+        140
+      ]
+    },
+    {
+      "id": "transmission",
+      "name": "Recover the control-station transmission",
+      "pos": [
+        592,
+        0
+      ],
+      "color": [
+        80,
+        170,
+        250
+      ]
+    }
+  ],
+  "areas": [
+    {
+      "id": "evac_center",
+      "name": "Community Evacuation Center",
+      "rect": [
+        499,
+        1,
+        90,
+        78
+      ],
+      "color": [
+        92,
+        205,
+        230
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "id": "supplies",
+      "title": "Collect Emergency go-bag",
+      "type": "collect",
+      "target": "go_bag"
+    },
+    {
+      "id": "second_supply",
+      "title": "Collect Drinking water",
+      "type": "collect",
+      "target": "water"
+    },
+    {
+      "id": "community",
+      "title": "Check in with Mang Lito",
+      "type": "talk",
+      "target": "nanay_luz"
+    },
+    {
+      "id": "evacuate",
+      "title": "Reach Community Evacuation Center",
+      "type": "reach",
+      "target": "evac_center"
+    },
+    {
+      "id": "rescue_nanay_luz",
+      "title": "Help Mang Lito reach safety",
+      "type": "rescue",
+      "target": "nanay_luz"
+    },
+    {
+      "id": "extra_supply",
+      "title": "Find a first-aid kit for the evacuation to high ground.",
+      "type": "collect",
+      "target": "first_aid"
+    },
+    {
+      "id": "community_supply",
+      "title": "Recover the control-station transmission",
+      "type": "collect",
+      "target": "transmission"
+    }
+  ],
+  "mascot": {
+    "intro": "I'm Tarsi! Move with WASD or arrows. E: talk, Q: ability, H: hint, P: pause. Finish your tasks and reach safety.",
+    "quests": {
+      "supplies": "Find Emergency go-bag.",
+      "second_supply": "Find Drinking water.",
+      "community": "Find Mang Lito and press E.",
+      "evacuate": "Reach High Ground / School and stay clear of danger.",
+      "extra_supply": "Find First-aid kit."
+    }
+  },
+  "hazards": {
+    "disasters": [
+      "flash_flood",
+      "typhoon",
+      "severe_flood"
+    ],
+    "danger_ramp_seconds": 110,
+    "hazard_start_seconds": 7,
+    "rain": {
+      "drops": 54
+    },
+    "wind": {
+      "strength": 40
+    },
+    "debris": {
+      "damage": 13,
+      "min_interval": 1.7,
+      "max_interval": 4.0
+    },
+    "seed": 566,
+    "flood_rate": 2.3,
+    "safe_zones": [
+      [
+        499,
+        1,
+        90,
+        78
+      ]
+    ],
+    "flood_start_seconds": 8,
+    "flood_rate_initial": 0.9,
+    "flood_escalation_seconds": 18
+  },
+  "lessons": [
+    "Never walk or drive through floodwater; depth and current can be hard to judge.",
+    "Move to higher ground and follow local evacuation instructions.",
+    "Keep emergency supplies and a family communication plan ready."
+  ],
+  "safe_zones": [
+    [
+      499,
+      1,
+      90,
+      78
+    ]
+  ],
+  "quiz": {
+    "question": "Floodwater covers your planned route. What should you do?",
+    "options": [
+      "Turn around and use a safe route directed by local authorities",
+      "Walk through if it looks shallow",
+      "Follow a vehicle through the water"
+    ],
+    "answer": 0,
+    "explanation": "Floodwater depth and current are difficult to judge. Never walk or drive through it."
+  },
+  "chapter": "Harbor",
+  "mission_number": 12,
+  "briefing": "Storm rain and coastal water overwhelm the low district. Rescue residents from safe access points, identify routes that remain above water, and prioritize essential supplies. Recover the transmission from the control station.",
+  "landmark": "rocky pass",
+  "items_total": 4,
+  "story_clue": "The transmission links the signals to a remote facility in the North East Plains.",
+  "ground_palette": [
+    [
+      79,
+      135,
+      136
+    ],
+    [
+      56,
+      107,
+      113
+    ],
+    [
+      117,
+      165,
+      149
+    ]
+  ],
+  "campaign_region": "Harbor",
+  "region_level": 3,
+  "hazard_join_levels": {
+    "flash_flood": 1,
+    "typhoon": 2,
+    "severe_flood": 3,
+    "tsunami": 4,
+    "flash_fire": 4
+  }
+}

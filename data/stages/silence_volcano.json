@@ -1,0 +1,320 @@
+{
+  "name": "The Volcano Stirs",
+  "map_size": [
+    640,
+    360
+  ],
+  "player_start": [
+    320,
+    180
+  ],
+  "walls": [
+    [
+      80,
+      110,
+      14,
+      125
+    ],
+    [
+      180,
+      70,
+      105,
+      14
+    ],
+    [
+      325,
+      70,
+      14,
+      105
+    ],
+    [
+      390,
+      185,
+      130,
+      14
+    ],
+    [
+      275,
+      235,
+      14,
+      90
+    ],
+    [
+      120,
+      285,
+      130,
+      14
+    ]
+  ],
+  "npcs": [
+    {
+      "id": "mang_tomas",
+      "name": "Mang Lito",
+      "pos": [
+        204,
+        20
+      ],
+      "color": [
+        210,
+        145,
+        95
+      ],
+      "dialogue": [
+        "I heard from the coast that the volcano has gone quiet, but ash is still falling and the alert remains.",
+        "Cover your nose and mouth, avoid river valleys, and prepare to evacuate."
+      ],
+      "after_dialogue": [
+        "Quiet does not mean safe. We will wait for the official all-clear at the evacuation center."
+      ],
+      "choice": {
+        "prompt": "The valley is quiet, but monitoring shows renewed activity. What should you do?",
+        "options": [
+          {
+            "text": "Follow the alert and prepare for ashfall",
+            "flag": "silence_volcano_safe",
+            "time_cost": 0,
+            "points": 100,
+            "result": "The team prepares and follows the warning.",
+            "consequence": "You stayed alert and prepared.",
+            "mascot": "Following official warnings and protecting people is the safer choice."
+          },
+          {
+            "text": "Assume the quiet means the danger is over",
+            "flag": "silence_volcano_risk",
+            "time_cost": 0,
+            "points": -50,
+            "property_damage": 140,
+            "result": "A quiet volcano can still erupt; follow official alerts.",
+            "consequence": "You ignored the renewed warning.",
+            "mascot": "Taking a shortcut through a hazard can injure people and damage resources."
+          }
+        ]
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "mask",
+      "name": "Protective mask",
+      "pos": [
+        254,
+        198
+      ],
+      "color": [
+        210,
+        220,
+        190
+      ]
+    },
+    {
+      "id": "radio",
+      "name": "Battery radio",
+      "pos": [
+        194,
+        142
+      ],
+      "color": [
+        120,
+        170,
+        250
+      ]
+    },
+    {
+      "id": "water",
+      "name": "Drinking water",
+      "pos": [
+        174,
+        42
+      ],
+      "color": [
+        70,
+        165,
+        235
+      ]
+    },
+    {
+      "id": "goggles",
+      "name": "Protective goggles",
+      "pos": [
+        286,
+        62
+      ],
+      "color": [
+        230,
+        210,
+        150
+      ]
+    },
+    {
+      "id": "control_key",
+      "name": "Secure the World Engine control key",
+      "pos": [
+        154,
+        138
+      ],
+      "color": [
+        205,
+        220,
+        190
+      ]
+    }
+  ],
+  "areas": [
+    {
+      "id": "evac_center",
+      "name": "Community Evacuation Center",
+      "rect": [
+        274,
+        0,
+        88,
+        75
+      ],
+      "color": [
+        92,
+        205,
+        230
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "id": "supplies",
+      "title": "Collect Protective mask",
+      "type": "collect",
+      "target": "mask"
+    },
+    {
+      "id": "second_supply",
+      "title": "Collect Battery radio",
+      "type": "collect",
+      "target": "radio"
+    },
+    {
+      "id": "community",
+      "title": "Check in with Mang Lito",
+      "type": "talk",
+      "target": "mang_tomas"
+    },
+    {
+      "id": "evacuate",
+      "title": "Reach Community Evacuation Center",
+      "type": "reach",
+      "target": "evac_center"
+    },
+    {
+      "id": "collect_water",
+      "title": "Secure drinking water for the ashfall route",
+      "type": "collect",
+      "target": "water"
+    },
+    {
+      "id": "extra_supply",
+      "title": "Find eye protection before crossing the ashfall route.",
+      "type": "collect",
+      "target": "goggles"
+    },
+    {
+      "id": "community_supply",
+      "title": "Secure the World Engine control key",
+      "type": "collect",
+      "target": "control_key"
+    }
+  ],
+  "mascot": {
+    "intro": "I'm Tarsi! Move with WASD or arrows. E: talk, Q: ability, H: hint, P: pause. Finish your tasks and reach safety.",
+    "quests": {
+      "supplies": "Find Protective mask.",
+      "second_supply": "Find Battery radio.",
+      "community": "Find Mang Lito and press E.",
+      "evacuate": "Reach Official Evacuation Center and stay clear of danger.",
+      "extra_supply": "Find Protective goggles."
+    }
+  },
+  "hazards": {
+    "disasters": [
+      "volcano"
+    ],
+    "danger_ramp_seconds": 52,
+    "hazard_start_seconds": 8.4,
+    "rain": {
+      "drops": 54
+    },
+    "wind": {
+      "strength": 40
+    },
+    "debris": {
+      "damage": 13,
+      "min_interval": 1.7,
+      "max_interval": 4.0
+    },
+    "seed": 699,
+    "eruption_interval": 3.3,
+    "safe_zones": [
+      [
+        274,
+        0,
+        88,
+        75
+      ]
+    ],
+    "volcano_start_seconds": 12
+  },
+  "lessons": [
+    "Follow current PHIVOLCS and local authority alerts and evacuation orders.",
+    "Keep outside restricted danger zones; use a protective mask or wet cloth if ashfall occurs.",
+    "Avoid river channels that may carry lahar during intense rain."
+  ],
+  "safe_zones": [
+    [
+      274,
+      0,
+      88,
+      75
+    ]
+  ],
+  "quiz": {
+    "question": "Authorities order evacuation from a volcanic danger zone. What is safest?",
+    "options": [
+      "Leave using the designated route and follow official instructions",
+      "Wait until ash or rocks are visible",
+      "Travel into a river channel to find another route"
+    ],
+    "answer": 0,
+    "explanation": "Follow PHIVOLCS and local authority evacuation orders; avoid restricted zones and hazardous channels."
+  },
+  "chapter": "Volcano Valleys",
+  "mission_number": 18,
+  "briefing": "The valley grows quiet, but silence does not mean the danger has passed. Check supplies and the monitoring station. When ash and alarms signal renewed activity, follow evacuation guidance, protect against ash, and secure the control key inside the research complex.",
+  "landmark": "river crossing",
+  "items_total": 5,
+  "story_clue": "Facility records show the World Engine is drawing energy from the volcanic region.",
+  "ground_palette": [
+    [
+      122,
+      112,
+      93
+    ],
+    [
+      87,
+      83,
+      73
+    ],
+    [
+      155,
+      135,
+      101
+    ]
+  ],
+  "campaign_region": "Volcano Valleys",
+  "region_level": 1,
+  "hazard_join_levels": {
+    "volcano": 1,
+    "landslide": 2,
+    "flash_fire": 2,
+    "flash_flood": 3,
+    "earthquake": 4,
+    "tsunami": 4,
+    "typhoon": 4,
+    "severe_flood": 4
+  }
+}

@@ -52,7 +52,7 @@ def draw_patch(surface, rect, title):
 
 
 class OptionsState(BaseState):
-    """Language (English / Filipino) and sound on/off. Saved to prefs.json."""
+    """Language (English / Filipino) and sound on/off preferences."""
 
     def __init__(self, game):
         super().__init__(game)

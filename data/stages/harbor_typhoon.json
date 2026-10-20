@@ -1,0 +1,313 @@
+{
+  "name": "Typhoon at the Harbor",
+  "map_size": [
+    640,
+    360
+  ],
+  "player_start": [
+    320,
+    180
+  ],
+  "walls": [
+    [
+      80,
+      95,
+      135,
+      14
+    ],
+    [
+      245,
+      95,
+      14,
+      105
+    ],
+    [
+      300,
+      55,
+      145,
+      14
+    ],
+    [
+      475,
+      90,
+      14,
+      145
+    ],
+    [
+      110,
+      255,
+      150,
+      14
+    ],
+    [
+      340,
+      260,
+      14,
+      60
+    ]
+  ],
+  "npcs": [
+    {
+      "id": "aling_nena",
+      "name": "Captain Reyes",
+      "pos": [
+        554,
+        2
+      ],
+      "color": [
+        230,
+        130,
+        90
+      ],
+      "dialogue": [
+        "The flash flood has covered the dock road, and now strong winds are pushing boats against the harbor wall.",
+        "The harbor master has opened the inland shelter. Let's get everyone off the waterfront."
+      ],
+      "after_dialogue": [
+        "Everyone is away from the water. Keep clear of the seawall while the storm passes."
+      ],
+      "choice": {
+        "prompt": "Should we board up the windows now? It takes time, and the storm is getting closer.",
+        "options": [
+          {
+            "text": "Board windows (storm pressure +10 sec)",
+            "flag": "boarded",
+            "time_cost": 10,
+            "points": 200,
+            "result": "Windows boarded! The storm pressure rises, but the home is protected.",
+            "mascot": "Boarding takes time, but it protects the home from wind-borne glass.",
+            "consequence": "You boarded the windows. It cost time, but the glass stayed intact and the house was protected."
+          },
+          {
+            "text": "Leave now (home damage: 150 pts)",
+            "flag": "skipped",
+            "time_cost": 0,
+            "points": 0,
+            "result": "You left immediately. The family is safer, but the house is exposed.",
+            "mascot": "Leaving quickly protects people. The unboarded windows may still break.",
+            "consequence": "You skipped the windows. You saved time, but strong wind broke the glass and damaged the house.",
+            "property_damage": 150
+          }
+        ]
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "go_bag",
+      "name": "Go-bag",
+      "pos": [
+        580,
+        0
+      ],
+      "color": [
+        80,
+        200,
+        120
+      ]
+    },
+    {
+      "id": "flashlight",
+      "name": "Flashlight",
+      "pos": [
+        552,
+        0
+      ],
+      "color": [
+        240,
+        240,
+        120
+      ]
+    },
+    {
+      "id": "radio",
+      "name": "Radio",
+      "pos": [
+        544,
+        0
+      ],
+      "color": [
+        120,
+        170,
+        250
+      ]
+    },
+    {
+      "id": "first_aid",
+      "name": "First-aid kit",
+      "pos": [
+        588,
+        0
+      ],
+      "color": [
+        230,
+        90,
+        140
+      ]
+    },
+    {
+      "id": "harbor_typhoon_supply",
+      "name": "Battery radio",
+      "pos": [
+        540,
+        0
+      ],
+      "color": [
+        120,
+        170,
+        250
+      ]
+    }
+  ],
+  "areas": [
+    {
+      "id": "evac_center",
+      "name": "Community Evacuation Center",
+      "rect": [
+        495,
+        2,
+        82,
+        75
+      ],
+      "color": [
+        92,
+        205,
+        230
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "id": "supplies",
+      "title": "Find emergency supplies",
+      "type": "collect",
+      "target": "go_bag"
+    },
+    {
+      "id": "flashlight",
+      "title": "Find the flashlight",
+      "type": "collect",
+      "target": "flashlight"
+    },
+    {
+      "id": "talk_nena",
+      "title": "Talk to Captain Reyes",
+      "type": "talk",
+      "target": "aling_nena"
+    },
+    {
+      "id": "evac",
+      "title": "Reach Community Evacuation Center",
+      "type": "reach",
+      "target": "evac_center"
+    },
+    {
+      "id": "extra_supply",
+      "title": "Find a first-aid kit before the storm reaches the evacuation center.",
+      "type": "collect",
+      "target": "first_aid"
+    },
+    {
+      "id": "community_supply",
+      "title": "Find Battery radio for the response team",
+      "type": "collect",
+      "target": "harbor_typhoon_supply"
+    }
+  ],
+  "mascot": {
+    "intro": "I'm Tarsi! Move with WASD or arrows. E: talk, Q: ability, H: hint, P: pause. Finish your tasks and reach safety.",
+    "quests": {
+      "supplies": "Look for the green go-bag. Every family needs one ready for an emergency.",
+      "flashlight": "A flashlight is important when the power goes out. Look for the yellow item.",
+      "talk_nena": "Captain Reyes needs help. Walk up to the orange person and press E.",
+      "evac": "Head to the blue Evacuation Center in the bottom-right corner.",
+      "extra_supply": "Find First-aid kit."
+    }
+  },
+  "hazards": {
+    "disasters": [
+      "flash_flood",
+      "typhoon"
+    ],
+    "danger_ramp_seconds": 150,
+    "hazard_start_seconds": 12,
+    "rain": {
+      "drops": 60
+    },
+    "wind": {
+      "strength": 45
+    },
+    "debris": {
+      "damage": 15,
+      "min_interval": 1.2,
+      "max_interval": 3.5
+    },
+    "seed": 547,
+    "safe_zones": [
+      [
+        495,
+        2,
+        82,
+        75
+      ]
+    ],
+    "flood_start_seconds": 8,
+    "flood_rate": 1.65,
+    "flood_rate_initial": 0.9
+  },
+  "safe_zones": [
+    [
+      495,
+      2,
+      82,
+      75
+    ]
+  ],
+  "lessons": [
+    "Follow PAGASA bulletins and local evacuation orders.",
+    "Prepare a go-bag and family communication plan before conditions worsen.",
+    "Stay away from floodwater and wind-borne debris."
+  ],
+  "quiz": {
+    "question": "Local officials order evacuation before a typhoon arrives. What is safest?",
+    "options": [
+      "Leave early using the designated route with essential supplies",
+      "Wait for the strongest winds before leaving",
+      "Take a shortcut through floodwater"
+    ],
+    "answer": 0,
+    "explanation": "Follow local evacuation orders early and avoid floodwater and exposed routes."
+  },
+  "chapter": "Harbor",
+  "mission_number": 11,
+  "briefing": "Strong winds and waves hit the harbor. Move residents from exposed docks to suitable shelters, keep away from unstable structures, and do not attempt to reach boats during dangerous conditions. Check the harbor only when the storm weakens.",
+  "landmark": "hilltop school",
+  "items_total": 5,
+  "story_clue": "Water levels continue to rise after the storm.",
+  "ground_palette": [
+    [
+      79,
+      135,
+      136
+    ],
+    [
+      56,
+      107,
+      113
+    ],
+    [
+      117,
+      165,
+      149
+    ]
+  ],
+  "campaign_region": "Harbor",
+  "region_level": 2,
+  "hazard_join_levels": {
+    "flash_flood": 1,
+    "typhoon": 2,
+    "severe_flood": 3,
+    "tsunami": 4,
+    "flash_fire": 4
+  }
+}

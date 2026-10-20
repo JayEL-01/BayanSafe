@@ -1,0 +1,352 @@
+{
+  "name": "The Slope Gives Way",
+  "map_size": [
+    640,
+    360
+  ],
+  "player_start": [
+    320,
+    180
+  ],
+  "walls": [
+    [
+      105,
+      70,
+      115,
+      14
+    ],
+    [
+      270,
+      45,
+      14,
+      112
+    ],
+    [
+      390,
+      90,
+      130,
+      14
+    ],
+    [
+      130,
+      205,
+      14,
+      100
+    ],
+    [
+      290,
+      260,
+      130,
+      14
+    ],
+    [
+      480,
+      205,
+      14,
+      92
+    ]
+  ],
+  "npcs": [
+    {
+      "id": "kapitan_jo",
+      "name": "Berto",
+      "pos": [
+        496,
+        348
+      ],
+      "color": [
+        210,
+        165,
+        100
+      ],
+      "dialogue": [
+        "Aftershocks and heavy rain have loosened the plateau slope. A fresh slide can move again without warning.",
+        "Keep everyone off the hillside and use the marked stable path."
+      ],
+      "after_dialogue": [
+        "The slope is still shifting after the quake. We will report the blocked path and stay uphill."
+      ],
+      "choice": {
+        "prompt": "The shortest path crosses a fresh slope failure. Which route?",
+        "options": [
+          {
+            "text": "Take the longer marked stable route",
+            "flag": "landslide_safe",
+            "time_cost": 0,
+            "points": 100,
+            "result": "You keep clear of unstable ground.",
+            "consequence": "You chose a stable route.",
+            "mascot": "Following official warnings and protecting people is the safer choice."
+          },
+          {
+            "text": "Cross the debris slope quickly",
+            "flag": "landslide_risk",
+            "time_cost": 0,
+            "points": -50,
+            "property_damage": 110,
+            "result": "Loose slopes can move again without warning.",
+            "consequence": "You crossed an unstable slope.",
+            "mascot": "Taking a shortcut through a hazard can injure people and damage resources."
+          }
+        ]
+      }
+    },
+    {
+      "id": "lolo_berto",
+      "name": "Liza",
+      "pos": [
+        508,
+        348
+      ],
+      "color": [
+        205,
+        145,
+        105
+      ],
+      "dialogue": [
+        "I was checking the trail when the hillside gave way. My leg hurts, and rocks are still falling.",
+        "Please bring the first-aid kit. Then help me follow the safe route."
+      ],
+      "after_dialogue": [
+        "Thank you for the first aid. I can follow you, but let's stay well away from the slope."
+      ],
+      "rescue_item": "landslide_supply",
+      "rescue_dialogue": [
+        "I am stranded and need the first-aid kit. Please bring it, then help me get to the marked route, away from the unstable slope."
+      ],
+      "rescue_success_dialogue": [
+        "Thank you. I can follow you to the marked route, away from the unstable slope now."
+      ],
+      "rescue_hint": "Find the first-aid kit, then speak with Liza again.",
+      "needs_carry": true
+    }
+  ],
+  "items": [
+    {
+      "id": "radio",
+      "name": "Emergency radio",
+      "pos": [
+        506,
+        350
+      ],
+      "color": [
+        120,
+        170,
+        250
+      ]
+    },
+    {
+      "id": "first_aid",
+      "name": "First-aid kit",
+      "pos": [
+        498,
+        350
+      ],
+      "color": [
+        230,
+        90,
+        140
+      ]
+    },
+    {
+      "id": "go_bag",
+      "name": "Go-bag",
+      "pos": [
+        498,
+        350
+      ],
+      "color": [
+        80,
+        200,
+        120
+      ]
+    },
+    {
+      "id": "flashlight",
+      "name": "Emergency flashlight",
+      "pos": [
+        506,
+        350
+      ],
+      "color": [
+        245,
+        215,
+        110
+      ]
+    },
+    {
+      "id": "landslide_supply",
+      "name": "First-aid kit",
+      "pos": [
+        494,
+        350
+      ],
+      "color": [
+        230,
+        90,
+        140
+      ]
+    }
+  ],
+  "areas": [
+    {
+      "id": "evac_center",
+      "name": "Community Evacuation Center",
+      "rect": [
+        482,
+        286,
+        72,
+        72
+      ],
+      "color": [
+        92,
+        205,
+        230
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "id": "supplies",
+      "title": "Collect Emergency radio",
+      "type": "collect",
+      "target": "radio"
+    },
+    {
+      "id": "second_supply",
+      "title": "Collect First-aid kit",
+      "type": "collect",
+      "target": "first_aid"
+    },
+    {
+      "id": "community",
+      "title": "Check in with Berto",
+      "type": "talk",
+      "target": "kapitan_jo"
+    },
+    {
+      "id": "evacuate",
+      "title": "Reach the stable evacuation route",
+      "type": "reach",
+      "target": "evac_center"
+    },
+    {
+      "id": "collect_go_bag",
+      "title": "Recover the monitoring station records",
+      "type": "collect",
+      "target": "go_bag"
+    },
+    {
+      "id": "extra_supply",
+      "title": "Collect the emergency flashlight for the search team",
+      "type": "collect",
+      "target": "flashlight"
+    },
+    {
+      "id": "community_supply",
+      "title": "Find First-aid kit for the response team",
+      "type": "collect",
+      "target": "landslide_supply"
+    },
+    {
+      "id": "rescue_lolo_berto",
+      "title": "Rescue Liza and get them to safety",
+      "type": "rescue",
+      "target": "lolo_berto"
+    }
+  ],
+  "mascot": {
+    "intro": "I'm Tarsi! Move with WASD or arrows. E: talk, Q: ability, H: hint, P: pause. Finish your tasks and reach safety. During shaking: Drop, Cover, Hold On.",
+    "quests": {
+      "supplies": "Find Emergency radio.",
+      "second_supply": "Find First-aid kit.",
+      "community": "Find Berto and press E.",
+      "evacuate": "Reach Sturdy Shelter and stay clear of danger.",
+      "cover": "When shaking starts, get under the sturdy table in the green cover field.",
+      "extra_supply": "Find Emergency flashlight."
+    }
+  },
+  "hazards": {
+    "disasters": [
+      "earthquake",
+      "landslide"
+    ],
+    "danger_ramp_seconds": 110,
+    "hazard_start_seconds": 7,
+    "rain": {
+      "drops": 54
+    },
+    "wind": {
+      "strength": 40
+    },
+    "debris": {
+      "damage": 13,
+      "min_interval": 1.7,
+      "max_interval": 4.0
+    },
+    "seed": 395,
+    "safe_zones": [
+      [
+        482,
+        286,
+        72,
+        72
+      ]
+    ],
+    "landslide_interval": 6.5,
+    "landslide_start_seconds": 8
+  },
+  "lessons": [
+    "Learn local landslide warning signs, hazard maps, and evacuation routes before heavy rain.",
+    "If a slide threatens, avoid its path and move to a safe area as directed by local officials.",
+    "After a slide, stay away from the affected slope because further movement may occur."
+  ],
+  "safe_zones": [
+    [
+      482,
+      286,
+      72,
+      72
+    ]
+  ],
+  "quiz": {
+    "question": "You see signs of a possible landslide near your route. What is safest?",
+    "options": [
+      "Avoid the slide path and move to a safe area following local instructions",
+      "Go closer to inspect the slope",
+      "Cross the debris to reach the road"
+    ],
+    "answer": 0,
+    "explanation": "Avoid landslide paths, move to a safe area, and follow local authority guidance."
+  },
+  "chapter": "North West Plateau",
+  "mission_number": 3,
+  "briefing": "Earthquake-weakened slopes fail in heavy rain. Keep away from the slide path, choose the longer stable route, and help stranded residents without entering unstable debris. Recover the monitoring records from the damaged station.",
+  "landmark": "coastal homes",
+  "items_total": 5,
+  "story_clue": "The records show artificial energy pulses shortly before the earthquake.",
+  "ground_palette": [
+    [
+      130,
+      140,
+      105
+    ],
+    [
+      99,
+      113,
+      81
+    ],
+    [
+      166,
+      159,
+      113
+    ]
+  ],
+  "campaign_region": "North West Plateau",
+  "region_level": 2,
+  "hazard_join_levels": {
+    "earthquake": 1,
+    "landslide": 2,
+    "tsunami": 4
+  }
+}

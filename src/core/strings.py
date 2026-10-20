@@ -3,7 +3,7 @@ from src.core import prefs
 
 STRINGS = {
     "en": {
-        "new_game": "NEW GAME", "continue": "CONTINUE", "guide": "DISASTER GUIDE",
+        "new_game": "NEW GAME", "continue": "CONTINUE", "guide": "DISASTER GUIDE", "high_scores": "HIGH SCORES",
         "options": "OPTIONS", "exit": "EXIT", "back": "BACK",
         "language": "LANGUAGE", "lang_name": "ENGLISH",
         "sfx": "SOUND FX", "on": "ON", "off": "OFF",
@@ -18,7 +18,7 @@ STRINGS = {
         "banner_wildfire": "WILDFIRE SPREADING", "hint_click": "CLICK THE TITLE",
     },
     "fil": {
-        "new_game": "BAGONG LARO", "continue": "ITULOY", "guide": "GABAY",
+        "new_game": "BAGONG LARO", "continue": "ITULOY", "guide": "GABAY", "high_scores": "MATAAS NA PUNTOS",
         "options": "OPSYON", "exit": "LUMABAS", "back": "BUMALIK",
         "language": "WIKA", "lang_name": "FILIPINO",
         "sfx": "TUNOG", "on": "BUKAS", "off": "SARADO",
@@ -93,7 +93,7 @@ GUIDE = {
         {"title": "WILDFIRE", "lines": [
             "Never burn trash in dry grass or forests.",
             "If you see smoke, call the fire station fast.",
-            "Cover your nose with a wet cloth and stay low.",
+            "Move away from fire and smoke. If indoors, stay low while leaving.",
             "Leave early and follow the evacuation route.",
         ]},
     ],
@@ -125,7 +125,7 @@ GUIDE = {
         {"title": "SUNOG SA GUBAT", "lines": [
             "Huwag magsunog ng basura sa tuyong damo.",
             "Kapag may usok, tumawag agad sa bumbero.",
-            "Takpan ang ilong ng basang tela at dumapa.",
+            "Umiwas sa apoy at usok. Kung nasa loob, yumuko habang lumalabas.",
             "Lumikas nang maaga at sundin ang evacuation route.",
         ]},
     ],

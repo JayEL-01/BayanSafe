@@ -1,0 +1,351 @@
+{
+  "name": "Flash Fire in Central Town",
+  "map_size": [
+    640,
+    360
+  ],
+  "player_start": [
+    320,
+    180
+  ],
+  "walls": [
+    [
+      80,
+      95,
+      135,
+      14
+    ],
+    [
+      245,
+      95,
+      14,
+      105
+    ],
+    [
+      300,
+      55,
+      145,
+      14
+    ],
+    [
+      475,
+      90,
+      14,
+      145
+    ],
+    [
+      110,
+      255,
+      150,
+      14
+    ],
+    [
+      340,
+      260,
+      14,
+      60
+    ]
+  ],
+  "npcs": [
+    {
+      "id": "ate_mila",
+      "name": "Rico Dela Cruz",
+      "pos": [
+        440,
+        340
+      ],
+      "color": [
+        230,
+        145,
+        95
+      ],
+      "dialogue": [
+        "A cooking fire has spread to the market stalls, and thick smoke is crossing the street.",
+        "Warn the vendors and take the clear exit away from the smoke."
+      ],
+      "after_dialogue": [
+        "Everyone is out of the market. Do not go back inside for bags or belongings."
+      ],
+      "choice": {
+        "prompt": "Smoke is spreading through the street. Which exit is safer?",
+        "options": [
+          {
+            "text": "Use the clear route away from smoke",
+            "flag": "flash_fire_safe",
+            "time_cost": 0,
+            "points": 100,
+            "result": "The group leaves by the clear route.",
+            "consequence": "You moved away from smoke and fire.",
+            "mascot": "Following official warnings and protecting people is the safer choice."
+          },
+          {
+            "text": "Cut through the smoke-filled shop",
+            "flag": "flash_fire_risk",
+            "time_cost": 0,
+            "points": -50,
+            "property_damage": 120,
+            "result": "Smoke can overwhelm people quickly and hide exits.",
+            "consequence": "You chose a smoke-filled route.",
+            "mascot": "Taking a shortcut through a hazard can injure people and damage resources."
+          }
+        ]
+      }
+    },
+    {
+      "id": "rosa",
+      "name": "Aling Rosa",
+      "pos": [
+        628,
+        340
+      ],
+      "color": [
+        145,
+        125,
+        205
+      ],
+      "dialogue": [
+        "I am near the clinic, but smoke is making it hard to breathe.",
+        "Please bring the spare respirator. I will leave by the clear route with you."
+      ],
+      "after_dialogue": [
+        "I have the respirator. I can follow you to the safe area now."
+      ],
+      "rescue_item": "respirator",
+      "rescue_dialogue": [
+        "I am stranded and need spare respirator. Please bring it, then help me get to the safe route, away from smoke and ash."
+      ],
+      "rescue_success_dialogue": [
+        "Thank you. I can follow you to the safe route, away from smoke and ash now."
+      ],
+      "rescue_hint": "Find spare respirator, then speak with Aling Rosa again."
+    }
+  ],
+  "items": [
+    {
+      "id": "go_bag",
+      "name": "Go-bag",
+      "pos": [
+        330,
+        342
+      ],
+      "color": [
+        80,
+        200,
+        120
+      ]
+    },
+    {
+      "id": "water",
+      "name": "Drinking water",
+      "pos": [
+        590,
+        342
+      ],
+      "color": [
+        80,
+        170,
+        250
+      ]
+    },
+    {
+      "id": "respirator",
+      "name": "Spare respirator",
+      "pos": [
+        290,
+        342
+      ],
+      "color": [
+        210,
+        230,
+        185
+      ]
+    },
+    {
+      "id": "radio",
+      "name": "Battery radio",
+      "pos": [
+        630,
+        342
+      ],
+      "color": [
+        120,
+        170,
+        250
+      ]
+    },
+    {
+      "id": "burned_component",
+      "name": "Recover the scorched machine component if the route is safe",
+      "pos": [
+        310,
+        298
+      ],
+      "color": [
+        235,
+        125,
+        60
+      ]
+    }
+  ],
+  "areas": [
+    {
+      "id": "evac_center",
+      "name": "Community Evacuation Center",
+      "rect": [
+        237,
+        284,
+        82,
+        75
+      ],
+      "color": [
+        92,
+        205,
+        230
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "id": "supplies",
+      "title": "Collect Go-bag",
+      "type": "collect",
+      "target": "go_bag"
+    },
+    {
+      "id": "second_supply",
+      "title": "Collect Drinking water",
+      "type": "collect",
+      "target": "water"
+    },
+    {
+      "id": "rescue_kit",
+      "title": "Find spare respirator",
+      "type": "collect",
+      "target": "respirator"
+    },
+    {
+      "id": "rescue_neighbor",
+      "title": "Rescue Aling Rosa with the respirator",
+      "type": "rescue",
+      "target": "rosa"
+    },
+    {
+      "id": "community",
+      "title": "Check in with Rico Dela Cruz",
+      "type": "talk",
+      "target": "ate_mila"
+    },
+    {
+      "id": "evacuate",
+      "title": "Reach Community Evacuation Center",
+      "type": "reach",
+      "target": "evac_center"
+    },
+    {
+      "id": "extra_supply",
+      "title": "Find a battery radio for official fire evacuation updates.",
+      "type": "collect",
+      "target": "radio"
+    },
+    {
+      "id": "community_supply",
+      "title": "Recover the scorched machine component if the route is safe",
+      "type": "collect",
+      "target": "burned_component"
+    }
+  ],
+  "mascot": {
+    "intro": "I'm Tarsi! Move with WASD or arrows. E: talk, Q: ability, H: hint, P: pause. Finish your tasks and reach safety.",
+    "quests": {
+      "supplies": "Find Go-bag.",
+      "second_supply": "Find Drinking water.",
+      "rescue_kit": "Search the clear route for a spare respirator before attempting the rescue.",
+      "rescue_neighbor": "Find Aling Rosa and speak with her after collecting the spare respirator.",
+      "community": "Find Rico Dela Cruz and press E.",
+      "evacuate": "Reach Fire Safe Zone and stay clear of danger.",
+      "extra_supply": "Find Battery radio."
+    }
+  },
+  "hazards": {
+    "disasters": [
+      "flash_fire"
+    ],
+    "danger_ramp_seconds": 110,
+    "hazard_start_seconds": 7,
+    "rain": {
+      "drops": 54
+    },
+    "wind": {
+      "strength": 40
+    },
+    "debris": {
+      "damage": 13,
+      "min_interval": 1.7,
+      "max_interval": 4.0
+    },
+    "seed": 452,
+    "wildfire_speed": 20,
+    "safe_zones": [
+      [
+        237,
+        284,
+        82,
+        75
+      ]
+    ]
+  },
+  "lessons": [
+    "Use the planned safe exit and go to the family or community meeting place.",
+    "Stay with your group and tell responders if someone is missing.",
+    "Do not return to a fire-affected building until authorities say it is safe."
+  ],
+  "safe_zones": [
+    [
+      237,
+      284,
+      82,
+      75
+    ]
+  ],
+  "quiz": {
+    "question": "Smoke blocks your usual exit during a fire. What should you do?",
+    "options": [
+      "Use a planned alternate safe exit and meet at the designated point",
+      "Hide in a room and wait without telling anyone",
+      "Go back inside after reaching safety to collect supplies"
+    ],
+    "answer": 0,
+    "explanation": "Know alternate escape routes and a meeting place. Do not re-enter until authorities say it is safe."
+  },
+  "chapter": "Central Town",
+  "mission_number": 6,
+  "briefing": "A fire spreads through a dense commercial district. Raise the alarm, guide residents away from smoke, electrical hazards, and fuel containers, and use a safe alternate exit. Do not enter a burning building to attempt an untrained rescue.",
+  "landmark": "hilltop school",
+  "items_total": 5,
+  "story_clue": "The scorched component has the same maker’s mark as the earlier research equipment.",
+  "ground_palette": [
+    [
+      144,
+      136,
+      107
+    ],
+    [
+      107,
+      112,
+      92
+    ],
+    [
+      171,
+      158,
+      123
+    ]
+  ],
+  "campaign_region": "Central Town",
+  "region_level": 1,
+  "hazard_join_levels": {
+    "flash_fire": 1,
+    "landslide": 2,
+    "typhoon": 3,
+    "flash_flood": 4
+  }
+}

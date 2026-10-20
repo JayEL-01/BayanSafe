@@ -5,6 +5,7 @@ from src.core.session import GameSession
 from src.core.state_manager import StateManager
 from src.ui import theme
 from src.ui.confirm_dialog import ConfirmDialog, exit_texts
+from src.hardware.pygame_controller import PygameController
 
 
 class Game:
@@ -24,6 +25,7 @@ class Game:
         self.state_manager = StateManager()
         self.running = True
         self.session = GameSession()
+        self.controller = PygameController()
         self.exit_dialog = None          # the "Leave BayanSafe?" box (made when needed)
 
     def quit(self):
@@ -47,12 +49,9 @@ class Game:
     def run(self):
         while self.running:
             dt = self.clock.tick(settings.FPS) / 1000  # seconds
+            controller_events = self.controller.poll_events(dt)
 
-            state = self.state_manager.current()
-            if state is None:
-                break
-
-            for event in pygame.event.get():
+            for event in [*pygame.event.get(), *controller_events]:
                 if event.type == pygame.QUIT:                 # the window's X button
                     if self.dialog_open:
                         self.quit()                           # pressing X again really closes it
@@ -61,12 +60,25 @@ class Game:
                 elif self.dialog_open:
                     self.exit_dialog.handle_event(event, self)
                 else:
-                    state.handle_event(event)
+                    # A prior event may have changed screens. Always dispatch
+                    # to the current screen so one input batch cannot operate
+                    # on a stale state after a transition.
+                    state = self.state_manager.current()
+                    if state is not None:
+                        state.handle_event(event)
 
             if self.dialog_open:
                 self.exit_dialog.update(dt)                   # the screen underneath is frozen
             else:
+                state = self.state_manager.current()
+                if state is None:
+                    break
                 state.update(dt)
+
+            # update() can also finish a mission or open the next screen.
+            state = self.state_manager.current()
+            if state is None:
+                break
 
             theme.TEXT_QUEUE.clear()
             self.canvas.fill((0, 0, 0))

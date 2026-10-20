@@ -1,6 +1,8 @@
 import hashlib
+import json
 import secrets
 from contextlib import contextmanager
+from pathlib import Path
 
 import psycopg2.errors
 from flask import Flask, jsonify, request
@@ -10,7 +12,9 @@ from database.db import get_connection
 
 app = Flask(__name__)
 
-STAGES = ["typhoon", "flood", "earthquake", "volcano", "wildfire"]
+CAMPAIGN_FILE = Path(__file__).resolve().parents[1] / "data" / "campaign.json"
+with CAMPAIGN_FILE.open(encoding="utf-8") as campaign_file:
+    STAGES = [stage["id"] for stage in json.load(campaign_file)["stages"]]
 TOKENS = {}    # login token -> player_id (cleared when the server restarts)
 
 
@@ -48,6 +52,11 @@ def error(message, code=400):
 
 
 def load_save(cur, player_id):
+    # Add campaign stages when an existing account signs in after an update.
+    for number, stage in enumerate(STAGES):
+        cur.execute("""INSERT INTO player_stage_progress (player_id, stage_id, status)
+                       VALUES (%s, %s, %s) ON CONFLICT (player_id, stage_id) DO NOTHING""",
+                    (player_id, stage, "UNLOCKED" if number == 0 else "LOCKED"))
     cur.execute("SELECT username, character_id FROM players WHERE player_id = %s",
                 (player_id,))
     username, character_id = cur.fetchone()
@@ -55,7 +64,7 @@ def load_save(cur, player_id):
                    FROM player_stage_progress WHERE player_id = %s""", (player_id,))
     stages = {row[0]: {"status": row[1], "best_time": row[2],
                        "best_score": row[3], "perfect": row[4]}
-              for row in cur.fetchall()}
+              for row in cur.fetchall() if row[0] in STAGES}
     cur.execute("SELECT achievement_id FROM player_achievements WHERE player_id = %s",
                 (player_id,))
     achievements = [row[0] for row in cur.fetchall()]

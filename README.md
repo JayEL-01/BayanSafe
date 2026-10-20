@@ -22,22 +22,88 @@ Repository: https://github.com/JayEL-01/BayanSafe
 
 BayanSafe is a game about staying safe when disasters happen. Players pick a character, move around the map, and work through stages that build practical safety knowledge.
 
+The story campaign follows the supplied island map as one continuous journey. It starts in San Isidro, follows the roads shown on the map, and ends at Mount Talon. During play, press **M** to see the complete supplied map, your current location, and the next marked story stop; the map's own red dashed roads show the route. Press **Tab** there to switch to the readable place directory. The island is one connected 1,920 × 720 playfield. Rivers block travel except at visible bridge crossings, so players must use the crossings to move between regions. Each disaster region has four story beats. Hazards join at the level shown in the campaign and remain active through later locations, building from three hazards at the North West Plateau to all eight in the Volcano Valleys and finale. At chapter boundaries, named characters reveal what changed through a short, staged dialogue scene; Tarsi provides optional gameplay hints. There are no post-mission replay or stage-selection choices. The finale resolves into one of three outcomes based on campaign performance and the shutdown decision.
+
+| Region level | Location and escalation |
+|---:|---|
+| Opening | Home Village: the player’s home and the first warning |
+| Levels 1–4 | North West Plateau: Earthquake → Landslide → recovery lull → Tsunami |
+| Levels 1–4 | Central Town: Flash Fire → Landslide → Typhoon → Flash Flood |
+| Levels 1–4 | Harbor: Flash Flood → Typhoon → Severe Flooding → Fire + Tsunami |
+| Levels 1–4 | North East Plains: Typhoon → Flash Flood + Severe Flooding → Landslide → Earthquake + Volcanic Eruption |
+| Levels 1–4 | Volcano Valleys: Volcanic Eruption → Landslide + Flash Fire → Flash Flood → all eight hazards |
+| Finale | Main Control Room: all hazards continue while the player makes the shutdown decision |
+
+The desktop game saves locally. The Flask/PostgreSQL service is separate from the game client. RFID login is for student identification; it does not collect survival items. Physical RFID, LCD, and serial-controller support still depends on the actual reader, board, display, and communication protocol.
+
+At an evacuation point, the player can end the task phase before optional objectives are complete. Villagers then head for the safe zone; the flood escort mission requires both the player and Nanay Luz to arrive before it ends. Endings weigh campaign-wide objective completion, supplies, rescues, damage, and the final shutdown decision. The leaderboard can be filtered by individual hazards and combinations that appear in the campaign.
+
+Mission scoring is transparent and capped: objectives 400, supplies 200, preparation and choices 200, response time 100, and personal/property safety 100; each available rescue can add up to 100 more (maximum two rescue bonuses). A wrong safety-quiz answer subtracts 150 points and does not count as another gameplay attempt.
+
+### Safety content references
+
+The missions are educational scenarios, not live emergency guidance. Always follow current instructions from local authorities and your barangay DRRM office. Content reviewers can check the lessons against [PAGASA storm surge preparedness](https://bagong.pagasa.dost.gov.ph/information/storm-surge), [PHIVOLCS earthquake and tsunami guidance](https://www.phivolcs.dost.gov.ph/primer-on-the-08-june-2026-magnitude-mw-7-8-offshore-sarangani-earthquake/), [PHIVOLCS volcano preparedness](https://www.phivolcs.dost.gov.ph/volcano-preparedness/), [PHIVOLCS landslide preparedness](https://test-wp.phivolcs.dost.gov.ph/landslide-preparedness/), [BFP fire safety for young adults](https://bfp.gov.ph/wp-content/uploads/2024/08/Volume-3-Fire-Safety-for-Young-Adults.pdf), and [flood safety guidance](https://www.ready.gov/floods).
+
+### In-game controls
+
+| Action | Controls |
+|---|---|
+| Move | WASD or arrow keys |
+| Talk / advance dialogue | E, Enter, or Space |
+| Use character ability | Q |
+| Ask Tarsi for a hint | H |
+| Open / close island overview | M |
+| Pause / resume | P or Escape |
+| Pause menu | R restart current scene, Q leave to title |
+
+Juan can sprint for a short burst (8-second cooldown). Maria can restore up to 35 health (20-second cooldown).
+
+At the start of the journey, players choose a community plan (first-aid pack, route map, or radio plan) and a pace. The plan and pace carry across the continuous story. Relaxed gives more warning time, extra health, and a small speed boost; Challenge makes hazards build sooner. The final recovery scene reflects campaign scores, rescues, injuries, and property damage. NPC rescue objectives and Tarsi's advice reinforce teamwork; restarting the current scene does not remove campaign progress.
+
+Each completed scene advances through an authored story beat tied to the supplied story document. The beat shows who is speaking, what changed because of the player's decisions, and why the journey continues. Press Enter to travel onward or Q to open the optional safety check; there is no replay or stage-selection screen between scenes. The optional overview can be opened during play with **M**.
+
+### Mission preparation controls
+
+| Action | Controls |
+|---|---|
+| Choose a plan | Left / Right or 1–3 |
+| Choose a pace | Up / Down |
+| Begin the journey | Enter or click **BEGIN JOURNEY** |
+| Leave preparation | Escape |
+
+In a mission, press **Tab** to expand or collapse the objective list. Wrong answers on the end-of-mission safety check reduce that run's score by 150 points.
+
 ### Project structure
 
 ```
 BayanSafe/
-├── data/          Game data, such as characters.json
-├── save/          Save files
-├── stages/        Game stages
+├── data/          Characters, 22-story order, supplied map, lessons, and mission definitions
+├── database/      Optional PostgreSQL schema and connection helper
+├── server/        Optional Flask account, RFID, save, and quiz API
 ├── src/
-│   └── states/    Game screens: main menu, character select, world map, and so on
+│   ├── core/      Game loop, campaign session, and local save handling
+│   ├── hazards/   Weather and disaster effects
+│   ├── states/    Menus, campaign map, stages, and results
+│   └── systems/   Quests and composable disaster hazards
 ├── README.md
 └── .gitignore
 ```
 
+See [HARDWARE_INTEGRATION.md](HARDWARE_INTEGRATION.md) for the supported USB HID controller mapping and the remaining board/RFID/LCD integration details.
+
 ---
 
 ## Getting started
+
+### Run the automated checks
+
+From the project folder, run:
+
+```powershell
+.venv\Scripts\python.exe -m unittest discover -s tests -v
+```
+
+The checks validate the 22-stage campaign data, verify every mission can load and render, confirm all six island regions are reachable on foot, walk residents to their evacuation destination, check text bounds and collisions across the primary screens and modal dialogs, and guard scene-transition input handling. They use Pygame's headless display, so no game window or controller is needed.
 
 These steps are for Windows. Do them in order.
 
@@ -138,7 +204,7 @@ This project uses **pygame-ce** (the community edition of pygame). Make sure the
 pip install pygame-ce
 ```
 
-If the project has a `requirements.txt`, you can install everything in one go instead:
+Install all game and optional backend dependencies in one go:
 
 ```powershell
 pip install -r requirements.txt
@@ -168,11 +234,7 @@ If the install fails, make sure you're using a Python version that pygame-ce sup
 python -m pip install --upgrade pip
 ```
 
-For the project owner: to save the dependency list so everyone gets the same versions, run this once with the virtual environment active, then commit the file:
-
-```powershell
-pip freeze > requirements.txt
-```
+Keep `requirements.txt` as the reviewed dependency list. Avoid replacing it with a full `pip freeze`, which can capture unrelated packages from a developer's environment.
 
 ### 10. Run the game
 
@@ -470,3 +532,12 @@ git push
 | `git checkout --ours file` | On conflict, keep the version from your current branch |
 | `git checkout --theirs file` | On conflict, keep the version from the branch you merged in |
 | `git log main..dev --oneline` | Preview commits that `dev` has and `main` doesn't |
+# Reference asset pack
+
+The NPC, player, terrain, building, item, and animated effect art in
+`assets/images/game_art` is cropped from the BayanSafe reference pack in
+`assets/images/bayan_pack`. `tools/prepare_bayan_pack.py` rebuilds the game art
+from those source sheets and the exported animation frames in
+`assets/images/sprite_frames`. The supplied labeled map remains the in-game
+map reference; it is not used as walkable ground art.
+

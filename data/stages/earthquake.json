@@ -1,0 +1,335 @@
+{
+  "name": "North West Plateau",
+  "map_size": [
+    640,
+    360
+  ],
+  "player_start": [
+    320,
+    180
+  ],
+  "walls": [
+    [
+      100,
+      65,
+      14,
+      135
+    ],
+    [
+      150,
+      180,
+      120,
+      14
+    ],
+    [
+      305,
+      65,
+      14,
+      130
+    ],
+    [
+      355,
+      180,
+      155,
+      14
+    ],
+    [
+      535,
+      200,
+      14,
+      95
+    ],
+    [
+      190,
+      275,
+      14,
+      48
+    ]
+  ],
+  "npcs": [
+    {
+      "id": "kapitan_jo",
+      "name": "Berto",
+      "pos": [
+        508,
+        348
+      ],
+      "color": [
+        210,
+        165,
+        100
+      ],
+      "dialogue": [
+        "That aftershock shook the plateau again. Drop, cover, and hold on under a sturdy table.",
+        "When the shaking stops, keep clear of cracked cliffs and buildings."
+      ],
+      "after_dialogue": [
+        "You checked the route before moving. We will wait for responders before entering damaged places."
+      ],
+      "choice": {
+        "prompt": "The shaking has stopped. What should you do before entering the damaged station?",
+        "options": [
+          {
+            "text": "Check the area and wait for responders",
+            "flag": "earthquake_safe",
+            "time_cost": 5,
+            "points": 100,
+            "result": "You avoid damaged walls and wait for a safe inspection.",
+            "consequence": "You checked the structure before entering.",
+            "mascot": "Following official warnings and protecting people is the safer choice."
+          },
+          {
+            "text": "Enter now to retrieve the map",
+            "flag": "earthquake_risk",
+            "time_cost": 0,
+            "points": -50,
+            "property_damage": 110,
+            "result": "Entering a damaged structure risks injury from aftershocks.",
+            "consequence": "You entered before the structure was checked.",
+            "mascot": "Taking a shortcut through a hazard can injure people and damage resources."
+          }
+        ]
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "radio",
+      "name": "Emergency radio",
+      "pos": [
+        490,
+        350
+      ],
+      "color": [
+        120,
+        170,
+        250
+      ]
+    },
+    {
+      "id": "first_aid",
+      "name": "First-aid kit",
+      "pos": [
+        510,
+        350
+      ],
+      "color": [
+        230,
+        90,
+        140
+      ]
+    },
+    {
+      "id": "go_bag",
+      "name": "Go-bag",
+      "pos": [
+        490,
+        350
+      ],
+      "color": [
+        80,
+        200,
+        120
+      ]
+    },
+    {
+      "id": "flashlight",
+      "name": "Emergency flashlight",
+      "pos": [
+        502,
+        350
+      ],
+      "color": [
+        245,
+        215,
+        110
+      ]
+    },
+    {
+      "id": "energy_map",
+      "name": "Inspect the research station energy map",
+      "pos": [
+        506,
+        350
+      ],
+      "color": [
+        245,
+        210,
+        110
+      ]
+    }
+  ],
+  "areas": [
+    {
+      "id": "evac_center",
+      "name": "Community Evacuation Center",
+      "rect": [
+        469,
+        279,
+        90,
+        78
+      ],
+      "color": [
+        92,
+        205,
+        230
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "id": "supplies",
+      "title": "Collect Emergency radio",
+      "type": "collect",
+      "target": "radio"
+    },
+    {
+      "id": "second_supply",
+      "title": "Collect First-aid kit",
+      "type": "collect",
+      "target": "first_aid"
+    },
+    {
+      "id": "community",
+      "title": "Check in with Berto",
+      "type": "talk",
+      "target": "kapitan_jo"
+    },
+    {
+      "id": "evacuate",
+      "title": "Reach Community Evacuation Center",
+      "type": "reach",
+      "target": "evac_center"
+    },
+    {
+      "id": "cover",
+      "title": "Take cover at green table",
+      "type": "cover",
+      "target": "earthquake"
+    },
+    {
+      "id": "collect_go_bag",
+      "title": "Collect the go-bag before the aftershock drill",
+      "type": "collect",
+      "target": "go_bag"
+    },
+    {
+      "id": "extra_supply",
+      "title": "Search for a flashlight in case aftershocks cut the power.",
+      "type": "collect",
+      "target": "flashlight"
+    },
+    {
+      "id": "community_supply",
+      "title": "Inspect the research station energy map",
+      "type": "collect",
+      "target": "energy_map"
+    }
+  ],
+  "mascot": {
+    "intro": "I'm Tarsi! Move with WASD or arrows. E: talk, Q: ability, H: hint, P: pause. Finish your tasks and reach safety. During shaking: Drop, Cover, Hold On.",
+    "quests": {
+      "supplies": "Find Emergency radio.",
+      "second_supply": "Find First-aid kit.",
+      "community": "Find Berto and press E.",
+      "evacuate": "Reach Sturdy Shelter and stay clear of danger.",
+      "cover": "When shaking starts, get under the sturdy table in the green cover field.",
+      "extra_supply": "Find Emergency flashlight."
+    }
+  },
+  "hazards": {
+    "disasters": [
+      "earthquake"
+    ],
+    "danger_ramp_seconds": 110,
+    "hazard_start_seconds": 7,
+    "rain": {
+      "drops": 54
+    },
+    "wind": {
+      "strength": 40
+    },
+    "debris": {
+      "damage": 13,
+      "min_interval": 1.7,
+      "max_interval": 4.0
+    },
+    "seed": 376,
+    "safe_zones": [
+      [
+        469,
+        279,
+        90,
+        78
+      ]
+    ],
+    "quake_safe_zones": [
+      [
+        467,
+        295,
+        78,
+        62
+      ]
+    ]
+  },
+  "lessons": [
+    "During shaking, drop, cover, and hold on under sturdy furniture.",
+    "After shaking, watch for hazards and follow local guidance before moving.",
+    "Use marked safe routes and stay away from damaged structures."
+  ],
+  "safe_zones": [
+    [
+      469,
+      279,
+      90,
+      78
+    ],
+    [
+      467,
+      295,
+      78,
+      62
+    ]
+  ],
+  "quiz": {
+    "question": "Strong shaking starts while you are indoors. What should you do?",
+    "options": [
+      "Drop, cover, and hold on under sturdy furniture",
+      "Run outside while objects are falling",
+      "Stand beside a window"
+    ],
+    "answer": 0,
+    "explanation": "Drop, cover, and hold on until the shaking stops; then follow official instructions."
+  },
+  "chapter": "North West Plateau",
+  "mission_number": 2,
+  "briefing": "During the shaking, protect yourself in a safe location and stay clear of windows and unstable structures. When it stops, check for injuries, report blocked roads, and help locate survivors. Inspect the damaged research station for the energy map.",
+  "landmark": "rocky pass",
+  "items_total": 5,
+  "story_clue": "A field sensor logged an unusual pulse seconds before the shaking began.",
+  "ground_palette": [
+    [
+      130,
+      140,
+      105
+    ],
+    [
+      99,
+      113,
+      81
+    ],
+    [
+      166,
+      159,
+      113
+    ]
+  ],
+  "campaign_region": "North West Plateau",
+  "region_level": 1,
+  "hazard_join_levels": {
+    "earthquake": 1,
+    "landslide": 2,
+    "tsunami": 4
+  },
+  "completion_requires_npc": "kapitan_jo"
+}

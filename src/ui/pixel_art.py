@@ -99,9 +99,9 @@ def brick_tile():
     })
 
 
-def grass_tiles(count=4, size=16, seed=3):
+def grass_tiles(count=4, size=16, seed=3, palette=None):
     rng = random.Random(seed)
-    base, dark, light = (86, 140, 100), (72, 122, 88), (104, 160, 110)
+    base, dark, light = palette or ((86, 140, 100), (72, 122, 88), (104, 160, 110))
     tiles = []
     for _ in range(count):
         t = pygame.Surface((size, size))

@@ -1,0 +1,348 @@
+{
+  "name": "Flash Flood at the Harbor",
+  "map_size": [
+    640,
+    360
+  ],
+  "player_start": [
+    320,
+    180
+  ],
+  "walls": [
+    [
+      130,
+      65,
+      14,
+      115
+    ],
+    [
+      160,
+      65,
+      115,
+      14
+    ],
+    [
+      335,
+      65,
+      14,
+      125
+    ],
+    [
+      350,
+      180,
+      145,
+      14
+    ],
+    [
+      195,
+      240,
+      14,
+      70
+    ],
+    [
+      80,
+      180,
+      90,
+      14
+    ]
+  ],
+  "npcs": [
+    {
+      "id": "nanay_luz",
+      "name": "Mang Lito",
+      "pos": [
+        590,
+        2
+      ],
+      "color": [
+        235,
+        150,
+        100
+      ],
+      "dialogue": [
+        "A sudden surge is sweeping across the harbor road. The dock is not a safe place to wait.",
+        "Take the marked uphill route and leave the boats and cargo behind."
+      ],
+      "after_dialogue": [
+        "We are above the flood line now. Stay clear of the harbor until the warning is lifted."
+      ],
+      "rescue_item": "water",
+      "rescue_dialogue": [
+        "I am stranded and need the drinking water. Please bring it, then help me get to the marked high ground, away from floodwater."
+      ],
+      "rescue_success_dialogue": [
+        "Thank you. I can follow you to the marked high ground, away from floodwater now."
+      ],
+      "rescue_hint": "Find the drinking water, then speak with Mang Lito again.",
+      "choice": {
+        "prompt": "Workers are stranded beside the flooded docks. What is safest?",
+        "options": [
+          {
+            "text": "Move them inland to higher ground",
+            "flag": "harbor_flash_flood_safe",
+            "time_cost": 0,
+            "points": 100,
+            "result": "Workers move away from the water first.",
+            "consequence": "You moved workers inland.",
+            "mascot": "Following official warnings and protecting people is the safer choice."
+          },
+          {
+            "text": "Send a volunteer across the dock",
+            "flag": "harbor_flash_flood_risk",
+            "time_cost": 0,
+            "points": -50,
+            "property_damage": 120,
+            "result": "Flooded docks and currents can sweep a person away.",
+            "consequence": "You sent a volunteer onto a flooded dock.",
+            "mascot": "Taking a shortcut through a hazard can injure people and damage resources."
+          }
+        ]
+      }
+    },
+    {
+      "id": "ate_salma",
+      "name": "Sari",
+      "pos": [
+        586,
+        2
+      ],
+      "color": [
+        205,
+        145,
+        105
+      ],
+      "dialogue": [
+        "Water is coming over the dock, and I cannot carry the warning radio alone.",
+        "Bring the drinking water, then help me reach the uphill shelter."
+      ],
+      "after_dialogue": [
+        "Thank you. I can follow you away from the dock and rising water."
+      ],
+      "rescue_item": "harbor_flash_flood_supply",
+      "rescue_dialogue": [
+        "I am stranded and need the drinking water. Please bring it, then help me get to the marked high ground, away from floodwater."
+      ],
+      "rescue_success_dialogue": [
+        "Thank you. I can follow you to the marked high ground, away from floodwater now."
+      ],
+      "rescue_hint": "Find the drinking water, then speak with Sari again.",
+      "needs_carry": true
+    }
+  ],
+  "items": [
+    {
+      "id": "go_bag",
+      "name": "Emergency go-bag",
+      "pos": [
+        528,
+        0
+      ],
+      "color": [
+        80,
+        200,
+        120
+      ]
+    },
+    {
+      "id": "water",
+      "name": "Drinking water",
+      "pos": [
+        592,
+        0
+      ],
+      "color": [
+        80,
+        170,
+        250
+      ]
+    },
+    {
+      "id": "first_aid",
+      "name": "First-aid kit",
+      "pos": [
+        520,
+        0
+      ],
+      "color": [
+        230,
+        90,
+        140
+      ]
+    },
+    {
+      "id": "harbor_flash_flood_supply",
+      "name": "Drinking water",
+      "pos": [
+        584,
+        48
+      ],
+      "color": [
+        80,
+        170,
+        250
+      ]
+    }
+  ],
+  "areas": [
+    {
+      "id": "evac_center",
+      "name": "Community Evacuation Center",
+      "rect": [
+        499,
+        0,
+        90,
+        65
+      ],
+      "color": [
+        92,
+        205,
+        230
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "id": "supplies",
+      "title": "Collect Emergency go-bag",
+      "type": "collect",
+      "target": "go_bag"
+    },
+    {
+      "id": "second_supply",
+      "title": "Collect Drinking water",
+      "type": "collect",
+      "target": "water"
+    },
+    {
+      "id": "community",
+      "title": "Check in with Mang Lito",
+      "type": "talk",
+      "target": "nanay_luz"
+    },
+    {
+      "id": "evacuate",
+      "title": "Reach Community Evacuation Center",
+      "type": "reach",
+      "target": "evac_center"
+    },
+    {
+      "id": "rescue_nanay_luz",
+      "title": "Help Mang Lito reach safety",
+      "type": "rescue",
+      "target": "nanay_luz"
+    },
+    {
+      "id": "extra_supply",
+      "title": "Find a first-aid kit for the evacuation to high ground.",
+      "type": "collect",
+      "target": "first_aid"
+    },
+    {
+      "id": "community_supply",
+      "title": "Find Drinking water for the response team",
+      "type": "collect",
+      "target": "harbor_flash_flood_supply"
+    },
+    {
+      "id": "rescue_ate_salma",
+      "title": "Rescue Sari and get them to safety",
+      "type": "rescue",
+      "target": "ate_salma"
+    }
+  ],
+  "mascot": {
+    "intro": "I'm Tarsi! Move with WASD or arrows. E: talk, Q: ability, H: hint, P: pause. Finish your tasks and reach safety.",
+    "quests": {
+      "supplies": "Find Emergency go-bag.",
+      "second_supply": "Find Drinking water.",
+      "community": "Find Mang Lito and press E.",
+      "evacuate": "Reach High Ground / School and stay clear of danger.",
+      "extra_supply": "Find First-aid kit."
+    }
+  },
+  "hazards": {
+    "disasters": [
+      "flash_flood"
+    ],
+    "danger_ramp_seconds": 110,
+    "hazard_start_seconds": 7,
+    "rain": {
+      "drops": 54
+    },
+    "wind": {
+      "strength": 40
+    },
+    "debris": {
+      "damage": 13,
+      "min_interval": 1.7,
+      "max_interval": 4.0
+    },
+    "seed": 528,
+    "flood_rate": 1.35,
+    "safe_zones": [
+      [
+        499,
+        0,
+        90,
+        65
+      ]
+    ],
+    "flood_start_seconds": 8,
+    "flood_rate_initial": 0.9
+  },
+  "lessons": [
+    "Never walk or drive through floodwater; depth and current can be hard to judge.",
+    "Move to higher ground and follow local evacuation instructions.",
+    "Keep emergency supplies and a family communication plan ready."
+  ],
+  "safe_zones": [
+    [
+      499,
+      0,
+      90,
+      65
+    ]
+  ],
+  "quiz": {
+    "question": "Floodwater covers your planned route. What should you do?",
+    "options": [
+      "Turn around and use a safe route directed by local authorities",
+      "Walk through if it looks shallow",
+      "Follow a vehicle through the water"
+    ],
+    "answer": 0,
+    "explanation": "Floodwater depth and current are difficult to judge. Never walk or drive through it."
+  },
+  "chapter": "Harbor",
+  "mission_number": 10,
+  "briefing": "Sudden rain floods the docks and warehouse entrances. Move harbor workers to higher ground and secure only supplies that can be reached safely. Check which storage area should be protected first.",
+  "landmark": "rice terraces",
+  "items_total": 4,
+  "story_clue": "The harbor radio warns that a typhoon is approaching.",
+  "ground_palette": [
+    [
+      79,
+      135,
+      136
+    ],
+    [
+      56,
+      107,
+      113
+    ],
+    [
+      117,
+      165,
+      149
+    ]
+  ],
+  "campaign_region": "Harbor",
+  "region_level": 1,
+  "hazard_join_levels": {
+    "flash_flood": 1,
+    "typhoon": 2,
+    "severe_flood": 3,
+    "tsunami": 4,
+    "flash_fire": 4
+  }
+}

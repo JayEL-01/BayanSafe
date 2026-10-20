@@ -1,0 +1,299 @@
+{
+  "name": "Home Village: The Warning",
+  "map_size": [
+    640,
+    360
+  ],
+  "player_start": [
+    320,
+    180
+  ],
+  "walls": [
+    [
+      105,
+      70,
+      115,
+      14
+    ],
+    [
+      270,
+      45,
+      14,
+      112
+    ],
+    [
+      390,
+      90,
+      130,
+      14
+    ],
+    [
+      130,
+      205,
+      14,
+      100
+    ],
+    [
+      290,
+      260,
+      130,
+      14
+    ],
+    [
+      480,
+      205,
+      14,
+      92
+    ]
+  ],
+  "npcs": [
+    {
+      "id": "aling_nena",
+      "name": "Aling Rosa",
+      "pos": [
+        104,
+        84
+      ],
+      "color": [
+        230,
+        130,
+        90
+      ],
+      "dialogue": [
+        "The warning says a typhoon is turning toward our village.",
+        "Please help me secure the windows, then bring our go-bag to the shelter."
+      ],
+      "after_dialogue": [
+        "You helped our neighbors get ready. Stay with the group and follow the shelter signs."
+      ],
+      "choice": {
+        "prompt": "Should we board up the windows now? It takes time, and the storm is getting closer.",
+        "options": [
+          {
+            "text": "Board windows (storm pressure +10 sec)",
+            "flag": "boarded",
+            "time_cost": 10,
+            "points": 200,
+            "result": "Windows boarded! The storm pressure rises, but the home is protected.",
+            "mascot": "Boarding takes time, but it protects the home from wind-borne glass.",
+            "consequence": "You boarded the windows. It cost time, but the glass stayed intact and the house was protected."
+          },
+          {
+            "text": "Leave now (home damage: 150 pts)",
+            "flag": "skipped",
+            "time_cost": 0,
+            "points": 0,
+            "result": "You left immediately. The family is safer, but the house is exposed.",
+            "mascot": "Leaving quickly protects people. The unboarded windows may still break.",
+            "consequence": "You skipped the windows. You saved time, but strong wind broke the glass and damaged the house.",
+            "property_damage": 150
+          }
+        ]
+      }
+    },
+    {
+      "id": "jun",
+      "name": "Jun",
+      "pos": [
+        84,
+        44
+      ],
+      "color": [
+        87,
+        155,
+        222
+      ],
+      "dialogue": [
+        "I heard the typhoon alert at school. I packed water and a flashlight.",
+        "I am ready to walk with the other families to the shelter."
+      ],
+      "after_dialogue": [
+        "Our class is together now. We will stay inside until the all-clear."
+      ]
+    }
+  ],
+  "items": [
+    {
+      "id": "go_bag",
+      "name": "Go-bag",
+      "pos": [
+        66,
+        182
+      ],
+      "color": [
+        80,
+        200,
+        120
+      ]
+    },
+    {
+      "id": "flashlight",
+      "name": "Flashlight",
+      "pos": [
+        154,
+        186
+      ],
+      "color": [
+        240,
+        240,
+        120
+      ]
+    },
+    {
+      "id": "radio",
+      "name": "Radio",
+      "pos": [
+        62,
+        106
+      ],
+      "color": [
+        120,
+        170,
+        250
+      ]
+    },
+    {
+      "id": "first_aid",
+      "name": "First-aid kit",
+      "pos": [
+        230,
+        138
+      ],
+      "color": [
+        230,
+        90,
+        140
+      ]
+    }
+  ],
+  "areas": [
+    {
+      "id": "evac_center",
+      "name": "Community Evacuation Center",
+      "rect": [
+        210,
+        154,
+        72,
+        72
+      ],
+      "color": [
+        92,
+        205,
+        230
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "id": "supplies",
+      "title": "Find emergency supplies",
+      "type": "collect",
+      "target": "go_bag"
+    },
+    {
+      "id": "flashlight",
+      "title": "Find the flashlight",
+      "type": "collect",
+      "target": "flashlight"
+    },
+    {
+      "id": "talk_nena",
+      "title": "Talk to Aling Rosa",
+      "type": "talk",
+      "target": "aling_nena"
+    },
+    {
+      "id": "evac",
+      "title": "Reach Community Evacuation Center",
+      "type": "reach",
+      "target": "evac_center"
+    },
+    {
+      "id": "extra_supply",
+      "title": "Find a first-aid kit before the storm reaches the evacuation center.",
+      "type": "collect",
+      "target": "first_aid"
+    }
+  ],
+  "mascot": {
+    "intro": "I'm Tarsi! Move with WASD or arrows. E: talk, Q: ability, H: hint, P: pause. Finish your tasks and reach safety.",
+    "quests": {
+      "supplies": "Look for the green go-bag. Every family needs one ready for an emergency.",
+      "flashlight": "A flashlight is important when the power goes out. Look for the yellow item.",
+      "talk_nena": "Aling Rosa needs help. Walk up to the orange person and press E.",
+      "evac": "Head to the blue Evacuation Center in the bottom-right corner.",
+      "extra_supply": "Find First-aid kit."
+    }
+  },
+  "hazards": {
+    "disasters": [],
+    "danger_ramp_seconds": 9999,
+    "hazard_start_seconds": 9999,
+    "rain": {
+      "drops": 60
+    },
+    "wind": {
+      "strength": 45
+    },
+    "debris": {
+      "damage": 15,
+      "min_interval": 1.2,
+      "max_interval": 3.5
+    },
+    "seed": 300,
+    "safe_zones": [
+      [
+        210,
+        154,
+        72,
+        72
+      ]
+    ]
+  },
+  "safe_zones": [
+    [
+      210,
+      154,
+      72,
+      72
+    ]
+  ],
+  "lessons": [
+    "Learn the controls and identify your safe evacuation area.",
+    "Prepare a go-bag and help neighbors follow the community plan.",
+    "Follow local instructions and use the marked safe route."
+  ],
+  "quiz": {
+    "question": "What should you do when local officials order your community to evacuate?",
+    "options": [
+      "Follow the designated route and help neighbors move safely",
+      "Wait until the hazard reaches your home",
+      "Take an unmarked shortcut through floodwater"
+    ],
+    "answer": 0,
+    "explanation": "Follow local authority instructions and use the designated safe route."
+  },
+  "chapter": "Home Village",
+  "mission_number": 1,
+  "briefing": "Begin in the small home village where the player grew up. A strange signal appears as neighbors prepare for the first evacuation.",
+  "landmark": "coastal homes",
+  "items_total": 4,
+  "story_clue": "A brief pulse of radio static interrupts an otherwise ordinary morning.",
+  "ground_palette": [
+    [
+      99,
+      145,
+      105
+    ],
+    [
+      69,
+      115,
+      83
+    ],
+    [
+      132,
+      169,
+      112
+    ]
+  ]
+}

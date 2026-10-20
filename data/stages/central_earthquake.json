@@ -1,0 +1,328 @@
+{
+  "name": "The City in Pieces",
+  "map_size": [
+    640,
+    360
+  ],
+  "player_start": [
+    320,
+    180
+  ],
+  "walls": [
+    [
+      100,
+      65,
+      14,
+      135
+    ],
+    [
+      150,
+      180,
+      120,
+      14
+    ],
+    [
+      305,
+      65,
+      14,
+      130
+    ],
+    [
+      355,
+      180,
+      155,
+      14
+    ],
+    [
+      535,
+      200,
+      14,
+      95
+    ],
+    [
+      190,
+      275,
+      14,
+      48
+    ]
+  ],
+  "npcs": [
+    {
+      "id": "kapitan_jo",
+      "name": "Mayor Cruz",
+      "pos": [
+        624,
+        136
+      ],
+      "color": [
+        210,
+        165,
+        100
+      ],
+      "dialogue": [
+        "An aftershock has damaged the hospital wing. Keep patients and visitors outside that building.",
+        "Move them to the checked assembly area and let responders inspect the structure."
+      ],
+      "after_dialogue": [
+        "The patients are in the safe area. Nobody should re-enter until inspectors approve it."
+      ],
+      "choice": {
+        "prompt": "The hospital wing is damaged. How should responders proceed?",
+        "options": [
+          {
+            "text": "Move patients to a checked safe area",
+            "flag": "central_earthquake_safe",
+            "time_cost": 5,
+            "points": 100,
+            "result": "Patients move before staff approach the unsafe wing.",
+            "consequence": "You moved patients to a checked safe area.",
+            "mascot": "Following official warnings and protecting people is the safer choice."
+          },
+          {
+            "text": "Restore power inside the damaged wing",
+            "flag": "central_earthquake_risk",
+            "time_cost": 0,
+            "points": -50,
+            "property_damage": 130,
+            "result": "Entering a damaged wing risks further harm.",
+            "consequence": "You sent staff into a damaged wing.",
+            "mascot": "Taking a shortcut through a hazard can injure people and damage resources."
+          }
+        ]
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "radio",
+      "name": "Emergency radio",
+      "pos": [
+        382,
+        186
+      ],
+      "color": [
+        120,
+        170,
+        250
+      ]
+    },
+    {
+      "id": "first_aid",
+      "name": "First-aid kit",
+      "pos": [
+        630,
+        214
+      ],
+      "color": [
+        230,
+        90,
+        140
+      ]
+    },
+    {
+      "id": "go_bag",
+      "name": "Go-bag",
+      "pos": [
+        610,
+        342
+      ],
+      "color": [
+        80,
+        200,
+        120
+      ]
+    },
+    {
+      "id": "flashlight",
+      "name": "Emergency flashlight",
+      "pos": [
+        430,
+        342
+      ],
+      "color": [
+        245,
+        215,
+        110
+      ]
+    },
+    {
+      "id": "network_map",
+      "name": "Recover the facility network map",
+      "pos": [
+        418,
+        342
+      ],
+      "color": [
+        245,
+        210,
+        110
+      ]
+    }
+  ],
+  "areas": [
+    {
+      "id": "evac_center",
+      "name": "Community Evacuation Center",
+      "rect": [
+        549,
+        279,
+        90,
+        78
+      ],
+      "color": [
+        92,
+        205,
+        230
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "id": "supplies",
+      "title": "Collect Emergency radio",
+      "type": "collect",
+      "target": "radio"
+    },
+    {
+      "id": "second_supply",
+      "title": "Collect First-aid kit",
+      "type": "collect",
+      "target": "first_aid"
+    },
+    {
+      "id": "community",
+      "title": "Check in with Mayor Cruz",
+      "type": "talk",
+      "target": "kapitan_jo"
+    },
+    {
+      "id": "evacuate",
+      "title": "Reach Community Evacuation Center",
+      "type": "reach",
+      "target": "evac_center"
+    },
+    {
+      "id": "cover",
+      "title": "Take cover at green table",
+      "type": "cover",
+      "target": "earthquake"
+    },
+    {
+      "id": "collect_go_bag",
+      "title": "Collect the go-bag before the aftershock drill",
+      "type": "collect",
+      "target": "go_bag"
+    },
+    {
+      "id": "extra_supply",
+      "title": "Search for a flashlight in case aftershocks cut the power.",
+      "type": "collect",
+      "target": "flashlight"
+    },
+    {
+      "id": "community_supply",
+      "title": "Recover the facility network map",
+      "type": "collect",
+      "target": "network_map"
+    }
+  ],
+  "mascot": {
+    "intro": "I'm Tarsi! Move with WASD or arrows. E: talk, Q: ability, H: hint, P: pause. Finish your tasks and reach safety. During shaking: Drop, Cover, Hold On.",
+    "quests": {
+      "supplies": "Find Emergency radio.",
+      "second_supply": "Find First-aid kit.",
+      "community": "Find Mayor Cruz and press E.",
+      "evacuate": "Reach Sturdy Shelter and stay clear of danger.",
+      "cover": "When shaking starts, get under the sturdy table in the green cover field.",
+      "extra_supply": "Find Emergency flashlight."
+    }
+  },
+  "hazards": {
+    "disasters": [
+      "flash_fire",
+      "earthquake"
+    ],
+    "danger_ramp_seconds": 110,
+    "hazard_start_seconds": 7,
+    "rain": {
+      "drops": 54
+    },
+    "wind": {
+      "strength": 40
+    },
+    "debris": {
+      "damage": 13,
+      "min_interval": 1.7,
+      "max_interval": 4.0
+    },
+    "seed": 471,
+    "safe_zones": [
+      [
+        549,
+        279,
+        90,
+        78
+      ]
+    ],
+    "quake_safe_zones": [
+      [
+        423,
+        295,
+        78,
+        62
+      ]
+    ]
+  },
+  "lessons": [
+    "During shaking, drop, cover, and hold on under sturdy furniture.",
+    "After shaking, watch for hazards and follow local guidance before moving.",
+    "Use marked safe routes and stay away from damaged structures."
+  ],
+  "safe_zones": [
+    [
+      549,
+      279,
+      90,
+      78
+    ],
+    [
+      423,
+      295,
+      78,
+      62
+    ]
+  ],
+  "quiz": {
+    "question": "Strong shaking starts while you are indoors. What should you do?",
+    "options": [
+      "Drop, cover, and hold on under sturdy furniture",
+      "Run outside while objects are falling",
+      "Stand beside a window"
+    ],
+    "answer": 0,
+    "explanation": "Drop, cover, and hold on until the shaking stops; then follow official instructions."
+  },
+  "chapter": "Central Town",
+  "mission_number": 7,
+  "briefing": "A second earthquake damages already weakened streets and buildings. Take cover during shaking, then help responders assess safe routes. Support the hospital’s move to backup power and recover the damaged network map.",
+  "landmark": "rocky pass",
+  "items_total": 5,
+  "story_clue": "The map links several facilities to a central site.",
+  "ground_palette": [
+    [
+      144,
+      136,
+      107
+    ],
+    [
+      107,
+      112,
+      92
+    ],
+    [
+      171,
+      158,
+      123
+    ]
+  ]
+}

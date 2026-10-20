@@ -273,7 +273,9 @@ class GuideState(BaseState):
         small font so everything still fits on the two pages."""
         if page in self._rows:
             return self._rows[page]
-        for font_name, row_h in (("body", 10), ("tiny", 8)):
+        # Match the actual font heights; tighter ruled-line spacing made
+        # neighboring rows touch or overlap on some guide pages.
+        for font_name, row_h in (("body", 13), ("tiny", 10)):
             font = theme.get_font(font_name)
             flat = []
             for line in data["lines"]:

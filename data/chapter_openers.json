@@ -1,0 +1,65 @@
+{
+  "home_island_tutorial": {
+    "chapter": "PROLOGUE · THE FIRST WARNING",
+    "place": "SAN ISIDRO",
+    "scene": "Morning at the village radio hut.",
+    "dialogue": [
+      {"speaker": "Aling Rosa", "color": [203, 112, 78], "line": "The market bell rang twice. That is not our morning signal."},
+      {"speaker": "Jun", "color": [77, 145, 193], "line": "The radio is hissing. Someone is trying to reach us."}
+    ]
+  },
+  "earthquake": {
+    "chapter": "CHAPTER 1 · THE GROUND BENEATH US",
+    "place": "SAN ISIDRO · NORTHWEST RIDGE",
+    "scene": "A crack splits the path above the village.",
+    "dialogue": [
+      {"speaker": "Berto", "color": [179, 133, 69], "line": "The ridge just cracked. The trail is sliding toward the homes."},
+      {"speaker": "Dr. Mira Santos", "color": [73, 150, 184], "line": "Under sturdy cover, everyone. Stay away from windows and walls."}
+    ]
+  },
+  "flash_fire": {
+    "chapter": "CHAPTER 2 · WHEN THE TOWN CALLS",
+    "place": "SANTOS",
+    "scene": "Smoke rises behind the market rooftops.",
+    "dialogue": [
+      {"speaker": "Mayor Cruz", "color": [69, 98, 143], "line": "The market fire is moving toward the power station."},
+      {"speaker": "Nurse Joy", "color": [211, 127, 139], "line": "I will take the clinic. Get families clear of the smoke."}
+    ]
+  },
+  "harbor_flash_flood": {
+    "chapter": "CHAPTER 3 · TRAPPED BETWEEN LAND AND SEA",
+    "place": "HARBORO",
+    "scene": "Boats scrape the exposed harbor floor as the tide pulls back.",
+    "dialogue": [
+      {"speaker": "Captain Reyes", "color": [56, 109, 173], "line": "The sea is pulling away from the docks. Leave the boats."},
+      {"speaker": "Mang Lito", "color": [93, 129, 78], "line": "That is no ordinary tide. Move everyone to high ground."}
+    ]
+  },
+  "plains_typhoon": {
+    "chapter": "CHAPTER 4 · THE TRUTH BENEATH THE SURFACE",
+    "place": "BAYANI",
+    "scene": "Rainwater spills over the rice-field channels.",
+    "dialogue": [
+      {"speaker": "Kuya Ben", "color": [174, 136, 72], "line": "The drainage gate is jammed. Water is crossing the fields."},
+      {"speaker": "Mila", "color": [79, 164, 102], "line": "These marks match the town records. Someone changed the controls."}
+    ]
+  },
+  "silence_volcano": {
+    "chapter": "CHAPTER 5 · THE LAST CHANCE",
+    "place": "PAG-ASA",
+    "scene": "Ash drifts across the valley road toward the mountain facility.",
+    "dialogue": [
+      {"speaker": "Tatay Pio", "color": [133, 99, 72], "line": "Ash is falling. The mountain has been quiet for too long."},
+      {"speaker": "Engr. Paolo Santos", "color": [76, 127, 164], "line": "The records point to the facility. Its control room is still powered."}
+    ]
+  },
+  "final_shutdown": {
+    "chapter": "THE FINAL DECISION",
+    "place": "MOUNT TALON · CONTROL ROOM",
+    "scene": "The core pulses behind the control-room glass.",
+    "dialogue": [
+      {"speaker": "Dr. Elias Voss", "color": [72, 71, 93], "line": "I built the World Engine to control disasters. I lost control."},
+      {"speaker": "Engr. Paolo Santos", "color": [76, 127, 164], "line": "The shutdown relay is live. We have one safe chance."}
+    ]
+  }
+}

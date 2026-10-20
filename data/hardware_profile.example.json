@@ -1,0 +1,32 @@
+{
+  "profile_name": "BayanSafe USB HID Controller (starter)",
+  "input_mode": "pygame_joystick",
+  "player_count": 1,
+  "joystick": {
+    "x_axis": 0,
+    "y_axis": 1,
+    "deadzone": 0.28
+  },
+  "buttons": {
+    "0": "confirm",
+    "1": "back",
+    "2": "previous_option",
+    "3": "next_option"
+  },
+  "display": {
+    "game_canvas": [320, 180],
+    "hardware_lcd": "unconfigured"
+  },
+  "rfid": {
+    "enabled": false,
+    "reader_model": "unconfirmed",
+    "uid_mode": "unconfirmed",
+    "account_linking": "not connected to desktop game"
+  },
+  "custom_serial": {
+    "enabled": false,
+    "board_model": "unconfirmed",
+    "protocol": "unconfirmed",
+    "baud_rate": null
+  }
+}

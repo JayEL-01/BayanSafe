@@ -1,6 +1,7 @@
 import random
 
 import pygame
+from src.entities.reference_art import effect_frame
 
 
 class Debris:
@@ -55,8 +56,16 @@ class Debris:
                     pygame.draw.rect(surface, (255, 80, 60), r, 1)
                 obj = pygame.Rect(0, 0, 10, 10)
                 obj.center = (r.centerx, r.centery - int(d["timer"] * 140))
-                pygame.draw.rect(surface, (120, 90, 60), obj)
-                pygame.draw.rect(surface, (60, 45, 30), obj, 1)
+                falling = effect_frame("falling_debris", (16, 14), self.FALL_TIME - d["timer"])
+                if falling:
+                    surface.blit(falling, falling.get_rect(center=obj.center))
+                else:
+                    pygame.draw.rect(surface, (120, 90, 60), obj)
+                    pygame.draw.rect(surface, (60, 45, 30), obj, 1)
             else:
-                pygame.draw.rect(surface, (120, 90, 60), r.inflate(-4, -4))
-                pygame.draw.rect(surface, (60, 45, 30), r.inflate(-4, -4), 1)
+                dust = effect_frame("dust", (22, 18), self.FALL_TIME - d["timer"])
+                if dust:
+                    surface.blit(dust, dust.get_rect(center=r.center))
+                else:
+                    pygame.draw.rect(surface, (120, 90, 60), r.inflate(-4, -4))
+                    pygame.draw.rect(surface, (60, 45, 30), r.inflate(-4, -4), 1)

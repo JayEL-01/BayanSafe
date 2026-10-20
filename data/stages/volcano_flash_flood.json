@@ -1,0 +1,364 @@
+{
+  "name": "Lahar and Flash Flood",
+  "map_size": [
+    640,
+    360
+  ],
+  "player_start": [
+    320,
+    180
+  ],
+  "walls": [
+    [
+      130,
+      65,
+      14,
+      115
+    ],
+    [
+      160,
+      65,
+      115,
+      14
+    ],
+    [
+      335,
+      65,
+      14,
+      125
+    ],
+    [
+      350,
+      180,
+      145,
+      14
+    ],
+    [
+      195,
+      240,
+      14,
+      70
+    ],
+    [
+      80,
+      180,
+      90,
+      14
+    ]
+  ],
+  "npcs": [
+    {
+      "id": "ate_mila",
+      "name": "Tatay Pio",
+      "pos": [
+        272,
+        100
+      ],
+      "color": [
+        230,
+        145,
+        95
+      ],
+      "dialogue": [
+        "The fire damaged the valley, and rain is mixing ash into fast lahar flows from the volcano slopes.",
+        "Stay out of river channels and away from unstable slopes. Move to high ground now."
+      ],
+      "after_dialogue": [
+        "We are clear of the channel. Keep watching the slopes for new flows."
+      ],
+      "choice": {
+        "prompt": "Smoke blocks the main corridor. How should personnel leave?",
+        "options": [
+          {
+            "text": "Use the clear alternate exit and stay low",
+            "flag": "facility_fire_safe",
+            "time_cost": 0,
+            "points": 100,
+            "result": "Personnel use the clear alternate exit.",
+            "consequence": "You guided personnel along the clear exit.",
+            "mascot": "Following official warnings and protecting people is the safer choice."
+          },
+          {
+            "text": "Enter the smoke to find another way",
+            "flag": "facility_fire_risk",
+            "time_cost": 0,
+            "points": -50,
+            "property_damage": 140,
+            "result": "Smoke can quickly make a corridor deadly.",
+            "consequence": "You sent personnel through smoke.",
+            "mascot": "Taking a shortcut through a hazard can injure people and damage resources."
+          }
+        ]
+      }
+    },
+    {
+      "id": "rosa",
+      "name": "Rhea",
+      "pos": [
+        260,
+        12
+      ],
+      "color": [
+        145,
+        125,
+        205
+      ],
+      "dialogue": [
+        "I am guiding people around the valley, but ash and floodwater have cut off my path.",
+        "Bring the spare respirator, then help me follow the high route."
+      ],
+      "after_dialogue": [
+        "Thank you. I can follow you uphill, away from the ash and lahar channel."
+      ],
+      "rescue_item": "respirator",
+      "rescue_dialogue": [
+        "I am stranded and need the spare respirator. Please bring it, then help me get to the safe route, away from smoke and ash."
+      ],
+      "rescue_success_dialogue": [
+        "Thank you. I can follow you to the safe route, away from smoke and ash now."
+      ],
+      "rescue_hint": "Find the spare respirator, then speak with Rhea again."
+    }
+  ],
+  "items": [
+    {
+      "id": "go_bag",
+      "name": "Go-bag",
+      "pos": [
+        302,
+        166
+      ],
+      "color": [
+        80,
+        200,
+        120
+      ]
+    },
+    {
+      "id": "water",
+      "name": "Drinking water",
+      "pos": [
+        122,
+        222
+      ],
+      "color": [
+        80,
+        170,
+        250
+      ]
+    },
+    {
+      "id": "respirator",
+      "name": "Spare respirator",
+      "pos": [
+        234,
+        234
+      ],
+      "color": [
+        210,
+        230,
+        185
+      ]
+    },
+    {
+      "id": "radio",
+      "name": "Battery radio",
+      "pos": [
+        122,
+        130
+      ],
+      "color": [
+        120,
+        170,
+        250
+      ]
+    },
+    {
+      "id": "research_log",
+      "name": "Recover Dr. Voss’s final research log",
+      "pos": [
+        310,
+        42
+      ],
+      "color": [
+        235,
+        125,
+        60
+      ]
+    }
+  ],
+  "areas": [
+    {
+      "id": "evac_center",
+      "name": "Facility Control Wing Access",
+      "rect": [
+        173,
+        202,
+        90,
+        65
+      ],
+      "color": [
+        92,
+        205,
+        230
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "id": "supplies",
+      "title": "Collect Go-bag",
+      "type": "collect",
+      "target": "go_bag"
+    },
+    {
+      "id": "second_supply",
+      "title": "Collect Drinking water",
+      "type": "collect",
+      "target": "water"
+    },
+    {
+      "id": "rescue_kit",
+      "title": "Find spare respirator",
+      "type": "collect",
+      "target": "respirator"
+    },
+    {
+      "id": "rescue_neighbor",
+      "title": "Rescue Rhea with the respirator",
+      "type": "rescue",
+      "target": "rosa"
+    },
+    {
+      "id": "community",
+      "title": "Check in with Tatay Pio",
+      "type": "talk",
+      "target": "ate_mila"
+    },
+    {
+      "id": "evacuate",
+      "title": "Reach Community Evacuation Center",
+      "type": "reach",
+      "target": "evac_center"
+    },
+    {
+      "id": "extra_supply",
+      "title": "Find a battery radio for official fire evacuation updates.",
+      "type": "collect",
+      "target": "radio"
+    },
+    {
+      "id": "community_supply",
+      "title": "Recover Dr. Voss’s final research log",
+      "type": "collect",
+      "target": "research_log"
+    }
+  ],
+  "mascot": {
+    "intro": "I'm Tarsi! Move with WASD or arrows. E: talk, Q: ability, H: hint, P: pause. Finish your tasks and reach safety.",
+    "quests": {
+      "supplies": "Find Go-bag.",
+      "second_supply": "Find Drinking water.",
+      "rescue_kit": "Search the clear route for a spare respirator before attempting the rescue.",
+      "rescue_neighbor": "Find Rhea and speak with her after collecting the spare respirator.",
+      "community": "Find Tatay Pio and press E.",
+      "evacuate": "Reach Fire Safe Zone and stay clear of danger.",
+      "extra_supply": "Find Battery radio."
+    }
+  },
+  "hazards": {
+    "disasters": [
+      "volcano",
+      "landslide",
+      "flash_fire",
+      "flash_flood"
+    ],
+    "danger_ramp_seconds": 49,
+    "hazard_start_seconds": 7.8,
+    "rain": {
+      "drops": 54
+    },
+    "wind": {
+      "strength": 40
+    },
+    "debris": {
+      "damage": 13,
+      "min_interval": 1.7,
+      "max_interval": 4.0
+    },
+    "seed": 718,
+    "wildfire_speed": 24,
+    "safe_zones": [
+      [
+        173,
+        202,
+        90,
+        65
+      ]
+    ],
+    "flood_start_seconds": 10,
+    "flood_rate": 2.25,
+    "flood_rate_initial": 1.05,
+    "flood_escalation_seconds": 20,
+    "volcano_start_seconds": 8,
+    "landslide_start_seconds": 7
+  },
+  "lessons": [
+    "During heavy rain near a volcano, avoid river channels where lahars can flow.",
+    "Follow evacuation alerts and move to designated high ground.",
+    "Wear a mask and protect your eyes during ashfall; avoid restricted areas."
+  ],
+  "safe_zones": [
+    [
+      173,
+      202,
+      90,
+      65
+    ]
+  ],
+  "quiz": {
+    "question": "Heavy rain begins near an active volcano. Which route should you avoid?",
+    "options": [
+      "River channels and valleys that can carry lahar",
+      "The signed route to high ground",
+      "The official evacuation center"
+    ],
+    "answer": 0,
+    "explanation": "Lahars can move through river channels during heavy rain. Use official routes to safe ground."
+  },
+  "chapter": "Volcano Valleys",
+  "mission_number": 20,
+  "briefing": "Rain reaches the volcanic slopes and sends muddy flows toward the valley. The eruption and flash fire have not stopped. Keep out of river channels, guide the neighbors to high ground, and carry the control-room records forward.",
+  "landmark": "volcano valleys and river channels",
+  "items_total": 5,
+  "story_clue": "The valley’s monitoring logs show that the machine is driving several hazards at once.",
+  "ground_palette": [
+    [
+      122,
+      112,
+      93
+    ],
+    [
+      87,
+      83,
+      73
+    ],
+    [
+      155,
+      135,
+      101
+    ]
+  ],
+  "campaign_region": "Volcano Valleys",
+  "region_level": 3,
+  "hazard_join_levels": {
+    "volcano": 1,
+    "landslide": 2,
+    "flash_fire": 2,
+    "flash_flood": 3,
+    "earthquake": 4,
+    "tsunami": 4,
+    "typhoon": 4,
+    "severe_flood": 4
+  }
+}

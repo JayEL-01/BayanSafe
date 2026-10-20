@@ -1,0 +1,303 @@
+{
+  "name": "The Rushing Waters",
+  "completion_requires_npc": "nanay_luz",
+  "map_size": [
+    640,
+    360
+  ],
+  "player_start": [
+    26,
+    30
+  ],
+  "walls": [
+    [
+      130,
+      65,
+      14,
+      115
+    ],
+    [
+      160,
+      65,
+      115,
+      14
+    ],
+    [
+      335,
+      65,
+      14,
+      125
+    ],
+    [
+      350,
+      180,
+      145,
+      14
+    ],
+    [
+      195,
+      240,
+      14,
+      70
+    ],
+    [
+      80,
+      180,
+      90,
+      14
+    ]
+  ],
+  "npcs": [
+    {
+      "id": "nanay_luz",
+      "name": "Lola Teresa",
+      "pos": [
+        115,
+        235
+      ],
+      "color": [
+        235,
+        150,
+        100
+      ],
+      "dialogue": [
+        "Rain has turned the creek into fast-moving floodwater.",
+        "Take the raised path to high ground. Do not try to cross the current."
+      ],
+      "after_dialogue": [
+        "We are above the water now. Wait for local officials to say the route is safe."
+      ],
+      "rescue_item": "water",
+      "rescue_dialogue": [
+        "I am stranded and need the drinking water. Please bring it, then help me get to the marked shelter."
+      ],
+      "rescue_success_dialogue": [
+        "Thank you. I can follow you to the marked shelter now."
+      ],
+      "rescue_hint": "Find the drinking water, then speak with Lola Teresa again.",
+      "choice": {
+        "prompt": "The main crossing is under fast water. What route should we take?",
+        "options": [
+          {
+            "text": "Use the marked high-ground route",
+            "flag": "flood_safe",
+            "time_cost": 0,
+            "points": 100,
+            "result": "Choose the marked high route and leave stranded supplies.",
+            "consequence": "You chose the marked high-ground route.",
+            "mascot": "Following official warnings and protecting people is the safer choice."
+          },
+          {
+            "text": "Try the short flooded crossing",
+            "flag": "flood_risk",
+            "time_cost": 0,
+            "points": -50,
+            "property_damage": 80,
+            "result": "Crossing moving water is dangerous. The short route damages the response team’s supplies.",
+            "consequence": "You entered a flooded route despite the warning.",
+            "mascot": "Taking a shortcut through a hazard can injure people and damage resources."
+          }
+        ]
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "go_bag",
+      "name": "Emergency go-bag",
+      "pos": [
+        376,
+        304
+      ],
+      "color": [
+        80,
+        200,
+        120
+      ]
+    },
+    {
+      "id": "water",
+      "name": "Drinking water",
+      "pos": [
+        80,
+        200
+      ],
+      "color": [
+        80,
+        170,
+        250
+      ]
+    },
+    {
+      "id": "first_aid",
+      "name": "First-aid kit",
+      "pos": [
+        550,
+        235
+      ],
+      "color": [
+        230,
+        90,
+        140
+      ]
+    },
+    {
+      "id": "signal_component",
+      "name": "Recover the marked signal component from the mud",
+      "pos": [
+        535,
+        220
+      ],
+      "color": [
+        80,
+        170,
+        250
+      ]
+    }
+  ],
+  "areas": [
+    {
+      "id": "evac_center",
+      "name": "Community Evacuation Center",
+      "rect": [
+        280,
+        270,
+        90,
+        65
+      ],
+      "color": [
+        92,
+        205,
+        230
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "id": "supplies",
+      "title": "Collect Emergency go-bag",
+      "type": "collect",
+      "target": "go_bag"
+    },
+    {
+      "id": "second_supply",
+      "title": "Collect Drinking water",
+      "type": "collect",
+      "target": "water"
+    },
+    {
+      "id": "community",
+      "title": "Check in with Lola Teresa",
+      "type": "talk",
+      "target": "nanay_luz"
+    },
+    {
+      "id": "evacuate",
+      "title": "Reach Community Evacuation Center",
+      "type": "reach",
+      "target": "evac_center"
+    },
+    {
+      "id": "rescue_nanay_luz",
+      "title": "Help Lola Teresa reach safety",
+      "type": "rescue",
+      "target": "nanay_luz"
+    },
+    {
+      "id": "extra_supply",
+      "title": "Find a first-aid kit for the evacuation to high ground.",
+      "type": "collect",
+      "target": "first_aid"
+    },
+    {
+      "id": "community_supply",
+      "title": "Recover the marked signal component from the mud",
+      "type": "collect",
+      "target": "signal_component"
+    }
+  ],
+  "mascot": {
+    "intro": "I'm Tarsi! Move with WASD or arrows. E: talk, Q: ability, H: hint, P: pause. Finish your tasks and reach safety.",
+    "quests": {
+      "supplies": "Find Emergency go-bag.",
+      "second_supply": "Find Drinking water.",
+      "community": "Find Lola Teresa and press E.",
+      "evacuate": "Reach High Ground / School and stay clear of danger.",
+      "extra_supply": "Find First-aid kit."
+    }
+  },
+  "hazards": {
+    "disasters": [
+      "flood"
+    ],
+    "danger_ramp_seconds": 110,
+    "hazard_start_seconds": 7,
+    "rain": {
+      "drops": 54
+    },
+    "wind": {
+      "strength": 40
+    },
+    "debris": {
+      "damage": 13,
+      "min_interval": 1.7,
+      "max_interval": 4.0
+    },
+    "seed": 338,
+    "flood_rate": 1.35,
+    "safe_zones": [
+      [
+        280,
+        270,
+        90,
+        65
+      ]
+    ]
+  },
+  "lessons": [
+    "Never walk or drive through floodwater; depth and current can be hard to judge.",
+    "Move to higher ground and follow local evacuation instructions.",
+    "Keep emergency supplies and a family communication plan ready."
+  ],
+  "safe_zones": [
+    [
+      280,
+      270,
+      90,
+      65
+    ]
+  ],
+  "quiz": {
+    "question": "Floodwater covers your planned route. What should you do?",
+    "options": [
+      "Turn around and use a safe route directed by local authorities",
+      "Walk through if it looks shallow",
+      "Follow a vehicle through the water"
+    ],
+    "answer": 0,
+    "explanation": "Floodwater depth and current are difficult to judge. Never walk or drive through it."
+  },
+  "chapter": "Prologue",
+  "mission_number": 3,
+  "briefing": "Rain turns a creek into fast-moving floodwater and cuts off the main road. Help Lola Teresa reach high ground, avoid entering moving water, and decide whether a stranded supply is safe to recover. Search the mud for a marked electronic component after the water recedes.",
+  "landmark": "rice terraces",
+  "items_total": 4,
+  "story_clue": "The recovered component contains part of the same repeating signal.",
+  "ground_palette": [
+    [
+      99,
+      145,
+      105
+    ],
+    [
+      69,
+      115,
+      83
+    ],
+    [
+      132,
+      169,
+      112
+    ]
+  ]
+}

@@ -1,10 +1,7 @@
-"""Tiny settings store (language, sound) saved to prefs.json next to main.py."""
+"""Tiny settings store saved alongside the user's campaign save."""
 import json
-from src.ui import menu_fx, theme
-from src.utils.data_loader import BASE_DIR
-from src.core import audio
-PATH = BASE_DIR / "prefs.json"
-SAVE_DIR = BASE_DIR / "saves"          # change this if your save files live elsewhere
+from src.core.save_data import SAVE_DIR, SAVE_PATH
+PATH = SAVE_DIR / "prefs.json"
 
 _DEFAULTS = {"language": "en", "sfx": True}
 _data = dict(_DEFAULTS)
@@ -23,14 +20,13 @@ def get(key):
 def put(key, value):
     _data[key] = value
     try:
+        SAVE_DIR.mkdir(parents=True, exist_ok=True)
         PATH.write_text(json.dumps(_data, indent=2), encoding="utf-8")
     except OSError:
         pass
 
 
 def has_save():
-    """True if at least one .json save exists in SAVE_DIR."""
-    try:
-        return SAVE_DIR.exists() and any(SAVE_DIR.glob("*.json"))
-    except OSError:
-        return False
+    """True only when a valid campaign save exists."""
+    from src.core.save_data import load_save
+    return SAVE_PATH.exists() and load_save() is not None

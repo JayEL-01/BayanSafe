@@ -5,16 +5,21 @@ from src.core.strings import tr
 from src.states.base_state import BaseState
 from src.states.character_select import CharacterSelect
 from src.states.guide_state import GuideState
+from src.states.high_scores import HighScores
+from src.states.loading import LoadingScreen
 from src.states.options_state import OptionsState
-from src.states.placeholder_state import PlaceholderState
+from src.states.new_game_confirm import NewGameConfirm
+from src.states.mission_prep import MissionPrep
 from src.ui import menu_fx, theme
 from src.ui.backdrop import MenuBackdrop
 from src.ui.button import Button
+from src.utils.data_loader import load_json
 
 ENTRIES = [               # (string key, icon)
     ("new_game", "house"),
     ("continue", "clip"),
     ("guide", "book"),
+    ("high_scores", "radio"),
     ("options", "gear"),
     ("exit", "door"),
 ]
@@ -33,6 +38,7 @@ class MainMenu(BaseState):
         self._slid = set()             # buttons that already played their slide-in sound
         self._lang = prefs.get("language")
         self._save_check = -1
+        self.continue_message = ""
         self._build_buttons()
         audio.warm()
 
@@ -45,12 +51,13 @@ class MainMenu(BaseState):
             return run
 
         actions = {"new_game": sounded(self.new_game), "continue": sounded(self.continue_game),
-                   "guide": sounded(self.guide), "options": sounded(self.options),
+                   "guide": sounded(self.guide), "high_scores": sounded(self.high_scores),
+                   "options": sounded(self.options),
                    "exit": self.game.ask_quit}          # opens the "Leave BayanSafe?" box (in Game)
-        width, height, gap = 110, 16, 3
+        width, height, gap = 110, 15, 2
         x = (settings.INTERNAL_WIDTH - width) // 2
         for i, (key, icon) in enumerate(ENTRIES):
-            button = Button(tr(key), (x, 68 + i * (height + gap), width, height),
+            button = Button(tr(key), (x, 59 + i * (height + gap), width, height),
                             actions[key], icon=icon, press_delay=0.12)
             button.offset_x = -150                   # starts off-screen, slides in
             self.buttons.append(button)
@@ -67,15 +74,30 @@ class MainMenu(BaseState):
 
     # ---------- actions ----------
     def new_game(self):
-        self.game.session.reset()
-        self.game.state_manager.push(CharacterSelect(self.game))
+        if prefs.has_save():
+            self.game.state_manager.push(NewGameConfirm(self.game))
+        else:
+            self.game.session.reset()
+            self.game.state_manager.push(CharacterSelect(self.game))
 
     def continue_game(self):
-        # replace with your real load logic when the save system exists
-        self.game.state_manager.push(PlaceholderState(self.game, "LOAD GAME"))
+        characters = load_json("data/characters.json")
+        if self.game.session.load(characters):
+            if all(stage in self.game.session.completed for stage in self.game.session.STAGE_ORDER):
+                self.continue_message = "Your story is complete. Start a new journey to play again."
+                return
+            stage_id = self.game.session.current_stage
+            self.game.state_manager.push(LoadingScreen(
+                self.game, lambda: MissionPrep(self.game, stage_id), "RESUMING YOUR JOURNEY"))
+        else:
+            self.game.session.erase()
+            self._refresh_buttons()
 
     def guide(self):
         self.game.state_manager.push(GuideState(self.game))
+
+    def high_scores(self):
+        self.game.state_manager.push(HighScores(self.game))
 
     def options(self):
         self.game.state_manager.push(OptionsState(self.game))
@@ -160,3 +182,6 @@ class MainMenu(BaseState):
         menu_fx.draw_gobag(surface, self.time)
         menu_fx.draw_footer(surface, self.time)
         menu_fx.draw_banner(surface, self.backdrop.fx)
+        if self.continue_message:
+            theme.draw_text(surface, self.continue_message, (160, 173), "tiny",
+                            theme.CREAM, anchor="center")

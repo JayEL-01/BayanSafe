@@ -1,0 +1,359 @@
+{
+  "name": "Flash Fire in the Valley",
+  "map_size": [
+    640,
+    360
+  ],
+  "player_start": [
+    320,
+    180
+  ],
+  "walls": [
+    [
+      130,
+      65,
+      14,
+      115
+    ],
+    [
+      160,
+      65,
+      115,
+      14
+    ],
+    [
+      335,
+      65,
+      14,
+      125
+    ],
+    [
+      350,
+      180,
+      145,
+      14
+    ],
+    [
+      195,
+      240,
+      14,
+      70
+    ],
+    [
+      80,
+      180,
+      90,
+      14
+    ]
+  ],
+  "npcs": [
+    {
+      "id": "ate_mila",
+      "name": "Tito Ramon",
+      "pos": [
+        272,
+        100
+      ],
+      "color": [
+        230,
+        145,
+        95
+      ],
+      "dialogue": [
+        "The volcano and landslide alerts are still active. An electrical fault has now started a facility fire.",
+        "I repair this equipment, but it is not safe to save it. Use the clear exit, stay low, and leave it behind."
+      ],
+      "after_dialogue": [
+        "The staff are outside. Nobody should return to the facility while it is burning."
+      ],
+      "choice": {
+        "prompt": "Smoke blocks the main corridor. How should personnel leave?",
+        "options": [
+          {
+            "text": "Use the clear alternate exit and stay low",
+            "flag": "facility_fire_safe",
+            "time_cost": 0,
+            "points": 100,
+            "result": "Personnel use the clear alternate exit.",
+            "consequence": "You guided personnel along the clear exit.",
+            "mascot": "Following official warnings and protecting people is the safer choice."
+          },
+          {
+            "text": "Enter the smoke to find another way",
+            "flag": "facility_fire_risk",
+            "time_cost": 0,
+            "points": -50,
+            "property_damage": 140,
+            "result": "Smoke can quickly make a corridor deadly.",
+            "consequence": "You sent personnel through smoke.",
+            "mascot": "Taking a shortcut through a hazard can injure people and damage resources."
+          }
+        ]
+      }
+    },
+    {
+      "id": "rosa",
+      "name": "Rhea",
+      "pos": [
+        260,
+        12
+      ],
+      "color": [
+        145,
+        125,
+        205
+      ],
+      "dialogue": [
+        "I am a ranger, not a responder, but I know the service path around the smoke and unstable slopes.",
+        "Please bring the spare respirator. I can guide the group once my breathing is protected."
+      ],
+      "after_dialogue": [
+        "I can breathe clearly now. Follow me along the service path, away from the smoke."
+      ],
+      "rescue_item": "respirator",
+      "rescue_dialogue": [
+        "I am stranded and need the spare respirator. Please bring it, then help me get to the safe route, away from smoke and ash."
+      ],
+      "rescue_success_dialogue": [
+        "Thank you. I can follow you to the safe route, away from smoke and ash now."
+      ],
+      "rescue_hint": "Find the spare respirator, then speak with Rhea again."
+    }
+  ],
+  "items": [
+    {
+      "id": "go_bag",
+      "name": "Go-bag",
+      "pos": [
+        302,
+        166
+      ],
+      "color": [
+        80,
+        200,
+        120
+      ]
+    },
+    {
+      "id": "water",
+      "name": "Drinking water",
+      "pos": [
+        122,
+        222
+      ],
+      "color": [
+        80,
+        170,
+        250
+      ]
+    },
+    {
+      "id": "respirator",
+      "name": "Spare respirator",
+      "pos": [
+        234,
+        234
+      ],
+      "color": [
+        210,
+        230,
+        185
+      ]
+    },
+    {
+      "id": "radio",
+      "name": "Battery radio",
+      "pos": [
+        122,
+        130
+      ],
+      "color": [
+        120,
+        170,
+        250
+      ]
+    },
+    {
+      "id": "research_log",
+      "name": "Recover Dr. Voss’s final research log",
+      "pos": [
+        310,
+        42
+      ],
+      "color": [
+        235,
+        125,
+        60
+      ]
+    }
+  ],
+  "areas": [
+    {
+      "id": "evac_center",
+      "name": "Facility Control Wing Access",
+      "rect": [
+        173,
+        202,
+        90,
+        65
+      ],
+      "color": [
+        92,
+        205,
+        230
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "id": "supplies",
+      "title": "Collect Go-bag",
+      "type": "collect",
+      "target": "go_bag"
+    },
+    {
+      "id": "second_supply",
+      "title": "Collect Drinking water",
+      "type": "collect",
+      "target": "water"
+    },
+    {
+      "id": "rescue_kit",
+      "title": "Find spare respirator",
+      "type": "collect",
+      "target": "respirator"
+    },
+    {
+      "id": "rescue_neighbor",
+      "title": "Rescue Rhea with the respirator",
+      "type": "rescue",
+      "target": "rosa"
+    },
+    {
+      "id": "community",
+      "title": "Check in with Tito Ramon",
+      "type": "talk",
+      "target": "ate_mila"
+    },
+    {
+      "id": "evacuate",
+      "title": "Reach Community Evacuation Center",
+      "type": "reach",
+      "target": "evac_center"
+    },
+    {
+      "id": "extra_supply",
+      "title": "Find a battery radio for official fire evacuation updates.",
+      "type": "collect",
+      "target": "radio"
+    },
+    {
+      "id": "community_supply",
+      "title": "Recover Dr. Voss’s final research log",
+      "type": "collect",
+      "target": "research_log"
+    }
+  ],
+  "mascot": {
+    "intro": "I'm Tarsi! Move with WASD or arrows. E: talk, Q: ability, H: hint, P: pause. Finish your tasks and reach safety.",
+    "quests": {
+      "supplies": "Find Go-bag.",
+      "second_supply": "Find Drinking water.",
+      "rescue_kit": "Search the clear route for a spare respirator before attempting the rescue.",
+      "rescue_neighbor": "Find Rhea and speak with her after collecting the spare respirator.",
+      "community": "Find Tito Ramon and press E.",
+      "evacuate": "Reach Fire Safe Zone and stay clear of danger.",
+      "extra_supply": "Find Battery radio."
+    }
+  },
+  "hazards": {
+    "disasters": [
+      "volcano",
+      "landslide",
+      "flash_fire"
+    ],
+    "danger_ramp_seconds": 49,
+    "hazard_start_seconds": 7.8,
+    "rain": {
+      "drops": 54
+    },
+    "wind": {
+      "strength": 40
+    },
+    "debris": {
+      "damage": 13,
+      "min_interval": 1.7,
+      "max_interval": 4.0
+    },
+    "seed": 718,
+    "wildfire_speed": 24,
+    "safe_zones": [
+      [
+        173,
+        202,
+        90,
+        65
+      ]
+    ],
+    "volcano_start_seconds": 11,
+    "landslide_start_seconds": 8
+  },
+  "lessons": [
+    "Use the planned safe exit and go to the family or community meeting place.",
+    "Stay with your group and tell responders if someone is missing.",
+    "Do not return to a fire-affected building until authorities say it is safe."
+  ],
+  "safe_zones": [
+    [
+      173,
+      202,
+      90,
+      65
+    ]
+  ],
+  "quiz": {
+    "question": "Smoke blocks your usual exit during a fire. What should you do?",
+    "options": [
+      "Use a planned alternate safe exit and meet at the designated point",
+      "Hide in a room and wait without telling anyone",
+      "Go back inside after reaching safety to collect supplies"
+    ],
+    "answer": 0,
+    "explanation": "Know alternate escape routes and a meeting place. Do not re-enter until authorities say it is safe."
+  },
+  "chapter": "Volcano Valleys",
+  "mission_number": 19,
+  "briefing": "Damaged electrical systems ignite the facility. Raise the alarm, guide personnel toward safe exits, avoid smoke-filled corridors, and use an alternate route when the main passage is blocked. Recover Dr. Voss’s final research log from a safe area.",
+  "landmark": "rice terraces",
+  "items_total": 5,
+  "story_clue": "The log says the World Engine became unstable after its power was increased beyond safe limits.",
+  "ground_palette": [
+    [
+      122,
+      112,
+      93
+    ],
+    [
+      87,
+      83,
+      73
+    ],
+    [
+      155,
+      135,
+      101
+    ]
+  ],
+  "campaign_region": "Volcano Valleys",
+  "region_level": 2,
+  "hazard_join_levels": {
+    "volcano": 1,
+    "landslide": 2,
+    "flash_fire": 2,
+    "flash_flood": 3,
+    "earthquake": 4,
+    "tsunami": 4,
+    "typhoon": 4,
+    "severe_flood": 4
+  }
+}

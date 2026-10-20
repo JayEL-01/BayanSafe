@@ -8,15 +8,18 @@ class QuestSystem:
             self.quests.append({
                 "id": q["id"],
                 "title": q["title"],
-                "type": q["type"],          # collect / talk / reach
+                "type": q["type"],          # collect / talk / reach / cover / rescue
                 "target": q["target"],
                 "required": q.get("count", 1),
+                "critical": bool(q.get("critical", False)),
                 "progress": 0,
                 "done": False,
             })
         events.subscribe("item_collected", self.on_item)
         events.subscribe("npc_talked", self.on_talk)
         events.subscribe("area_reached", self.on_reach)
+        events.subscribe("cover_reached", self.on_cover)
+        events.subscribe("person_rescued", self.on_rescue)
 
     def _advance(self, quest_type, target):
         for q in self.quests:
@@ -36,8 +39,17 @@ class QuestSystem:
     def on_reach(self, area_id, **_):
         self._advance("reach", area_id)
 
+    def on_cover(self, hazard, **_):
+        self._advance("cover", hazard)
+
+    def on_rescue(self, npc_id, **_):
+        self._advance("rescue", npc_id)
+
     def all_done(self):
         return all(q["done"] for q in self.quests)
+
+    def all_critical_done(self):
+        return all(q["done"] for q in self.quests if q["critical"])
 
     def done_count(self):
         return sum(1 for q in self.quests if q["done"])

@@ -1,0 +1,348 @@
+{
+  "title": "BayanSafe: Echoes Before the Storm",
+  "version": 3,
+  "journey": {
+    "start": "Home Village",
+    "route": [
+      "North West Plateau",
+      "Central Town",
+      "Harbor",
+      "North East Plains",
+      "Volcano Valleys",
+      "Main Control Room"
+    ],
+    "levels_per_region": 4,
+    "hazards_join_and_persist": true,
+    "hazard_join_levels": {
+      "North West Plateau": {
+        "earthquake": 1,
+        "landslide": 2,
+        "tsunami": 4
+      },
+      "Central Town": {
+        "flash_fire": 1,
+        "earthquake": 2,
+        "typhoon": 3,
+        "flash_flood": 4
+      },
+      "Harbor": {
+        "flash_flood": 1,
+        "typhoon": 2,
+        "severe_flood": 3,
+        "tsunami": 4,
+        "flash_fire": 4
+      },
+      "North East Plains": {
+        "typhoon": 1,
+        "flash_flood": 2,
+        "severe_flood": 2,
+        "landslide": 3,
+        "earthquake": 4,
+        "volcano": 4
+      },
+      "Volcano Valleys": {
+        "volcano": 1,
+        "landslide": 2,
+        "flash_fire": 2,
+        "flash_flood": 3,
+        "earthquake": 4,
+        "tsunami": 4,
+        "typhoon": 4,
+        "severe_flood": 4
+      }
+    },
+    "ending_conditions": [
+      "all islands and people saved",
+      "partial rescue, some land lost",
+      "tragic end, the machine wins"
+    ]
+  },
+  "stages": [
+    {
+      "id": "home_island_tutorial",
+      "title": "Home Village: The Warning",
+      "chapter": "Home Village",
+      "region": "Home Village",
+      "region_level": 0,
+      "order": 1,
+      "active_hazards": []
+    },
+    {
+      "id": "earthquake",
+      "title": "North West Plateau",
+      "chapter": "North West Plateau",
+      "region": "North West Plateau",
+      "region_level": 1,
+      "order": 2,
+      "active_hazards": [
+        "earthquake"
+      ]
+    },
+    {
+      "id": "landslide",
+      "title": "The Slope Gives Way",
+      "chapter": "North West Plateau",
+      "region": "North West Plateau",
+      "region_level": 2,
+      "order": 3,
+      "active_hazards": [
+        "earthquake",
+        "landslide"
+      ]
+    },
+    {
+      "id": "calm_before_wave",
+      "title": "A False Calm",
+      "chapter": "North West Plateau",
+      "region": "North West Plateau",
+      "region_level": 3,
+      "order": 4,
+      "active_hazards": [
+        "earthquake",
+        "landslide"
+      ]
+    },
+    {
+      "id": "tsunami",
+      "title": "The Coast Breaks",
+      "chapter": "North West Plateau",
+      "region": "North West Plateau",
+      "region_level": 4,
+      "order": 5,
+      "active_hazards": [
+        "earthquake",
+        "landslide",
+        "tsunami"
+      ]
+    },
+    {
+      "id": "flash_fire",
+      "title": "Flash Fire in Central Town",
+      "chapter": "Central Town",
+      "region": "Central Town",
+      "region_level": 1,
+      "order": 6,
+      "active_hazards": [
+        "flash_fire"
+      ]
+    },
+    {
+      "id": "central_earthquake",
+      "title": "The City in Pieces",
+      "chapter": "Central Town",
+      "region": "Central Town",
+      "region_level": 2,
+      "order": 7,
+      "active_hazards": [
+        "flash_fire",
+        "earthquake"
+      ]
+    },
+    {
+      "id": "central_typhoon",
+      "title": "Typhoon Over Central Town",
+      "chapter": "Central Town",
+      "region": "Central Town",
+      "region_level": 3,
+      "order": 8,
+      "active_hazards": [
+        "flash_fire",
+        "earthquake",
+        "typhoon"
+      ]
+    },
+    {
+      "id": "central_flash_flood",
+      "title": "Central Town Floods",
+      "chapter": "Central Town",
+      "region": "Central Town",
+      "region_level": 4,
+      "order": 9,
+      "active_hazards": [
+        "flash_fire",
+        "earthquake",
+        "typhoon",
+        "flash_flood"
+      ]
+    },
+    {
+      "id": "harbor_flash_flood",
+      "title": "Flash Flood at the Harbor",
+      "chapter": "Harbor",
+      "region": "Harbor",
+      "region_level": 1,
+      "order": 10,
+      "active_hazards": [
+        "flash_flood"
+      ]
+    },
+    {
+      "id": "harbor_typhoon",
+      "title": "Typhoon at the Harbor",
+      "chapter": "Harbor",
+      "region": "Harbor",
+      "region_level": 2,
+      "order": 11,
+      "active_hazards": [
+        "flash_flood",
+        "typhoon"
+      ]
+    },
+    {
+      "id": "harbor_severe_flood",
+      "title": "Severe Flooding at the Harbor",
+      "chapter": "Harbor",
+      "region": "Harbor",
+      "region_level": 3,
+      "order": 12,
+      "active_hazards": [
+        "flash_flood",
+        "typhoon",
+        "severe_flood"
+      ]
+    },
+    {
+      "id": "harbor_fire_tsunami",
+      "title": "Fire and Tsunami at the Harbor",
+      "chapter": "Harbor",
+      "region": "Harbor",
+      "region_level": 4,
+      "order": 13,
+      "active_hazards": [
+        "flash_flood",
+        "typhoon",
+        "severe_flood",
+        "tsunami",
+        "flash_fire"
+      ]
+    },
+    {
+      "id": "plains_typhoon",
+      "title": "Typhoon in the North East Plains",
+      "chapter": "North East Plains",
+      "region": "North East Plains",
+      "region_level": 1,
+      "order": 14,
+      "active_hazards": [
+        "typhoon"
+      ]
+    },
+    {
+      "id": "plains_severe_flood",
+      "title": "Floodwater Turns Severe",
+      "chapter": "North East Plains",
+      "region": "North East Plains",
+      "region_level": 2,
+      "order": 15,
+      "active_hazards": [
+        "typhoon",
+        "flash_flood",
+        "severe_flood"
+      ]
+    },
+    {
+      "id": "plains_landslide",
+      "title": "Landslide Across the Plains",
+      "chapter": "North East Plains",
+      "region": "North East Plains",
+      "region_level": 3,
+      "order": 16,
+      "active_hazards": [
+        "typhoon",
+        "flash_flood",
+        "severe_flood",
+        "landslide"
+      ]
+    },
+    {
+      "id": "plains_quake_volcano",
+      "title": "Earthquake at the Volcano Approach",
+      "chapter": "North East Plains",
+      "region": "North East Plains",
+      "region_level": 4,
+      "order": 17,
+      "active_hazards": [
+        "typhoon",
+        "flash_flood",
+        "severe_flood",
+        "landslide",
+        "earthquake",
+        "volcano"
+      ]
+    },
+    {
+      "id": "silence_volcano",
+      "title": "The Volcano Stirs",
+      "chapter": "Volcano Valleys",
+      "region": "Volcano Valleys",
+      "region_level": 1,
+      "order": 18,
+      "active_hazards": [
+        "volcano"
+      ]
+    },
+    {
+      "id": "facility_fire",
+      "title": "Flash Fire in the Valley",
+      "chapter": "Volcano Valleys",
+      "region": "Volcano Valleys",
+      "region_level": 2,
+      "order": 19,
+      "active_hazards": [
+        "volcano",
+        "landslide",
+        "flash_fire"
+      ]
+    },
+    {
+      "id": "volcano_flash_flood",
+      "title": "Lahar and Flash Flood",
+      "chapter": "Volcano Valleys",
+      "region": "Volcano Valleys",
+      "region_level": 3,
+      "order": 20,
+      "active_hazards": [
+        "volcano",
+        "landslide",
+        "flash_fire",
+        "flash_flood"
+      ]
+    },
+    {
+      "id": "final_typhoon_flood",
+      "title": "All Eight Hazards Converge",
+      "chapter": "Volcano Valleys",
+      "region": "Volcano Valleys",
+      "region_level": 4,
+      "order": 21,
+      "active_hazards": [
+        "volcano",
+        "landslide",
+        "flash_fire",
+        "flash_flood",
+        "earthquake",
+        "tsunami",
+        "typhoon",
+        "severe_flood"
+      ]
+    },
+    {
+      "id": "final_shutdown",
+      "title": "Main Control Room",
+      "chapter": "Main Control Room",
+      "region": "Main Control Room",
+      "region_level": 1,
+      "order": 22,
+      "active_hazards": [
+        "earthquake",
+        "landslide",
+        "tsunami",
+        "volcano",
+        "flash_fire",
+        "flash_flood",
+        "typhoon",
+        "severe_flood"
+      ]
+    }
+  ]
+}

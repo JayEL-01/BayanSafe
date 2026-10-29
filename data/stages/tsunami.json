@@ -1,0 +1,314 @@
+{
+  "name": "The Coast Breaks",
+  "map_size": [
+    640,
+    360
+  ],
+  "player_start": [
+    320,
+    180
+  ],
+  "walls": [
+    [
+      130,
+      65,
+      14,
+      115
+    ],
+    [
+      160,
+      65,
+      115,
+      14
+    ],
+    [
+      335,
+      65,
+      14,
+      125
+    ],
+    [
+      350,
+      180,
+      145,
+      14
+    ],
+    [
+      195,
+      240,
+      14,
+      70
+    ],
+    [
+      80,
+      180,
+      90,
+      14
+    ]
+  ],
+  "npcs": [
+    {
+      "id": "nanay_luz",
+      "name": "Mang Lito",
+      "pos": [
+        492,
+        348
+      ],
+      "color": [
+        235,
+        150,
+        100
+      ],
+      "dialogue": [
+        "The tsunami warning is active after the quake. Do not wait to watch the wave or collect things.",
+        "Move inland and uphill on foot, away from the shoreline and landslide slopes."
+      ],
+      "after_dialogue": [
+        "We made it to high ground. Stay here until officials say it is safe to return."
+      ],
+      "rescue_item": "water",
+      "rescue_dialogue": [
+        "I am stranded and need the drinking water. Please bring it, then help me get to inland high ground."
+      ],
+      "rescue_success_dialogue": [
+        "Thank you. I can follow you to inland high ground now."
+      ],
+      "rescue_hint": "Find the drinking water, then speak with Mang Lito again.",
+      "choice": {
+        "prompt": "The sea has pulled back and the warning is sounding. What now?",
+        "options": [
+          {
+            "text": "Evacuate to high ground immediately",
+            "flag": "tsunami_safe",
+            "time_cost": 0,
+            "points": 100,
+            "result": "Residents reach high ground before the wave arrives.",
+            "consequence": "You followed the tsunami warning immediately.",
+            "mascot": "Following official warnings and protecting people is the safer choice."
+          },
+          {
+            "text": "Collect supplies from the shoreline first",
+            "flag": "tsunami_risk",
+            "time_cost": 0,
+            "points": -50,
+            "property_damage": 150,
+            "result": "Returning to the shore after the warning risks lives.",
+            "consequence": "You delayed evacuation to collect supplies.",
+            "mascot": "Taking a shortcut through a hazard can injure people and damage resources."
+          }
+        ]
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "go_bag",
+      "name": "Emergency go-bag",
+      "pos": [
+        498,
+        350
+      ],
+      "color": [
+        80,
+        200,
+        120
+      ]
+    },
+    {
+      "id": "water",
+      "name": "Drinking water",
+      "pos": [
+        498,
+        350
+      ],
+      "color": [
+        80,
+        170,
+        250
+      ]
+    },
+    {
+      "id": "first_aid",
+      "name": "First-aid kit",
+      "pos": [
+        506,
+        350
+      ],
+      "color": [
+        230,
+        90,
+        140
+      ]
+    },
+    {
+      "id": "research_records",
+      "name": "Recover records from the exposed research facility",
+      "pos": [
+        506,
+        350
+      ],
+      "color": [
+        80,
+        170,
+        250
+      ]
+    }
+  ],
+  "areas": [
+    {
+      "id": "evac_center",
+      "name": "Community Evacuation Center",
+      "rect": [
+        461,
+        294,
+        90,
+        65
+      ],
+      "color": [
+        92,
+        205,
+        230
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "id": "supplies",
+      "title": "Collect Emergency go-bag",
+      "type": "collect",
+      "target": "go_bag"
+    },
+    {
+      "id": "second_supply",
+      "title": "Collect Drinking water",
+      "type": "collect",
+      "target": "water"
+    },
+    {
+      "id": "community",
+      "title": "Check in with Mang Lito",
+      "type": "talk",
+      "target": "nanay_luz"
+    },
+    {
+      "id": "evacuate",
+      "title": "Reach Community Evacuation Center",
+      "type": "reach",
+      "target": "evac_center"
+    },
+    {
+      "id": "rescue_nanay_luz",
+      "title": "Help Mang Lito reach safety",
+      "type": "rescue",
+      "target": "nanay_luz"
+    },
+    {
+      "id": "extra_supply",
+      "title": "Find a first-aid kit for the evacuation to high ground.",
+      "type": "collect",
+      "target": "first_aid"
+    },
+    {
+      "id": "community_supply",
+      "title": "Recover records from the exposed research facility",
+      "type": "collect",
+      "target": "research_records"
+    }
+  ],
+  "mascot": {
+    "intro": "I'm Tarsi! Move with WASD or arrows. E: talk, Q: ability, H: hint, P: pause. Finish your tasks and reach safety.",
+    "quests": {
+      "supplies": "Find Emergency go-bag.",
+      "second_supply": "Find Drinking water.",
+      "community": "Find Mang Lito and press E.",
+      "evacuate": "Reach High Ground / School and stay clear of danger.",
+      "extra_supply": "Find First-aid kit."
+    }
+  },
+  "hazards": {
+    "disasters": [
+      "earthquake",
+      "landslide",
+      "tsunami"
+    ],
+    "danger_ramp_seconds": 110,
+    "hazard_start_seconds": 7,
+    "rain": {
+      "drops": 54
+    },
+    "wind": {
+      "strength": 40
+    },
+    "debris": {
+      "damage": 13,
+      "min_interval": 1.7,
+      "max_interval": 4.0
+    },
+    "seed": 433,
+    "flood_rate": 1.35,
+    "safe_zones": [
+      [
+        461,
+        294,
+        90,
+        65
+      ]
+    ],
+    "tsunami_warning_seconds": 28,
+    "tsunami_surge_seconds": 28,
+    "landslide_start_seconds": 8
+  },
+  "lessons": [
+    "After strong or long coastal shaking, move inland or to high ground immediately; do not wait for a warning.",
+    "Follow official evacuation routes and stay away from the shore until authorities say it is safe.",
+    "Never cross floodwater to reach a route."
+  ],
+  "safe_zones": [
+    [
+      461,
+      294,
+      90,
+      65
+    ]
+  ],
+  "quiz": {
+    "question": "You are near the coast and feel strong, long earthquake shaking. What should you do?",
+    "options": [
+      "Move inland or to high ground immediately",
+      "Wait by the shore for an official alert",
+      "Return to the beach to check the water"
+    ],
+    "answer": 0,
+    "explanation": "Strong or long coastal shaking is a natural tsunami warning. Move to high ground immediately."
+  },
+  "chapter": "North West Plateau",
+  "mission_number": 5,
+  "briefing": "The sea retreats and the coastal warning sounds. Move residents immediately toward higher ground, prioritize people who need assistance, and leave unnecessary supplies behind. After the wave, search the exposed research access for records.",
+  "landmark": "rice terraces",
+  "items_total": 4,
+  "story_clue": "An underground recording reveals a machine that can manipulate environmental forces.",
+  "ground_palette": [
+    [
+      130,
+      140,
+      105
+    ],
+    [
+      99,
+      113,
+      81
+    ],
+    [
+      166,
+      159,
+      113
+    ]
+  ],
+  "campaign_region": "North West Plateau",
+  "region_level": 4,
+  "hazard_join_levels": {
+    "earthquake": 1,
+    "landslide": 2,
+    "tsunami": 4
+  }
+}

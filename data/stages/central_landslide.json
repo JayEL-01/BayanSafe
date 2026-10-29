@@ -1,0 +1,324 @@
+{
+  "name": "The Broken Town Route",
+  "map_size": [
+    640,
+    360
+  ],
+  "player_start": [
+    28,
+    320
+  ],
+  "walls": [
+    [
+      100,
+      65,
+      14,
+      135
+    ],
+    [
+      150,
+      180,
+      120,
+      14
+    ],
+    [
+      305,
+      65,
+      14,
+      130
+    ],
+    [
+      355,
+      180,
+      155,
+      14
+    ],
+    [
+      535,
+      200,
+      14,
+      95
+    ],
+    [
+      190,
+      275,
+      14,
+      48
+    ]
+  ],
+  "npcs": [
+    {
+      "id": "kapitan_jo",
+      "name": "Mayor Cruz",
+      "pos": [
+        440,
+        75
+      ],
+      "color": [
+        210,
+        165,
+        100
+      ],
+      "dialogue": [
+        "The market fire is out, but the town road is blocked by a fresh slope failure. Do not climb across debris.",
+        "Use the checked detour and tell the shelter which streets are closed."
+      ],
+      "after_dialogue": [
+        "The detour is holding. We can guide families around the slide without entering it."
+      ],
+      "choice": {
+        "prompt": "The hospital wing is damaged. How should responders proceed?",
+        "options": [
+          {
+            "text": "Move patients to a checked safe area",
+            "flag": "central_earthquake_safe",
+            "time_cost": 5,
+            "points": 100,
+            "result": "Patients move before staff approach the unsafe wing.",
+            "consequence": "You moved patients to a checked safe area.",
+            "mascot": "Following official warnings and protecting people is the safer choice."
+          },
+          {
+            "text": "Restore power inside the damaged wing",
+            "flag": "central_earthquake_risk",
+            "time_cost": 0,
+            "points": -50,
+            "property_damage": 130,
+            "result": "Entering a damaged wing risks further harm.",
+            "consequence": "You sent staff into a damaged wing.",
+            "mascot": "Taking a shortcut through a hazard can injure people and damage resources."
+          }
+        ]
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "radio",
+      "name": "Emergency radio",
+      "pos": [
+        220,
+        105
+      ],
+      "color": [
+        120,
+        170,
+        250
+      ]
+    },
+    {
+      "id": "first_aid",
+      "name": "First-aid kit",
+      "pos": [
+        505,
+        125
+      ],
+      "color": [
+        230,
+        90,
+        140
+      ]
+    },
+    {
+      "id": "go_bag",
+      "name": "Go-bag",
+      "pos": [
+        430,
+        270
+      ],
+      "color": [
+        80,
+        200,
+        120
+      ]
+    },
+    {
+      "id": "flashlight",
+      "name": "Emergency flashlight",
+      "pos": [
+        265,
+        210
+      ],
+      "color": [
+        245,
+        215,
+        110
+      ]
+    },
+    {
+      "id": "network_map",
+      "name": "Recover the facility network map",
+      "pos": [
+        250,
+        320
+      ],
+      "color": [
+        245,
+        210,
+        110
+      ]
+    }
+  ],
+  "areas": [
+    {
+      "id": "evac_center",
+      "name": "Community Evacuation Center",
+      "rect": [
+        520,
+        165,
+        90,
+        78
+      ],
+      "color": [
+        92,
+        205,
+        230
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "id": "supplies",
+      "title": "Collect Emergency radio",
+      "type": "collect",
+      "target": "radio"
+    },
+    {
+      "id": "second_supply",
+      "title": "Collect First-aid kit",
+      "type": "collect",
+      "target": "first_aid"
+    },
+    {
+      "id": "community",
+      "title": "Check in with Mayor Cruz",
+      "type": "talk",
+      "target": "kapitan_jo"
+    },
+    {
+      "id": "evacuate",
+      "title": "Reach Community Evacuation Center",
+      "type": "reach",
+      "target": "evac_center"
+    },
+    {
+      "id": "collect_go_bag",
+      "title": "Collect the go-bag before the aftershock drill",
+      "type": "collect",
+      "target": "go_bag"
+    },
+    {
+      "id": "extra_supply",
+      "title": "Search for a flashlight in case aftershocks cut the power.",
+      "type": "collect",
+      "target": "flashlight"
+    },
+    {
+      "id": "community_supply",
+      "title": "Recover the facility network map",
+      "type": "collect",
+      "target": "network_map"
+    }
+  ],
+  "mascot": {
+    "intro": "I'm Tarsi! Move with WASD or arrows. E: talk, Q: ability, H: hint, P: pause. Finish your tasks and reach safety. During shaking: Drop, Cover, Hold On.",
+    "quests": {
+      "supplies": "Find Emergency radio.",
+      "second_supply": "Find First-aid kit.",
+      "community": "Find Mayor Cruz and press E.",
+      "evacuate": "Reach Sturdy Shelter and stay clear of danger.",
+      "cover": "When shaking starts, get under the sturdy table in the green cover field.",
+      "extra_supply": "Find Emergency flashlight."
+    }
+  },
+  "hazards": {
+    "disasters": [
+      "flash_fire",
+      "landslide"
+    ],
+    "danger_ramp_seconds": 110,
+    "hazard_start_seconds": 7,
+    "rain": {
+      "drops": 54
+    },
+    "wind": {
+      "strength": 40
+    },
+    "debris": {
+      "damage": 13,
+      "min_interval": 1.7,
+      "max_interval": 4.0
+    },
+    "seed": 471,
+    "safe_zones": [
+      [
+        520,
+        165,
+        90,
+        78
+      ]
+    ],
+    "quake_safe_zones": [],
+    "landslide_start_seconds": 8
+  },
+  "lessons": [
+    "Stay away from slopes showing cracks, falling debris, or unusual movement.",
+    "Move away from a landslide path and use an official safe route.",
+    "Do not cross fresh slide debris; more ground may still move."
+  ],
+  "safe_zones": [
+    [
+      520,
+      165,
+      90,
+      78
+    ],
+    [
+      250,
+      215,
+      78,
+      62
+    ]
+  ],
+  "quiz": {
+    "question": "A landslide blocks the road and the slope still looks unstable. What is safest?",
+    "options": [
+      "Use the official detour and stay clear of the slope",
+      "Climb over the debris quickly",
+      "Stand below the slope to watch"
+    ],
+    "answer": 0,
+    "explanation": "Avoid landslide paths and fresh debris. Follow the marked route and local responders."
+  },
+  "chapter": "Central Town",
+  "mission_number": 7,
+  "briefing": "A slope failure blocks the route through Central Town while the earlier flash fire still threatens the district. Follow the marked detour, help the residents move away from the slope, and reach the evacuation center.",
+  "landmark": "central school and farmland",
+  "items_total": 5,
+  "story_clue": "The damaged slope exposes cables that match the World Engine signal found at the fire scene.",
+  "ground_palette": [
+    [
+      144,
+      136,
+      107
+    ],
+    [
+      107,
+      112,
+      92
+    ],
+    [
+      171,
+      158,
+      123
+    ]
+  ],
+  "campaign_region": "Central Town",
+  "region_level": 2,
+  "hazard_join_levels": {
+    "flash_fire": 1,
+    "landslide": 2,
+    "typhoon": 3,
+    "flash_flood": 4
+  }
+}

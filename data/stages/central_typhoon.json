@@ -1,0 +1,310 @@
+{
+  "name": "Typhoon Over Central Town",
+  "map_size": [
+    640,
+    360
+  ],
+  "player_start": [
+    320,
+    180
+  ],
+  "walls": [
+    [
+      105,
+      70,
+      115,
+      14
+    ],
+    [
+      270,
+      45,
+      14,
+      112
+    ],
+    [
+      390,
+      90,
+      130,
+      14
+    ],
+    [
+      130,
+      205,
+      14,
+      100
+    ],
+    [
+      290,
+      260,
+      130,
+      14
+    ],
+    [
+      480,
+      205,
+      14,
+      92
+    ]
+  ],
+  "npcs": [
+    {
+      "id": "aling_nena",
+      "name": "Mayor Cruz",
+      "pos": [
+        268,
+        340
+      ],
+      "color": [
+        230,
+        130,
+        90
+      ],
+      "dialogue": [
+        "The market fire and earthquake damaged two streets. Now the typhoon is reaching town.",
+        "I have opened the town shelter. Let's guide families there before the winds grow stronger."
+      ],
+      "after_dialogue": [
+        "The families are inside the shelter. I will keep the town updated as the storm passes."
+      ],
+      "choice": {
+        "prompt": "Should we board up the windows now? It takes time, and the storm is getting closer.",
+        "options": [
+          {
+            "text": "Board windows (storm pressure +10 sec)",
+            "flag": "boarded",
+            "time_cost": 10,
+            "points": 200,
+            "result": "Windows boarded! The storm pressure rises, but the home is protected.",
+            "mascot": "Boarding takes time, but it protects the home from wind-borne glass.",
+            "consequence": "You boarded the windows. It cost time, but the glass stayed intact and the house was protected."
+          },
+          {
+            "text": "Leave now (home damage: 150 pts)",
+            "flag": "skipped",
+            "time_cost": 0,
+            "points": 0,
+            "result": "You left immediately. The family is safer, but the house is exposed.",
+            "mascot": "Leaving quickly protects people. The unboarded windows may still break.",
+            "consequence": "You skipped the windows. You saved time, but strong wind broke the glass and damaged the house.",
+            "property_damage": 150
+          }
+        ]
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "go_bag",
+      "name": "Go-bag",
+      "pos": [
+        518,
+        342
+      ],
+      "color": [
+        80,
+        200,
+        120
+      ]
+    },
+    {
+      "id": "flashlight",
+      "name": "Flashlight",
+      "pos": [
+        226,
+        314
+      ],
+      "color": [
+        240,
+        240,
+        120
+      ]
+    },
+    {
+      "id": "radio",
+      "name": "Radio",
+      "pos": [
+        630,
+        342
+      ],
+      "color": [
+        120,
+        170,
+        250
+      ]
+    },
+    {
+      "id": "first_aid",
+      "name": "First-aid kit",
+      "pos": [
+        242,
+        342
+      ],
+      "color": [
+        230,
+        90,
+        140
+      ]
+    },
+    {
+      "id": "central_typhoon_supply",
+      "name": "Battery radio",
+      "pos": [
+        630,
+        342
+      ],
+      "color": [
+        120,
+        170,
+        250
+      ]
+    }
+  ],
+  "areas": [
+    {
+      "id": "evac_center",
+      "name": "Community Evacuation Center",
+      "rect": [
+        566,
+        286,
+        72,
+        72
+      ],
+      "color": [
+        92,
+        205,
+        230
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "id": "supplies",
+      "title": "Find emergency supplies",
+      "type": "collect",
+      "target": "go_bag"
+    },
+    {
+      "id": "flashlight",
+      "title": "Find the flashlight",
+      "type": "collect",
+      "target": "flashlight"
+    },
+    {
+      "id": "talk_nena",
+      "title": "Talk to Mayor Cruz",
+      "type": "talk",
+      "target": "aling_nena"
+    },
+    {
+      "id": "evac",
+      "title": "Reach Community Evacuation Center",
+      "type": "reach",
+      "target": "evac_center"
+    },
+    {
+      "id": "extra_supply",
+      "title": "Find a first-aid kit before the storm reaches the evacuation center.",
+      "type": "collect",
+      "target": "first_aid"
+    },
+    {
+      "id": "community_supply",
+      "title": "Find Battery radio for the response team",
+      "type": "collect",
+      "target": "central_typhoon_supply"
+    }
+  ],
+  "mascot": {
+    "intro": "I'm Tarsi! Move with WASD or arrows. E: talk, Q: ability, H: hint, P: pause. Finish your tasks and reach safety.",
+    "quests": {
+      "supplies": "Look for the green go-bag. Every family needs one ready for an emergency.",
+      "flashlight": "A flashlight is important when the power goes out. Look for the yellow item.",
+      "talk_nena": "Mayor Cruz needs help. Walk up to the orange person and press E.",
+      "evac": "Head to the blue Evacuation Center in the bottom-right corner.",
+      "extra_supply": "Find First-aid kit."
+    }
+  },
+  "hazards": {
+    "disasters": [
+      "flash_fire",
+      "earthquake",
+      "typhoon"
+    ],
+    "danger_ramp_seconds": 150,
+    "hazard_start_seconds": 12,
+    "rain": {
+      "drops": 60
+    },
+    "wind": {
+      "strength": 45
+    },
+    "debris": {
+      "damage": 15,
+      "min_interval": 1.2,
+      "max_interval": 3.5
+    },
+    "seed": 490,
+    "safe_zones": [
+      [
+        566,
+        286,
+        72,
+        72
+      ]
+    ]
+  },
+  "safe_zones": [
+    [
+      566,
+      286,
+      72,
+      72
+    ]
+  ],
+  "lessons": [
+    "Follow PAGASA bulletins and local evacuation orders.",
+    "Prepare a go-bag and family communication plan before conditions worsen.",
+    "Stay away from floodwater and wind-borne debris."
+  ],
+  "quiz": {
+    "question": "Local officials order evacuation before a typhoon arrives. What is safest?",
+    "options": [
+      "Leave early using the designated route with essential supplies",
+      "Wait for the strongest winds before leaving",
+      "Take a shortcut through floodwater"
+    ],
+    "answer": 0,
+    "explanation": "Follow local evacuation orders early and avoid floodwater and exposed routes."
+  },
+  "chapter": "Central Town",
+  "mission_number": 8,
+  "briefing": "A typhoon reaches the town while residents are still recovering. Help people select structurally sound shelters and secure essential supplies. Keep clear of exposed areas during the storm; inspect the drainage route only after conditions ease.",
+  "landmark": "coastal homes",
+  "items_total": 5,
+  "story_clue": "Storm debris has blocked a major drainage route.",
+  "ground_palette": [
+    [
+      144,
+      136,
+      107
+    ],
+    [
+      107,
+      112,
+      92
+    ],
+    [
+      171,
+      158,
+      123
+    ]
+  ],
+  "campaign_region": "Central Town",
+  "region_level": 3,
+  "hazard_join_levels": {
+    "flash_fire": 1,
+    "earthquake": 2,
+    "typhoon": 3,
+    "flash_flood": 4
+  }
+}

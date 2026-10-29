@@ -1,0 +1,315 @@
+{
+  "name": "Central Town Floods",
+  "map_size": [
+    640,
+    360
+  ],
+  "player_start": [
+    320,
+    180
+  ],
+  "walls": [
+    [
+      80,
+      110,
+      14,
+      125
+    ],
+    [
+      180,
+      70,
+      105,
+      14
+    ],
+    [
+      325,
+      70,
+      14,
+      105
+    ],
+    [
+      390,
+      185,
+      130,
+      14
+    ],
+    [
+      275,
+      235,
+      14,
+      90
+    ],
+    [
+      120,
+      285,
+      130,
+      14
+    ]
+  ],
+  "npcs": [
+    {
+      "id": "nanay_luz",
+      "name": "Nurse Joy",
+      "pos": [
+        460,
+        264
+      ],
+      "color": [
+        235,
+        150,
+        100
+      ],
+      "dialogue": [
+        "After the fire, earthquake, and typhoon, runoff is rushing through town and covering the low street.",
+        "Take the raised road to the school shelter. Never enter the floodwater, on foot or by car."
+      ],
+      "after_dialogue": [
+        "We reached the school by the high road. The water can hide open drains and debris."
+      ],
+      "rescue_item": "water",
+      "rescue_dialogue": [
+        "I am helping neighbors and need drinking water before I can make the move to high ground."
+      ],
+      "rescue_success_dialogue": [
+        "Thank you. I can leave for the safe area with you now."
+      ],
+      "rescue_hint": "Find the water, then talk to me again.",
+      "choice": {
+        "prompt": "Floodwater covers the direct street route. Which way?",
+        "options": [
+          {
+            "text": "Take the raised road to the school",
+            "flag": "central_flash_flood_safe",
+            "time_cost": 0,
+            "points": 100,
+            "result": "The team stays out of floodwater.",
+            "consequence": "You kept the group out of floodwater.",
+            "mascot": "Following official warnings and protecting people is the safer choice."
+          },
+          {
+            "text": "Walk through the street water",
+            "flag": "central_flash_flood_risk",
+            "time_cost": 0,
+            "points": -50,
+            "property_damage": 130,
+            "result": "Floodwater can hide hazards and carry people away.",
+            "consequence": "You sent the group through floodwater.",
+            "mascot": "Taking a shortcut through a hazard can injure people and damage resources."
+          }
+        ]
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "go_bag",
+      "name": "Emergency go-bag",
+      "pos": [
+        602,
+        162
+      ],
+      "color": [
+        80,
+        200,
+        120
+      ]
+    },
+    {
+      "id": "water",
+      "name": "Drinking water",
+      "pos": [
+        522,
+        342
+      ],
+      "color": [
+        80,
+        170,
+        250
+      ]
+    },
+    {
+      "id": "first_aid",
+      "name": "First-aid kit",
+      "pos": [
+        358,
+        270
+      ],
+      "color": [
+        230,
+        90,
+        140
+      ]
+    },
+    {
+      "id": "communication_battery",
+      "name": "Restore the emergency communications relay",
+      "pos": [
+        398,
+        50
+      ],
+      "color": [
+        80,
+        170,
+        250
+      ]
+    }
+  ],
+  "areas": [
+    {
+      "id": "evac_center",
+      "name": "Community Evacuation Center",
+      "rect": [
+        550,
+        60,
+        88,
+        75
+      ],
+      "color": [
+        92,
+        205,
+        230
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "id": "supplies",
+      "title": "Collect Emergency go-bag",
+      "type": "collect",
+      "target": "go_bag"
+    },
+    {
+      "id": "second_supply",
+      "title": "Collect Drinking water",
+      "type": "collect",
+      "target": "water"
+    },
+    {
+      "id": "community",
+      "title": "Check in with Nurse Joy",
+      "type": "talk",
+      "target": "nanay_luz"
+    },
+    {
+      "id": "evacuate",
+      "title": "Reach Community Evacuation Center",
+      "type": "reach",
+      "target": "evac_center"
+    },
+    {
+      "id": "rescue_nanay_luz",
+      "title": "Help Nurse Joy reach safety",
+      "type": "rescue",
+      "target": "nanay_luz"
+    },
+    {
+      "id": "extra_supply",
+      "title": "Find a first-aid kit for the evacuation to high ground.",
+      "type": "collect",
+      "target": "first_aid"
+    },
+    {
+      "id": "community_supply",
+      "title": "Restore the emergency communications relay",
+      "type": "collect",
+      "target": "communication_battery"
+    }
+  ],
+  "mascot": {
+    "intro": "I'm Tarsi! Move with WASD or arrows. E: talk, Q: ability, H: hint, P: pause. Finish your tasks and reach safety.",
+    "quests": {
+      "supplies": "Find Emergency go-bag.",
+      "second_supply": "Find Drinking water.",
+      "community": "Find Nurse Joy and press E.",
+      "evacuate": "Reach High Ground / School and stay clear of danger.",
+      "extra_supply": "Find First-aid kit."
+    }
+  },
+  "hazards": {
+    "disasters": [
+      "flash_fire",
+      "earthquake",
+      "typhoon",
+      "flash_flood"
+    ],
+    "danger_ramp_seconds": 110,
+    "hazard_start_seconds": 7,
+    "rain": {
+      "drops": 54
+    },
+    "wind": {
+      "strength": 40
+    },
+    "debris": {
+      "damage": 13,
+      "min_interval": 1.7,
+      "max_interval": 4.0
+    },
+    "seed": 509,
+    "flood_rate": 1.35,
+    "safe_zones": [
+      [
+        550,
+        60,
+        88,
+        75
+      ]
+    ],
+    "flood_start_seconds": 8,
+    "flood_rate_initial": 0.9
+  },
+  "lessons": [
+    "Never walk or drive through floodwater; depth and current can be hard to judge.",
+    "Move to higher ground and follow local evacuation instructions.",
+    "Keep emergency supplies and a family communication plan ready."
+  ],
+  "safe_zones": [
+    [
+      550,
+      60,
+      88,
+      75
+    ]
+  ],
+  "quiz": {
+    "question": "Floodwater covers your planned route. What should you do?",
+    "options": [
+      "Turn around and use a safe route directed by local authorities",
+      "Walk through if it looks shallow",
+      "Follow a vehicle through the water"
+    ],
+    "answer": 0,
+    "explanation": "Floodwater depth and current are difficult to judge. Never walk or drive through it."
+  },
+  "chapter": "Central Town",
+  "mission_number": 9,
+  "briefing": "Heavy rain and blocked drainage push water through low streets. Keep residents away from floodwater and electrical hazards, find a safe route to higher ground, and restore communications from an accessible emergency point.",
+  "landmark": "river crossing",
+  "items_total": 4,
+  "story_clue": "A harbor worker reports that coastal water and weather are behaving unpredictably.",
+  "ground_palette": [
+    [
+      144,
+      136,
+      107
+    ],
+    [
+      107,
+      112,
+      92
+    ],
+    [
+      171,
+      158,
+      123
+    ]
+  ],
+  "campaign_region": "Central Town",
+  "region_level": 4,
+  "hazard_join_levels": {
+    "flash_fire": 1,
+    "earthquake": 2,
+    "typhoon": 3,
+    "flash_flood": 4
+  }
+}

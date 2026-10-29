@@ -10,21 +10,21 @@ from src.utils.data_loader import BASE_DIR
 # ------------------------------------------------------------------
 # COLORS
 # ------------------------------------------------------------------
-NIGHT      = (36, 28, 44)      # deepest background
-PLUM       = (52, 40, 60)      # panel fill
-PLUM_LIGHT = (72, 57, 80)      # panel highlight
-CREAM      = (255, 244, 224)   # main text
-CREAM_DIM  = (196, 180, 170)   # secondary text
-HONEY      = (247, 195, 90)    # accent, selection, titles
-CORAL      = (232, 118, 104)   # danger, health, bad
-SAGE       = (140, 196, 132)   # good, done
-SKY        = (124, 178, 204)   # info, water
-LAVENDER   = (168, 140, 200)   # locked / special
-SHADOW     = (20, 14, 26)      # text and panel shadows
+NIGHT      = (10, 35, 61)      # deep ocean navy
+PLUM       = (18, 65, 94)      # blue interface panels
+PLUM_LIGHT = (42, 116, 145)    # teal panel highlight
+CREAM      = (248, 252, 244)   # main text
+CREAM_DIM  = (198, 222, 227)   # secondary text
+HONEY      = (255, 190, 61)    # warm accent, selection, titles
+CORAL      = (232, 76, 64)     # danger, health, bad
+SAGE       = (69, 178, 101)    # good, done
+SKY        = (76, 173, 224)    # info, water
+LAVENDER   = (114, 160, 205)   # locked / special
+SHADOW     = (5, 24, 42)      # text and panel shadows
 
-WOOD       = (120, 78, 44)     # plank
-WOOD_DARK  = (84, 52, 32)      # unselected plank
-WOOD_LIGHT = (168, 114, 64)    # plank highlight
+WOOD       = (20, 91, 122)     # active blue button
+WOOD_DARK  = (12, 54, 82)      # unselected blue button
+WOOD_LIGHT = (47, 143, 170)    # selected button highlight
 
 STRIPE     = NIGHT             # hazard stripes on the selected button (the menu tints this per hazard)
 
@@ -43,14 +43,14 @@ FONT_DIR = BASE_DIR / "assets" / "fonts" / "text"
 
 # Sizes are in WINDOW pixels (the canvas is scaled x4).
 SIZES = {
-    "tiny": 24,
-    "small": 26,
-    "body": 28,
-    "button": 32,
+    "tiny": 28,
+    "small": 32,
+    "body": 36,
+    "button": 36,
     "heading": 44,
     "title": 72,
 }
-SMOOTH_TEXT = False   # False = crisp pixel edges (good for Pixelify Sans). True = soft edges.
+SMOOTH_TEXT = True    # Render at window resolution before scaling for cleaner letter shapes.
 TEXT_QUEUE = []       # text waiting to be drawn on top of the scaled canvas
 _font_cache = {}
 _font_file = "unset"
@@ -103,9 +103,15 @@ def flush_text(window):
     """Called by Game after the canvas is scaled up. Draws all queued text."""
     scale = settings.SCALE
     for font, text, color, (x, y), shadow in TEXT_QUEUE:
+        # A one-canvas-pixel outline keeps letters legible over busy art and
+        # colored panels without relying on a particular background color.
+        glyph = font.font.render(text, SMOOTH_TEXT, color)
         if shadow:
-            window.blit(font.font.render(text, SMOOTH_TEXT, SHADOW), (x * scale + 2, y * scale + 2))
-        window.blit(font.font.render(text, SMOOTH_TEXT, color), (x * scale, y * scale))
+            outline = font.font.render(text, SMOOTH_TEXT, SHADOW)
+            for ox, oy in ((-scale, 0), (scale, 0), (0, -scale), (0, scale)):
+                window.blit(outline, (x * scale + ox, y * scale + oy))
+            window.blit(outline, (x * scale + scale, y * scale + scale))
+        window.blit(glyph, (x * scale, y * scale))
     TEXT_QUEUE.clear()
 
 # ------------------------------------------------------------------

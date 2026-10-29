@@ -1,1 +1,5 @@
 pygame-ce
+
+Flask
+psycopg2-binary
+python-dotenv

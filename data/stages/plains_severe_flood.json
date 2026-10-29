@@ -1,0 +1,317 @@
+{
+  "name": "Floodwater Turns Severe",
+  "map_size": [
+    640,
+    360
+  ],
+  "player_start": [
+    320,
+    180
+  ],
+  "walls": [
+    [
+      130,
+      65,
+      14,
+      115
+    ],
+    [
+      160,
+      65,
+      115,
+      14
+    ],
+    [
+      335,
+      65,
+      14,
+      125
+    ],
+    [
+      350,
+      180,
+      145,
+      14
+    ],
+    [
+      195,
+      240,
+      14,
+      70
+    ],
+    [
+      80,
+      180,
+      90,
+      14
+    ]
+  ],
+  "npcs": [
+    {
+      "id": "nanay_luz",
+      "name": "Mila",
+      "pos": [
+        314,
+        44
+      ],
+      "color": [
+        235,
+        150,
+        100
+      ],
+      "dialogue": [
+        "The typhoon has pushed water from the overflowing channel across the low fields.",
+        "Move people and medicine uphill. Do not enter the channel to clear debris."
+      ],
+      "after_dialogue": [
+        "The families and medicines are above the flood line. We will wait for responders."
+      ],
+      "rescue_item": "water",
+      "rescue_dialogue": [
+        "I am stranded and need the drinking water. Please bring it, then help me get to the marked high ground, away from floodwater."
+      ],
+      "rescue_success_dialogue": [
+        "Thank you. I can follow you to the marked high ground, away from floodwater now."
+      ],
+      "rescue_hint": "Find the drinking water, then speak with Mila again.",
+      "choice": {
+        "prompt": "The channel is overflowing. What should residents do?",
+        "options": [
+          {
+            "text": "Leave low ground for the marked high area",
+            "flag": "plains_severe_flood_safe",
+            "time_cost": 0,
+            "points": 100,
+            "result": "Residents move out of the flood path.",
+            "consequence": "You moved residents to higher ground.",
+            "mascot": "Following official warnings and protecting people is the safer choice."
+          },
+          {
+            "text": "Try to clear the channel in the water",
+            "flag": "plains_severe_flood_risk",
+            "time_cost": 0,
+            "points": -50,
+            "property_damage": 140,
+            "result": "Entering floodwater near damaged controls is dangerous.",
+            "consequence": "You sent residents into floodwater.",
+            "mascot": "Taking a shortcut through a hazard can injure people and damage resources."
+          }
+        ]
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "go_bag",
+      "name": "Emergency go-bag",
+      "pos": [
+        152,
+        78
+      ],
+      "color": [
+        80,
+        200,
+        120
+      ]
+    },
+    {
+      "id": "water",
+      "name": "Drinking water",
+      "pos": [
+        364,
+        102
+      ],
+      "color": [
+        80,
+        170,
+        250
+      ]
+    },
+    {
+      "id": "first_aid",
+      "name": "First-aid kit",
+      "pos": [
+        308,
+        274
+      ],
+      "color": [
+        230,
+        90,
+        140
+      ]
+    },
+    {
+      "id": "drainage_record",
+      "name": "Inspect the drainage-control records",
+      "pos": [
+        172,
+        334
+      ],
+      "color": [
+        80,
+        170,
+        250
+      ]
+    }
+  ],
+  "areas": [
+    {
+      "id": "evac_center",
+      "name": "Community Evacuation Center",
+      "rect": [
+        183,
+        278,
+        90,
+        65
+      ],
+      "color": [
+        92,
+        205,
+        230
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "id": "supplies",
+      "title": "Collect Emergency go-bag",
+      "type": "collect",
+      "target": "go_bag"
+    },
+    {
+      "id": "second_supply",
+      "title": "Collect Drinking water",
+      "type": "collect",
+      "target": "water"
+    },
+    {
+      "id": "community",
+      "title": "Check in with Mila",
+      "type": "talk",
+      "target": "nanay_luz"
+    },
+    {
+      "id": "evacuate",
+      "title": "Reach Community Evacuation Center",
+      "type": "reach",
+      "target": "evac_center"
+    },
+    {
+      "id": "rescue_nanay_luz",
+      "title": "Help Mila reach safety",
+      "type": "rescue",
+      "target": "nanay_luz"
+    },
+    {
+      "id": "extra_supply",
+      "title": "Find a first-aid kit for the evacuation to high ground.",
+      "type": "collect",
+      "target": "first_aid"
+    },
+    {
+      "id": "community_supply",
+      "title": "Inspect the drainage-control records",
+      "type": "collect",
+      "target": "drainage_record"
+    }
+  ],
+  "mascot": {
+    "intro": "I'm Tarsi! Move with WASD or arrows. E: talk, Q: ability, H: hint, P: pause. Finish your tasks and reach safety.",
+    "quests": {
+      "supplies": "Find Emergency go-bag.",
+      "second_supply": "Find Drinking water.",
+      "community": "Find Mila and press E.",
+      "evacuate": "Reach High Ground / School and stay clear of danger.",
+      "extra_supply": "Find First-aid kit."
+    }
+  },
+  "hazards": {
+    "disasters": [
+      "typhoon",
+      "flash_flood",
+      "severe_flood"
+    ],
+    "danger_ramp_seconds": 64,
+    "hazard_start_seconds": 10.8,
+    "rain": {
+      "drops": 54
+    },
+    "wind": {
+      "strength": 40
+    },
+    "debris": {
+      "damage": 13,
+      "min_interval": 1.7,
+      "max_interval": 4.0
+    },
+    "seed": 623,
+    "flood_rate": 2.3,
+    "safe_zones": [
+      [
+        183,
+        278,
+        90,
+        65
+      ]
+    ],
+    "flood_rate_initial": 1.35,
+    "flood_escalation_seconds": 20,
+    "flood_start_seconds": 8
+  },
+  "lessons": [
+    "Never walk or drive through floodwater; depth and current can be hard to judge.",
+    "Move to higher ground and follow local evacuation instructions.",
+    "Keep emergency supplies and a family communication plan ready."
+  ],
+  "safe_zones": [
+    [
+      183,
+      278,
+      90,
+      65
+    ]
+  ],
+  "quiz": {
+    "question": "Floodwater covers your planned route. What should you do?",
+    "options": [
+      "Turn around and use a safe route directed by local authorities",
+      "Walk through if it looks shallow",
+      "Follow a vehicle through the water"
+    ],
+    "answer": 0,
+    "explanation": "Floodwater depth and current are difficult to judge. Never walk or drive through it."
+  },
+  "chapter": "North East Plains",
+  "mission_number": 15,
+  "briefing": "Heavy rain fills streams and irrigation channels, then floods the low plains. Move residents to higher ground, keep them out of floodwater, and inspect the drainage controls from a safe location.",
+  "landmark": "rice terraces",
+  "items_total": 4,
+  "story_clue": "Several drainage controls appear to have been deliberately disabled.",
+  "ground_palette": [
+    [
+      139,
+      150,
+      102
+    ],
+    [
+      104,
+      123,
+      79
+    ],
+    [
+      177,
+      169,
+      103
+    ]
+  ],
+  "campaign_region": "North East Plains",
+  "region_level": 2,
+  "hazard_join_levels": {
+    "typhoon": 1,
+    "flash_flood": 2,
+    "severe_flood": 2,
+    "landslide": 3,
+    "earthquake": 4,
+    "volcano": 4
+  }
+}

@@ -5,12 +5,13 @@ import time
 import pygame
 
 from src.core import audio
-from src.entities.walk_sheet import WalkSheet
+from src.entities.reference_art import player_sprite
 from src.states.base_state import BaseState
-from src.states.world_map import WorldMap
+from src.states.loading import LoadingScreen
+from src.states.mission_prep import MissionPrep
 from src.ui import theme
 from src.ui.select_backdrop import SelectBackdrop
-from src.utils.data_loader import BASE_DIR, load_json
+from src.utils.data_loader import load_json
 from src.utils.helpers import wrap_text
 
 CENTERS = [90, 230]     # x of each hero on the 320x180 canvas
@@ -30,7 +31,7 @@ SHOW_DOG = True                     # sleeping dog on the banig mat
 SHOW_CLOCK = False                  # wall clock (off: too busy)
 SHOW_ABILITY_CARD = False           # ability description card (off: too busy)
 POSTER_PAGES = 1                    # 1 = just the go-bag list, 2 = + storm signals, 3 = + evacuate map
-POSTER_RECT = (134, 38, 52, 58)     # x, y, w, h of the pinned poster
+POSTER_RECT = (134, 38, 52, 62)     # x, y, w, h of the pinned poster
 PAGE_TIME = 6.0                     # seconds each poster page stays up
 PAGE_FLIP = 0.3                     # flutter time when the page changes
 CHECKLIST = ("Water", "Torch", "Radio", "Aid kit", "Whistle")
@@ -110,7 +111,7 @@ class CharacterSelect(BaseState):
         tips = [_parse_tip(t) for t in load_json("data/trivia.json")] or [("Stay safe!", "general")]
         random.shuffle(tips)
         self.tips = tips
-        self.board_rect = pygame.Rect(20, 153, 280, 25)
+        self.board_rect = pygame.Rect(20, 153, 280, 27)
         self.board_hover = False
 
         self.font = theme.get_font("tiny")
@@ -119,6 +120,9 @@ class CharacterSelect(BaseState):
         self.t = 0.0
         self.hop_t = 1.0            # time since the selection changed (drives the hop)
         self.leaving = False
+        self.identity_editing = False
+        self.identity_text = ""
+        self.identity_error = ""
         self.leave_t = 0.0
         self._last_step = -1
         self._landed = False
@@ -134,15 +138,17 @@ class CharacterSelect(BaseState):
 
         self.down, self.up, self.dimmed = [], [], []
         for c in self.characters:
-            path = c.get("walk")
-            if path:
-                sheet = WalkSheet(str(BASE_DIR / path), height=36)
-                zoom = lambda f: pygame.transform.scale(f, (f.get_width() * ZOOM, f.get_height() * ZOOM))
-                down = [zoom(f) for f in sheet.frames["down"]]
-                up = [zoom(f) for f in sheet.frames["up"]]
+            reference = player_sprite(c.get("id", "juan"))
+            if reference:
+                height = 62
+                width = round(reference.get_width() * height / reference.get_height())
+                hero = pygame.transform.scale(reference, (width, height))
+                # Keep one stable front-facing pose; the exit animation moves
+                # the whole sprite rather than changing direction every frame.
+                down = up = [hero] * 4
             else:
-                box = pygame.Surface((24, 40))
-                box.fill(tuple(c["color"]))
+                box = pygame.Surface((32, 56), pygame.SRCALPHA)
+                box.fill((*tuple(c["color"]), 255))
                 down = up = [box] * 4
             dim = down[0].copy()
             dim.fill((125, 125, 150, 255), special_flags=pygame.BLEND_RGBA_MULT)
@@ -161,8 +167,22 @@ class CharacterSelect(BaseState):
             audio.play("tick")
 
     def confirm(self):
-        if self.leaving:
+        if self.leaving or self.identity_editing:
             return
+        self.identity_text = self.game.session.challenger_id
+        self.identity_error = ""
+        self.identity_editing = True
+        pygame.key.start_text_input()
+
+    def finish_identity_entry(self):
+        tag = self.identity_text.strip().upper()
+        if len(tag) < 3:
+            self.identity_error = "Use at least 3 letters or numbers."
+            return
+        self.game.session.challenger_id = tag
+        self.game.session.challenger_name = tag
+        self.identity_editing = False
+        pygame.key.stop_text_input()
         self.leaving = True
         self.leave_t = 0.0
         self._last_step = -1
@@ -188,10 +208,29 @@ class CharacterSelect(BaseState):
 
     def _finish(self):
         self.game.session.character = self.characters[self.selected]
-        self.game.state_manager.change(WorldMap(self.game))
+        self.game.session.save()
+        stage_id = self.game.session.current_stage
+        self.game.state_manager.change(LoadingScreen(
+            self.game, lambda: MissionPrep(self.game, stage_id), "PREPARING YOUR JOURNEY"))
 
     # ---------- input ----------
     def handle_event(self, event):
+        if self.identity_editing:
+            if event.type == pygame.TEXTINPUT:
+                allowed = "".join(char for char in event.text.upper()
+                                  if char.isalnum() or char in "-_")
+                self.identity_text = (self.identity_text + allowed)[:14]
+                self.identity_error = ""
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_BACKSPACE:
+                    self.identity_text = self.identity_text[:-1]
+                    self.identity_error = ""
+                elif event.key in (pygame.K_RETURN, pygame.K_KP_ENTER):
+                    self.finish_identity_entry()
+                elif event.key == pygame.K_ESCAPE:
+                    self.identity_editing = False
+                    pygame.key.stop_text_input()
+            return
         if self.leaving:
             return
         if event.type == pygame.KEYDOWN:
@@ -309,16 +348,16 @@ class CharacterSelect(BaseState):
         theme.draw_button(surface, pygame.Rect(cx - 42, 106, 84, 14), c["name"], selected=selected)
 
         # stats panel: two bars + ability with an icon
-        panel = pygame.Rect(cx - 50, 123, 100, 28)
+        panel = pygame.Rect(cx - 50, 121, 100, 30)
         theme.draw_panel(surface, panel, accent=theme.HONEY if selected else theme.LAVENDER,
                          alpha=230 if selected else 190)
         rows = (("SPEED", c["speed"], self.speed_max, theme.SKY),
                 ("HP", c["max_health"], self.hp_max, theme.CORAL))
         for n, (label, value, maximum, color) in enumerate(rows):
-            y = panel.y + 4 + n * 8
+            y = panel.y + 4 + n * 9
             theme.draw_text(surface, label, (panel.x + 5, y), self.font, theme.CREAM_DIM, shadow=False)
             theme.draw_bar(surface, (panel.x + 34, y + 1, 58, 5), value, maximum, color)
-        y = panel.y + 19
+        y = panel.y + 21
         icon = ABILITY_ICON.get(c["ability"], "light")
         theme.draw_icon(surface, icon, (panel.x + 5, y), theme.HONEY)
         theme.draw_text(surface, c["ability"].replace("_", " ").title(), (panel.x + 16, y + 1),
@@ -348,7 +387,7 @@ class CharacterSelect(BaseState):
         if page == 0:       # checklist that ticks in one by one
             checked = min(len(CHECKLIST), int(local * 1.1))
             for n, item in enumerate(CHECKLIST):
-                y = paper.y + 16 + n * 8
+                y = paper.y + 16 + n * 9
                 box = pygame.Rect(paper.x + 6, y + 1, 5, 5)
                 pygame.draw.rect(surface, ink, box, 1)
                 if n < checked:
@@ -358,7 +397,7 @@ class CharacterSelect(BaseState):
 
         elif page == 1:     # PAGASA wind signals
             for n, (num, speed, color) in enumerate(SIGNALS):
-                y = paper.y + 16 + n * 8
+                y = paper.y + 16 + n * 9
                 sw = pygame.Rect(paper.x + 6, y, 7, 6)
                 pygame.draw.rect(surface, color, sw)
                 pygame.draw.rect(surface, ink, sw, 1)
@@ -448,7 +487,7 @@ class CharacterSelect(BaseState):
             pygame.draw.line(surface, (30, 20, 14), (hx + side * 1, hy - 1), (hx + side * 3, hy - 1))  # closed eye
             for k in range(2):                                                                   # floating zzz
                 ph = (self.t * 0.6 + k * 0.5) % 1.0
-                theme.draw_text(surface, "z", (cx + side * 15 + k * 3, int(cy - 10 - ph * 12)),
+                theme.draw_text(surface, "z", (cx + side * 15 + k * 6, int(cy - 10 - ph * 12)),
                                 self.font, theme.CREAM, shadow=False)
 
     def draw_notice_board(self, surface):
@@ -481,7 +520,7 @@ class CharacterSelect(BaseState):
             remaining -= len(line)
             if not part:
                 break
-            ly = board.y + 2 + n * 8
+            ly = board.y + n * 9
             theme.draw_text(surface, part, (board.x + TEXT_X, ly), self.font, ink, shadow=False)
             if not done and remaining <= 0 and int(self.t * 6) % 2:       # blinking cursor
                 cx = board.x + TEXT_X + self.font.size(part)[0] + 1
@@ -519,3 +558,26 @@ class CharacterSelect(BaseState):
             fade = (self.leave_t - FADE_START) / (LEAVE_TIME - FADE_START)
             self.fade.set_alpha(int(255 * max(0.0, min(1.0, fade))))
             surface.blit(self.fade, (0, 0))
+
+        if self.identity_editing:
+            # Text is rendered after the canvas is scaled, so discard the
+            # underlying screen's queued text before drawing this modal.
+            theme.TEXT_QUEUE.clear()
+            shade = pygame.Surface(surface.get_size(), pygame.SRCALPHA)
+            shade.fill((7, 12, 24, 205))
+            surface.blit(shade, (0, 0))
+            panel = pygame.Rect(32, 48, 256, 82)
+            theme.draw_panel(surface, panel, title="LEADERBOARD PLAYER ID", accent=theme.HONEY)
+            theme.draw_text(surface, "Choose a unique tag for your scores.",
+                            (160, 69), "tiny", theme.CREAM, anchor="center")
+            field = pygame.Rect(65, 81, 190, 20)
+            pygame.draw.rect(surface, (12, 22, 34), field)
+            pygame.draw.rect(surface, theme.SKY, field, 1)
+            cursor = "_" if pygame.time.get_ticks() // 400 % 2 == 0 else ""
+            field_text = self.identity_text + cursor if self.identity_text else "TYPE YOUR ID"
+            field_color = theme.CREAM if self.identity_text else theme.CREAM_DIM
+            theme.draw_text(surface, field_text, field.center,
+                            "small", field_color, anchor="center")
+            instruction = self.identity_error or "TYPE A TAG  ·  ENTER: CONTINUE  ·  ESC: CANCEL"
+            color = theme.CORAL if self.identity_error else theme.CREAM_DIM
+            theme.draw_text(surface, instruction, (160, 111), "tiny", color, anchor="center")

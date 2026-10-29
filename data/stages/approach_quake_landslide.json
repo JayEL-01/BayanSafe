@@ -1,0 +1,405 @@
+{
+  "name": "The Broken Approach",
+  "map_size": [
+    640,
+    360
+  ],
+  "player_start": [
+    26,
+    30
+  ],
+  "walls": [
+    [
+      105,
+      70,
+      115,
+      14
+    ],
+    [
+      270,
+      45,
+      14,
+      112
+    ],
+    [
+      390,
+      90,
+      130,
+      14
+    ],
+    [
+      130,
+      205,
+      14,
+      100
+    ],
+    [
+      290,
+      260,
+      130,
+      14
+    ],
+    [
+      480,
+      205,
+      14,
+      92
+    ]
+  ],
+  "npcs": [
+    {
+      "id": "tarsi_lead",
+      "name": "Rico Dela Cruz",
+      "pos": [
+        525,
+        305
+      ],
+      "color": [
+        230,
+        145,
+        100
+      ],
+      "dialogue": [
+        "The earthquake, landslide, and coastal warnings are all active.",
+        "Use sturdy cover during shaking, then follow the checked route inland."
+      ],
+      "after_dialogue": [
+        "The route is holding. Keep the group together and follow updates from responders."
+      ],
+      "choice": {
+        "prompt": "The road has cracked and the slope is unstable. Which approach?",
+        "options": [
+          {
+            "text": "Follow the checked service route",
+            "flag": "approach_quake_landslide_safe",
+            "time_cost": 0,
+            "points": 100,
+            "result": "The team reaches the facility without entering the slide zone.",
+            "consequence": "You followed the checked route.",
+            "mascot": "Following official warnings and protecting people is the safer choice."
+          },
+          {
+            "text": "Cross beneath the damaged slope",
+            "flag": "approach_quake_landslide_risk",
+            "time_cost": 0,
+            "points": -50,
+            "property_damage": 150,
+            "result": "The damaged slope may collapse again.",
+            "consequence": "You crossed below an unstable slope.",
+            "mascot": "Taking a shortcut through a hazard can injure people and damage resources."
+          }
+        ]
+      }
+    },
+    {
+      "id": "lola_pilar",
+      "name": "Dr. Mira Santos",
+      "pos": [
+        175,
+        315
+      ],
+      "color": [
+        155,
+        115,
+        190
+      ],
+      "dialogue": [
+        "The slope blocked the road and I hurt my leg trying to get clear.",
+        "Please bring the radio so I can call the team, then carry me to high ground."
+      ],
+      "after_dialogue": [
+        "The response team heard my call. Please carry me along the marked safe route."
+      ],
+      "rescue_item": "radio",
+      "rescue_dialogue": [
+        "I cannot walk safely with my injured leg. Bring the emergency radio, then carry me to the marked route, away from the unstable slope."
+      ],
+      "rescue_success_dialogue": [
+        "Thank you. Please carry me to the marked route, away from the unstable slope."
+      ],
+      "rescue_hint": "Collect the emergency radio, then speak with Dr. Mira Santos again.",
+      "needs_carry": true
+    },
+    {
+      "id": "mang_tomas",
+      "name": "Mang Lito",
+      "pos": [
+        525,
+        70
+      ],
+      "color": [
+        205,
+        145,
+        105
+      ],
+      "dialogue": [
+        "The ground is cracking near the coast, and the sea is pulling back.",
+        "Help me pass the tsunami warning to the shelter. We must move uphill."
+      ],
+      "after_dialogue": [
+        "The warning reached the shelter. Stay inland and away from the river valleys."
+      ],
+      "rescue_item": "approach_quake_landslide_supply",
+      "rescue_dialogue": [
+        "I am stranded and need the first-aid kit. Please bring it, then help me get to the marked route, away from the unstable slope."
+      ],
+      "rescue_success_dialogue": [
+        "Thank you. I can follow you to the marked route, away from the unstable slope now."
+      ],
+      "rescue_hint": "Find the first-aid kit, then speak with Mang Lito again.",
+      "needs_carry": false
+    }
+  ],
+  "items": [
+    {
+      "id": "go_bag",
+      "name": "Emergency go-bag",
+      "pos": [
+        80,
+        185
+      ],
+      "color": [
+        80,
+        200,
+        120
+      ]
+    },
+    {
+      "id": "radio",
+      "name": "Emergency radio",
+      "pos": [
+        550,
+        235
+      ],
+      "color": [
+        120,
+        170,
+        250
+      ]
+    },
+    {
+      "id": "mask",
+      "name": "Protective mask",
+      "pos": [
+        90,
+        290
+      ],
+      "color": [
+        210,
+        220,
+        190
+      ]
+    },
+    {
+      "id": "goggles",
+      "name": "Eye protection",
+      "pos": [
+        340,
+        300
+      ],
+      "color": [
+        230,
+        210,
+        150
+      ]
+    },
+    {
+      "id": "approach_quake_landslide_supply",
+      "name": "First-aid kit",
+      "pos": [
+        455,
+        315
+      ],
+      "color": [
+        230,
+        90,
+        140
+      ]
+    }
+  ],
+  "areas": [
+    {
+      "id": "evac_center",
+      "name": "Community Evacuation Center",
+      "rect": [
+        550,
+        265,
+        72,
+        72
+      ],
+      "color": [
+        92,
+        205,
+        230
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "id": "supplies",
+      "title": "Collect Emergency go-bag",
+      "type": "collect",
+      "target": "go_bag"
+    },
+    {
+      "id": "second_supply",
+      "title": "Collect Emergency radio",
+      "type": "collect",
+      "target": "radio"
+    },
+    {
+      "id": "mask_supply",
+      "title": "Collect Protective mask",
+      "type": "collect",
+      "target": "mask"
+    },
+    {
+      "id": "rescue_pilar",
+      "title": "Help Dr. Mira Santos call the response team",
+      "type": "rescue",
+      "target": "lola_pilar"
+    },
+    {
+      "id": "community",
+      "title": "Check in with Rico Dela Cruz",
+      "type": "talk",
+      "target": "tarsi_lead"
+    },
+    {
+      "id": "evacuate",
+      "title": "Reach Community Evacuation Center",
+      "type": "reach",
+      "target": "evac_center"
+    },
+    {
+      "id": "cover",
+      "title": "Take cover at green table",
+      "type": "cover",
+      "target": "earthquake"
+    },
+    {
+      "id": "extra_supply",
+      "title": "Find eye protection before crossing the ash and debris route.",
+      "type": "collect",
+      "target": "goggles"
+    },
+    {
+      "id": "community_supply",
+      "title": "Find First-aid kit for the response team",
+      "type": "collect",
+      "target": "approach_quake_landslide_supply"
+    },
+    {
+      "id": "rescue_mang_tomas",
+      "title": "Rescue Mang Lito and get them to safety",
+      "type": "rescue",
+      "target": "mang_tomas"
+    }
+  ],
+  "mascot": {
+    "intro": "I'm Tarsi! Move with WASD or arrows. E: talk, Q: ability, H: hint, P: pause. Finish your tasks and reach safety.",
+    "quests": {
+      "supplies": "Find Emergency go-bag.",
+      "second_supply": "Collect the remaining emergency supply.",
+      "rescue_pilar": "Find Dr. Mira Santos and give her the radio so she can call the response team.",
+      "community": "Find Rico Dela Cruz and press E.",
+      "evacuate": "Reach the marked inland safe zone.",
+      "cover": "When shaking starts, get under the sturdy table in the green cover field.",
+      "extra_supply": "Find Eye protection."
+    }
+  },
+  "hazards": {
+    "disasters": [
+      "earthquake",
+      "landslide"
+    ],
+    "danger_ramp_seconds": 55,
+    "hazard_start_seconds": 9.0,
+    "rain": {
+      "drops": 58
+    },
+    "wind": {
+      "strength": 42
+    },
+    "debris": {
+      "damage": 14,
+      "min_interval": 1.25,
+      "max_interval": 3.5
+    },
+    "seed": 680,
+    "flood_rate": 1.7,
+    "wildfire_speed": 14.2,
+    "tsunami_warning_seconds": 28,
+    "tsunami_surge_seconds": 36,
+    "safe_zones": [
+      [
+        550,
+        265,
+        72,
+        72
+      ]
+    ],
+    "quake_safe_zones": [
+      [
+        250,
+        215,
+        78,
+        62
+      ]
+    ],
+    "landslide_interval": 5.2,
+    "landslide_start_seconds": 8
+  },
+  "lessons": [
+    "Learn local landslide warning signs, hazard maps, and evacuation routes before heavy rain.",
+    "If a slide threatens, avoid its path and move to a safe area as directed by local officials.",
+    "After a slide, stay away from the affected slope because further movement may occur."
+  ],
+  "safe_zones": [
+    [
+      550,
+      265,
+      72,
+      72
+    ],
+    [
+      250,
+      215,
+      78,
+      62
+    ]
+  ],
+  "quiz": {
+    "question": "You see signs of a possible landslide near your route. What is safest?",
+    "options": [
+      "Avoid the slide path and move to a safe area following local instructions",
+      "Go closer to inspect the slope",
+      "Cross the debris to reach the road"
+    ],
+    "answer": 0,
+    "explanation": "Avoid landslide paths, move to a safe area, and follow local authority guidance."
+  },
+  "chapter": "Chapter 5 · Volcano Valley",
+  "mission_number": 21,
+  "briefing": "An earthquake cracks the approach road and weakens nearby slopes. Protect yourself during shaking, then move clear of damaged structures. Take a longer stable route around the landslide; report trapped people rather than entering unstable debris.",
+  "landmark": "coastal homes",
+  "items_total": 5,
+  "story_clue": "The team confirms the World Engine is destabilizing natural systems.",
+  "ground_palette": [
+    [
+      122,
+      112,
+      93
+    ],
+    [
+      87,
+      83,
+      73
+    ],
+    [
+      155,
+      135,
+      101
+    ]
+  ]
+}

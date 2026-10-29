@@ -22,6 +22,7 @@ class Mascot:
         self.idle_timer = 0.0
         self.bubble = ""
         self.bubble_timer = 0.0
+        self.hint_cursor = -1
 
         events.subscribe("quest_completed", self.on_quest_completed)
         events.subscribe("item_collected", self.on_progress)
@@ -38,10 +39,12 @@ class Mascot:
         self.idle_timer = 0.0
 
     def next_hint(self):
-        for q in self.quests.quests:
-            if not q["done"]:
-                return self.hints["quests"].get(q["id"], q["title"])
-        return "All done! Head back to the world map."
+        pending = [q for q in self.quests.quests if not q["done"]]
+        if not pending:
+            return "All done! Head back to the world map."
+        self.hint_cursor = (self.hint_cursor + 1) % len(pending)
+        quest = pending[self.hint_cursor]
+        return self.hints["quests"].get(quest["id"], quest["title"])
 
     def ask_hint(self):
         self.say(self.next_hint(), 6)
@@ -79,21 +82,54 @@ class Mascot:
         if self.idle_timer > self.IDLE_DELAY:
             self.say(self.next_hint(), 6)
 
-    def draw(self, surface, camera, show_bubble=True):
+    def draw(self, surface, camera, show_bubble=True, avoid_rects=()):
         bob = int(math.sin(self.time * 4) * 1.5)
         r = camera.apply(self.rect.move(0, bob))
 
         surface.blit(self.sprite, r.topleft)
 
         if self.bubble_timer > 0 and show_bubble:
-            lines = wrap_text(self.bubble, self.font, 110)[:4]
-            w = max(self.font.size(line)[0] for line in lines) + 8
-            h = len(lines) * 10 + 6
-            x = max(4, min(r.centerx - w // 2, settings.INTERNAL_WIDTH - w - 4))
-            y = max(4, r.y - h - 4)
-            box = pygame.Rect(x, y, w, h)
-            pygame.draw.rect(surface, (250, 250, 240), box)
-            pygame.draw.rect(surface, self.color, box, 1)
-            for i, line in enumerate(lines):
-                theme.draw_text(surface, line, (x + 4, y + 3 + i * 10),
-                                self.font, (30, 30, 50), shadow=False)
+            self.draw_bubble(surface, camera, avoid_rects)
+
+    def draw_bubble(self, surface, camera, avoid_rects=()):
+        if self.bubble_timer <= 0 or not self.bubble:
+            return
+        bob = int(math.sin(self.time * 4) * 1.5)
+        r = camera.apply(self.rect.move(0, bob))
+        lines = wrap_text(self.bubble, self.font, 158)[:5]
+        w = min(170, max(self.font.size(line)[0] for line in lines) + 12)
+        h = len(lines) * 10 + 8
+        x = max(4, min(r.centerx - w // 2, settings.INTERNAL_WIDTH - w - 4))
+        y = max(4, r.y - h - 4)
+        box = pygame.Rect(x, y, w, h)
+        if any(box.colliderect(avoid) for avoid in avoid_rects):
+            below_y = min(settings.INTERNAL_HEIGHT - h - 4, r.bottom + 8)
+            below = pygame.Rect(x, below_y, w, h)
+            if not any(below.colliderect(avoid) for avoid in avoid_rects):
+                box = below
+            else:
+                for offset in (-w - 12, 18):
+                    other_x = max(4, min(r.centerx + offset, settings.INTERNAL_WIDTH - w - 4))
+                    other = pygame.Rect(other_x, y, w, h)
+                    if not any(other.colliderect(avoid) for avoid in avoid_rects):
+                        box = other
+                        break
+        pygame.draw.rect(surface, (10, 15, 26), box.inflate(2, 2))
+        pygame.draw.rect(surface, (250, 250, 240), box)
+        pygame.draw.rect(surface, self.color, box, 1)
+        for i, line in enumerate(lines):
+            theme.draw_text(surface, line, (box.x + 6, box.y + 4 + i * 10),
+                            self.font, (30, 30, 50), shadow=False)
+        tail_x = max(box.x + 8, min(r.centerx, box.right - 8))
+        if box.bottom < r.top:
+            pygame.draw.polygon(surface, (250, 250, 240),
+                                [(tail_x - 4, box.bottom - 1), (tail_x + 4, box.bottom - 1),
+                                 (tail_x, box.bottom + 5)])
+        else:
+            pygame.draw.polygon(surface, (250, 250, 240),
+                                [(tail_x - 4, box.y + 1), (tail_x + 4, box.y + 1),
+                                 (tail_x, box.y - 5)])
+
+    def draw_tip(self, surface):
+        """Speech is drawn beside Tarsi, not as a fixed overlay card."""
+        return

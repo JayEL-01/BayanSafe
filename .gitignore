@@ -5,3 +5,9 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+build/
+dist/
+
+# Local credentials and campaign saves
+.env
+saves/

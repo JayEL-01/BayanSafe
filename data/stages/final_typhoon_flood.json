@@ -1,0 +1,400 @@
+{
+  "name": "All Eight Hazards Converge",
+  "map_size": [
+    640,
+    360
+  ],
+  "player_start": [
+    320,
+    180
+  ],
+  "walls": [
+    [
+      80,
+      95,
+      135,
+      14
+    ],
+    [
+      245,
+      95,
+      14,
+      105
+    ],
+    [
+      300,
+      55,
+      145,
+      14
+    ],
+    [
+      475,
+      90,
+      14,
+      145
+    ],
+    [
+      110,
+      255,
+      150,
+      14
+    ],
+    [
+      340,
+      260,
+      14,
+      60
+    ]
+  ],
+  "npcs": [
+    {
+      "id": "tarsi_lead",
+      "name": "Rico Dela Cruz",
+      "pos": [
+        156,
+        244
+      ],
+      "color": [
+        230,
+        145,
+        100
+      ],
+      "dialogue": [
+        "All eight hazard warnings are active around Mount Talon. This route is our last chance.",
+        "Take cover during shaking; avoid floodwater, smoke, ash, and unstable slopes."
+      ],
+      "after_dialogue": [
+        "The team is together. We will follow the safest route and keep listening for updates."
+      ],
+      "choice": {
+        "prompt": "Water is nearing the control level. What should be prioritized?",
+        "options": [
+          {
+            "text": "Move personnel and preserve emergency power",
+            "flag": "final_typhoon_flood_safe",
+            "time_cost": 0,
+            "points": 100,
+            "result": "Personnel and emergency support remain protected.",
+            "consequence": "You protected people and emergency power.",
+            "mascot": "Following official warnings and protecting people is the safer choice."
+          },
+          {
+            "text": "Recover extra equipment from the lower floor",
+            "flag": "final_typhoon_flood_risk",
+            "time_cost": 0,
+            "points": -50,
+            "property_damage": 150,
+            "result": "The lower floor may flood and contain electrical hazards.",
+            "consequence": "You risked personnel for extra equipment.",
+            "mascot": "Taking a shortcut through a hazard can injure people and damage resources."
+          }
+        ]
+      }
+    },
+    {
+      "id": "lola_pilar",
+      "name": "Dr. Mira Santos",
+      "pos": [
+        132,
+        164
+      ],
+      "color": [
+        155,
+        115,
+        190
+      ],
+      "dialogue": [
+        "I helped the harbor and plains teams, but floodwater, smoke, ash, and debris now block this road.",
+        "I hurt my leg. Bring the radio so I can call for help, then carry me to the control shelter."
+      ],
+      "after_dialogue": [
+        "The response team is on the radio. Please carry me away from the flood channel."
+      ],
+      "rescue_item": "radio",
+      "rescue_dialogue": [
+        "I cannot walk safely with my injured leg. Bring the emergency radio, then carry me to inland high ground."
+      ],
+      "rescue_success_dialogue": [
+        "Thank you. Please carry me to inland high ground."
+      ],
+      "rescue_hint": "Collect the emergency radio, then speak with Dr. Mira Santos again.",
+      "needs_carry": true
+    },
+    {
+      "id": "aling_rosa",
+      "name": "Aling Rosa",
+      "pos": [
+        116,
+        20
+      ],
+      "color": [
+        205,
+        145,
+        105
+      ],
+      "dialogue": [
+        "I have seen neighbors help one another at every shelter on this island.",
+        "Please bring first aid. We still have families to guide away from the hazards."
+      ],
+      "after_dialogue": [
+        "Thank you. I can follow you. Let's keep the families together and move uphill."
+      ],
+      "rescue_item": "first_aid",
+      "rescue_dialogue": [
+        "I am stranded and need first-aid kit. Please bring it, then help me get to inland high ground."
+      ],
+      "rescue_success_dialogue": [
+        "Thank you. I can follow you to inland high ground now."
+      ],
+      "rescue_hint": "Find first-aid kit, then speak with Aling Rosa again.",
+      "needs_carry": false
+    }
+  ],
+  "items": [
+    {
+      "id": "go_bag",
+      "name": "Emergency go-bag",
+      "pos": [
+        194,
+        142
+      ],
+      "color": [
+        80,
+        200,
+        120
+      ]
+    },
+    {
+      "id": "radio",
+      "name": "Emergency radio",
+      "pos": [
+        174,
+        42
+      ],
+      "color": [
+        120,
+        170,
+        250
+      ]
+    },
+    {
+      "id": "water",
+      "name": "Drinking water",
+      "pos": [
+        286,
+        62
+      ],
+      "color": [
+        85,
+        175,
+        235
+      ]
+    },
+    {
+      "id": "first_aid",
+      "name": "First-aid kit",
+      "pos": [
+        254,
+        198
+      ],
+      "color": [
+        215,
+        90,
+        88
+      ]
+    },
+    {
+      "id": "final_typhoon_flood_supply",
+      "name": "Drinking water",
+      "pos": [
+        234,
+        54
+      ],
+      "color": [
+        80,
+        170,
+        250
+      ]
+    }
+  ],
+  "areas": [
+    {
+      "id": "evac_center",
+      "name": "World Engine Control Access",
+      "rect": [
+        77,
+        192,
+        82,
+        75
+      ],
+      "color": [
+        92,
+        205,
+        230
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "id": "go_bag",
+      "title": "Take the emergency go-bag",
+      "type": "collect",
+      "target": "go_bag"
+    },
+    {
+      "id": "radio",
+      "title": "Keep the emergency radio available",
+      "type": "collect",
+      "target": "radio"
+    },
+    {
+      "id": "water",
+      "title": "Secure drinking water for the response team",
+      "type": "collect",
+      "target": "water"
+    },
+    {
+      "id": "first_aid",
+      "title": "Find first aid for injured personnel",
+      "type": "collect",
+      "target": "first_aid"
+    },
+    {
+      "id": "check_in",
+      "title": "Coordinate the evacuation with Tarsi",
+      "type": "talk",
+      "target": "tarsi_lead"
+    },
+    {
+      "id": "rescue_pilar",
+      "title": "Help Dr. Mira Santos reach the evacuation route",
+      "type": "rescue",
+      "target": "lola_pilar"
+    },
+    {
+      "id": "rescue_rosa",
+      "title": "Help Aling Rosa reach the evacuation route",
+      "type": "rescue",
+      "target": "aling_rosa"
+    },
+    {
+      "id": "evacuate",
+      "title": "Reach the control facility evacuation route",
+      "type": "reach",
+      "target": "evac_center"
+    }
+  ],
+  "mascot": {
+    "intro": "I'm Tarsi! Move with WASD or arrows. E: talk, Q: ability, H: hint, P: pause. Finish your tasks and reach safety.",
+    "quests": {
+      "supplies": "Find Emergency go-bag.",
+      "second_supply": "Collect the remaining emergency supply.",
+      "rescue_pilar": "Find Dr. Mira Santos and give her the radio so she can call the response team.",
+      "community": "Find Rico Dela Cruz and press E.",
+      "evacuate": "Reach the marked inland safe zone.",
+      "cover": "When shaking starts, get under the sturdy table in the green cover field.",
+      "extra_supply": "Find Eye protection."
+    }
+  },
+  "hazards": {
+    "disasters": [
+      "volcano",
+      "landslide",
+      "flash_fire",
+      "flash_flood",
+      "earthquake",
+      "tsunami",
+      "typhoon",
+      "severe_flood"
+    ],
+    "danger_ramp_seconds": 38,
+    "hazard_start_seconds": 5,
+    "rain": {
+      "drops": 58
+    },
+    "wind": {
+      "strength": 42
+    },
+    "debris": {
+      "damage": 14,
+      "min_interval": 1.25,
+      "max_interval": 3.5
+    },
+    "seed": 737,
+    "flood_rate": 2.3,
+    "wildfire_speed": 14.2,
+    "tsunami_warning_seconds": 28,
+    "tsunami_surge_seconds": 28,
+    "safe_zones": [
+      [
+        77,
+        192,
+        82,
+        75
+      ]
+    ],
+    "flood_start_seconds": 16,
+    "flood_rate_initial": 0.9,
+    "flood_escalation_seconds": 18,
+    "volcano_start_seconds": 11,
+    "landslide_start_seconds": 8
+  },
+  "lessons": [
+    "Never walk or drive through floodwater; depth and current can be hard to judge.",
+    "Move to higher ground and follow local evacuation instructions.",
+    "Keep emergency supplies and a family communication plan ready."
+  ],
+  "safe_zones": [
+    [
+      77,
+      192,
+      82,
+      75
+    ]
+  ],
+  "quiz": {
+    "question": "Floodwater covers your planned route. What should you do?",
+    "options": [
+      "Turn around and use a safe route directed by local authorities",
+      "Walk through if it looks shallow",
+      "Follow a vehicle through the water"
+    ],
+    "answer": 0,
+    "explanation": "Floodwater depth and current are difficult to judge. Never walk or drive through it."
+  },
+  "chapter": "Volcano Valleys",
+  "mission_number": 21,
+  "briefing": "The World Engine activates a typhoon defense sequence, then severe flooding threatens lower facility levels. Keep personnel away from exposed structures and floodwater near electrical equipment. Protect essential emergency systems, choose viable evacuation routes, and reach the central controls.",
+  "landmark": "hilltop school",
+  "items_total": 5,
+  "story_clue": "Every earlier rescue, resource, record, and decision can now affect the shutdown.",
+  "ground_palette": [
+    [
+      122,
+      112,
+      93
+    ],
+    [
+      87,
+      83,
+      73
+    ],
+    [
+      155,
+      135,
+      101
+    ]
+  ],
+  "campaign_region": "Volcano Valleys",
+  "region_level": 4,
+  "hazard_join_levels": {
+    "volcano": 1,
+    "landslide": 2,
+    "flash_fire": 2,
+    "flash_flood": 3,
+    "earthquake": 4,
+    "tsunami": 4,
+    "typhoon": 4,
+    "severe_flood": 4
+  }
+}

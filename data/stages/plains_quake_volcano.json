@@ -1,0 +1,387 @@
+{
+  "name": "Earthquake at the Volcano Approach",
+  "map_size": [
+    640,
+    360
+  ],
+  "player_start": [
+    320,
+    180
+  ],
+  "walls": [
+    [
+      100,
+      65,
+      14,
+      135
+    ],
+    [
+      150,
+      180,
+      120,
+      14
+    ],
+    [
+      305,
+      65,
+      14,
+      130
+    ],
+    [
+      355,
+      180,
+      155,
+      14
+    ],
+    [
+      535,
+      200,
+      14,
+      95
+    ],
+    [
+      190,
+      275,
+      14,
+      48
+    ]
+  ],
+  "npcs": [
+    {
+      "id": "tarsi_lead",
+      "name": "Rico Dela Cruz",
+      "pos": [
+        258,
+        196
+      ],
+      "color": [
+        230,
+        145,
+        100
+      ],
+      "dialogue": [
+        "Typhoon winds, floodwater, and unstable slopes are already dangerous. Now tremors and ashfall begin.",
+        "Take cover during shaking, then follow the official inland route. Avoid valleys and slopes."
+      ],
+      "after_dialogue": [
+        "The group is clear of the valley. Keep masks on and listen for the next official update."
+      ],
+      "choice": {
+        "prompt": "Ash is spreading and evacuation orders are active. What now?",
+        "options": [
+          {
+            "text": "Follow official routes and protect eyes and breathing",
+            "flag": "plains_quake_volcano_safe",
+            "time_cost": 0,
+            "points": 100,
+            "result": "Residents leave the hazard zone with suitable protection.",
+            "consequence": "You followed the evacuation order.",
+            "mascot": "Following official warnings and protecting people is the safer choice."
+          },
+          {
+            "text": "Wait near the valley for a clearer view",
+            "flag": "plains_quake_volcano_risk",
+            "time_cost": 0,
+            "points": -50,
+            "property_damage": 150,
+            "result": "Ash, gases, and lahars make the valley unsafe.",
+            "consequence": "You remained in the volcanic hazard zone.",
+            "mascot": "Taking a shortcut through a hazard can injure people and damage resources."
+          }
+        ]
+      }
+    },
+    {
+      "id": "lola_pilar",
+      "name": "Dr. Mira Santos",
+      "pos": [
+        334,
+        148
+      ],
+      "color": [
+        155,
+        115,
+        190
+      ],
+      "dialogue": [
+        "I helped the harbor families escape. Now a tremor has blocked our path, and ash hides the road.",
+        "Bring the radio so I can call the team. Then carry me along the marked route."
+      ],
+      "after_dialogue": [
+        "The team heard us. Please keep me away from the valley and falling rocks."
+      ],
+      "rescue_item": "radio",
+      "rescue_dialogue": [
+        "I cannot walk safely with my injured leg. Bring the emergency radio, then carry me to the safe route, away from smoke and ash."
+      ],
+      "rescue_success_dialogue": [
+        "Thank you. Please carry me to the safe route, away from smoke and ash."
+      ],
+      "rescue_hint": "Collect the emergency radio, then speak with Dr. Mira Santos again.",
+      "needs_carry": true
+    }
+  ],
+  "items": [
+    {
+      "id": "go_bag",
+      "name": "Emergency go-bag",
+      "pos": [
+        364,
+        102
+      ],
+      "color": [
+        80,
+        200,
+        120
+      ]
+    },
+    {
+      "id": "radio",
+      "name": "Emergency radio",
+      "pos": [
+        308,
+        274
+      ],
+      "color": [
+        120,
+        170,
+        250
+      ]
+    },
+    {
+      "id": "mask",
+      "name": "Protective mask",
+      "pos": [
+        184,
+        202
+      ],
+      "color": [
+        210,
+        220,
+        190
+      ]
+    },
+    {
+      "id": "goggles",
+      "name": "Eye protection",
+      "pos": [
+        152,
+        78
+      ],
+      "color": [
+        230,
+        210,
+        150
+      ]
+    },
+    {
+      "id": "plains_quake_volcano_supply",
+      "name": "Protective mask",
+      "pos": [
+        216,
+        2
+      ],
+      "color": [
+        205,
+        220,
+        190
+      ]
+    }
+  ],
+  "areas": [
+    {
+      "id": "evac_center",
+      "name": "Community Evacuation Center",
+      "rect": [
+        343,
+        163,
+        90,
+        78
+      ],
+      "color": [
+        92,
+        205,
+        230
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "id": "supplies",
+      "title": "Collect Emergency go-bag",
+      "type": "collect",
+      "target": "go_bag"
+    },
+    {
+      "id": "second_supply",
+      "title": "Collect Emergency radio",
+      "type": "collect",
+      "target": "radio"
+    },
+    {
+      "id": "mask_supply",
+      "title": "Collect Protective mask",
+      "type": "collect",
+      "target": "mask"
+    },
+    {
+      "id": "rescue_pilar",
+      "title": "Help Dr. Mira Santos call the response team",
+      "type": "rescue",
+      "target": "lola_pilar"
+    },
+    {
+      "id": "community",
+      "title": "Check in with Rico Dela Cruz",
+      "type": "talk",
+      "target": "tarsi_lead"
+    },
+    {
+      "id": "evacuate",
+      "title": "Reach Community Evacuation Center",
+      "type": "reach",
+      "target": "evac_center"
+    },
+    {
+      "id": "cover",
+      "title": "Take cover at green table",
+      "type": "cover",
+      "target": "earthquake"
+    },
+    {
+      "id": "extra_supply",
+      "title": "Find eye protection before crossing the ash and debris route.",
+      "type": "collect",
+      "target": "goggles"
+    },
+    {
+      "id": "community_supply",
+      "title": "Find Protective mask for the response team",
+      "type": "collect",
+      "target": "plains_quake_volcano_supply"
+    }
+  ],
+  "mascot": {
+    "intro": "I'm Tarsi! Move with WASD or arrows. E: talk, Q: ability, H: hint, P: pause. Finish your tasks and reach safety.",
+    "quests": {
+      "supplies": "Find Emergency go-bag.",
+      "second_supply": "Collect the remaining emergency supply.",
+      "rescue_pilar": "Find Dr. Mira Santos and give her the radio so she can call the response team.",
+      "community": "Find Rico Dela Cruz and press E.",
+      "evacuate": "Reach the marked inland safe zone.",
+      "cover": "When shaking starts, get under the sturdy table in the green cover field.",
+      "extra_supply": "Find Eye protection."
+    }
+  },
+  "hazards": {
+    "disasters": [
+      "typhoon",
+      "flash_flood",
+      "severe_flood",
+      "landslide",
+      "earthquake",
+      "volcano"
+    ],
+    "danger_ramp_seconds": 58,
+    "hazard_start_seconds": 9.6,
+    "rain": {
+      "drops": 58
+    },
+    "wind": {
+      "strength": 42
+    },
+    "debris": {
+      "damage": 14,
+      "min_interval": 1.25,
+      "max_interval": 3.5
+    },
+    "seed": 661,
+    "flood_rate": 2.3,
+    "wildfire_speed": 14.2,
+    "tsunami_warning_seconds": 28,
+    "tsunami_surge_seconds": 36,
+    "safe_zones": [
+      [
+        343,
+        163,
+        90,
+        78
+      ]
+    ],
+    "quake_safe_zones": [
+      [
+        165,
+        215,
+        78,
+        62
+      ]
+    ],
+    "volcano_start_seconds": 18,
+    "flood_start_seconds": 8,
+    "flood_rate_initial": 0.9,
+    "flood_escalation_seconds": 18,
+    "landslide_start_seconds": 8
+  },
+  "lessons": [
+    "Follow current PHIVOLCS and local authority alerts and evacuation orders.",
+    "Keep outside restricted danger zones; use a protective mask or wet cloth if ashfall occurs.",
+    "Avoid river channels that may carry lahar during intense rain."
+  ],
+  "safe_zones": [
+    [
+      343,
+      163,
+      90,
+      78
+    ],
+    [
+      165,
+      215,
+      78,
+      62
+    ]
+  ],
+  "quiz": {
+    "question": "Authorities order evacuation from a volcanic danger zone. What is safest?",
+    "options": [
+      "Leave using the designated route and follow official instructions",
+      "Wait until ash or rocks are visible",
+      "Travel into a river channel to find another route"
+    ],
+    "answer": 0,
+    "explanation": "Follow PHIVOLCS and local authority evacuation orders; avoid restricted zones and hazardous channels."
+  },
+  "chapter": "North East Plains",
+  "mission_number": 17,
+  "briefing": "An earthquake damages roads toward the volcanic region. After the shaking, an eruption triggers evacuation alerts. Follow official instructions, avoid restricted zones and valleys threatened by lahars, and use suitable eye and respiratory protection from ash.",
+  "landmark": "rocky pass",
+  "items_total": 5,
+  "story_clue": "Dr. Voss’s recording warns that an uncontrolled shutdown could release catastrophic energy.",
+  "ground_palette": [
+    [
+      139,
+      150,
+      102
+    ],
+    [
+      104,
+      123,
+      79
+    ],
+    [
+      177,
+      169,
+      103
+    ]
+  ],
+  "campaign_region": "North East Plains",
+  "region_level": 4,
+  "hazard_join_levels": {
+    "typhoon": 1,
+    "flash_flood": 2,
+    "severe_flood": 2,
+    "landslide": 3,
+    "earthquake": 4,
+    "volcano": 4
+  }
+}

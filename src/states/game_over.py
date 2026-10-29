@@ -19,13 +19,16 @@ class GameOver(BaseState):
         self.selected = 0
         self.buttons = [
             Button("RETRY", (105, 112, 110, 20), self.on_retry),
-            Button("WORLD MAP", (105, 140, 110, 20), self.back_to_map),
+            Button("RETURN TO TITLE", (105, 140, 110, 20), self.back_to_map),
         ]
         self.update_selection()
 
     def back_to_map(self):
         self.game.state_manager.pop()   # this screen
         self.game.state_manager.pop()   # the stage
+        world = self.game.state_manager.current()
+        if world and hasattr(world, "focus_stage"):
+            world.focus_stage(self.game.session.current_stage)
 
     def update_selection(self):
         for i, b in enumerate(self.buttons):

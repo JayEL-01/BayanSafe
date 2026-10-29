@@ -1,0 +1,302 @@
+{
+  "name": "The Sinking Settlement",
+  "map_size": [
+    640,
+    360
+  ],
+  "player_start": [
+    28,
+    320
+  ],
+  "walls": [
+    [
+      80,
+      95,
+      135,
+      14
+    ],
+    [
+      245,
+      95,
+      14,
+      105
+    ],
+    [
+      300,
+      55,
+      145,
+      14
+    ],
+    [
+      475,
+      90,
+      14,
+      145
+    ],
+    [
+      110,
+      255,
+      150,
+      14
+    ],
+    [
+      340,
+      260,
+      14,
+      60
+    ]
+  ],
+  "npcs": [
+    {
+      "id": "nanay_luz",
+      "name": "Lola Teresa",
+      "pos": [
+        365,
+        205
+      ],
+      "color": [
+        235,
+        150,
+        100
+      ],
+      "dialogue": [
+        "Floodwater is spreading through the settlement and the low road is gone.",
+        "Move people and medicine uphill. Leave belongings behind and stay out of the water."
+      ],
+      "after_dialogue": [
+        "Everyone is on high ground. We will wait here for the response team."
+      ],
+      "rescue_item": "water",
+      "rescue_dialogue": [
+        "I am stranded and need the drinking water. Please bring it, then help me get to the marked shelter."
+      ],
+      "rescue_success_dialogue": [
+        "Thank you. I can follow you to the marked shelter now."
+      ],
+      "rescue_hint": "Find the drinking water, then speak with Lola Teresa again.",
+      "choice": {
+        "prompt": "Water is rising across the settlement. What should be secured first?",
+        "options": [
+          {
+            "text": "Move residents and medicines uphill",
+            "flag": "severe_flood_safe",
+            "time_cost": 0,
+            "points": 100,
+            "result": "People and essential medicine reach higher ground.",
+            "consequence": "You prioritized people and essential medicine.",
+            "mascot": "Following official warnings and protecting people is the safer choice."
+          },
+          {
+            "text": "Search low homes for extra supplies",
+            "flag": "severe_flood_risk",
+            "time_cost": 0,
+            "points": -50,
+            "property_damage": 100,
+            "result": "The low search delays evacuation and damages supplies.",
+            "consequence": "You delayed evacuation for optional supplies.",
+            "mascot": "Taking a shortcut through a hazard can injure people and damage resources."
+          }
+        ]
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "go_bag",
+      "name": "Emergency go-bag",
+      "pos": [
+        505,
+        125
+      ],
+      "color": [
+        80,
+        200,
+        120
+      ]
+    },
+    {
+      "id": "water",
+      "name": "Drinking water",
+      "pos": [
+        430,
+        270
+      ],
+      "color": [
+        80,
+        170,
+        250
+      ]
+    },
+    {
+      "id": "first_aid",
+      "name": "First-aid kit",
+      "pos": [
+        265,
+        210
+      ],
+      "color": [
+        230,
+        90,
+        140
+      ]
+    },
+    {
+      "id": "severe_flood_supply",
+      "name": "Drinking water",
+      "pos": [
+        305,
+        35
+      ],
+      "color": [
+        80,
+        170,
+        250
+      ]
+    }
+  ],
+  "areas": [
+    {
+      "id": "evac_center",
+      "name": "Community Evacuation Center",
+      "rect": [
+        30,
+        260,
+        82,
+        75
+      ],
+      "color": [
+        92,
+        205,
+        230
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "id": "supplies",
+      "title": "Collect Emergency go-bag",
+      "type": "collect",
+      "target": "go_bag"
+    },
+    {
+      "id": "second_supply",
+      "title": "Collect Drinking water",
+      "type": "collect",
+      "target": "water"
+    },
+    {
+      "id": "community",
+      "title": "Check in with Lola Teresa",
+      "type": "talk",
+      "target": "nanay_luz"
+    },
+    {
+      "id": "evacuate",
+      "title": "Reach Community Evacuation Center",
+      "type": "reach",
+      "target": "evac_center"
+    },
+    {
+      "id": "rescue_nanay_luz",
+      "title": "Help Lola Teresa reach safety",
+      "type": "rescue",
+      "target": "nanay_luz"
+    },
+    {
+      "id": "extra_supply",
+      "title": "Find a first-aid kit for the evacuation to high ground.",
+      "type": "collect",
+      "target": "first_aid"
+    },
+    {
+      "id": "community_supply",
+      "title": "Find Drinking water for the response team",
+      "type": "collect",
+      "target": "severe_flood_supply"
+    }
+  ],
+  "mascot": {
+    "intro": "I'm Tarsi! Move with WASD or arrows. E: talk, Q: ability, H: hint, P: pause. Finish your tasks and reach safety.",
+    "quests": {
+      "supplies": "Find Emergency go-bag.",
+      "second_supply": "Find Drinking water.",
+      "community": "Find Lola Teresa and press E.",
+      "evacuate": "Reach High Ground / School and stay clear of danger.",
+      "extra_supply": "Find First-aid kit."
+    }
+  },
+  "hazards": {
+    "disasters": [
+      "flood"
+    ],
+    "danger_ramp_seconds": 110,
+    "hazard_start_seconds": 5,
+    "rain": {
+      "drops": 54
+    },
+    "wind": {
+      "strength": 40
+    },
+    "debris": {
+      "damage": 13,
+      "min_interval": 1.7,
+      "max_interval": 4.0
+    },
+    "seed": 357,
+    "flood_rate": 2.0,
+    "safe_zones": [
+      [
+        30,
+        260,
+        82,
+        75
+      ]
+    ]
+  },
+  "lessons": [
+    "Never walk or drive through floodwater; depth and current can be hard to judge.",
+    "Move to higher ground and follow local evacuation instructions.",
+    "Keep emergency supplies and a family communication plan ready."
+  ],
+  "safe_zones": [
+    [
+      30,
+      260,
+      82,
+      75
+    ]
+  ],
+  "quiz": {
+    "question": "Floodwater covers your planned route. What should you do?",
+    "options": [
+      "Turn around and use a safe route directed by local authorities",
+      "Walk through if it looks shallow",
+      "Follow a vehicle through the water"
+    ],
+    "answer": 0,
+    "explanation": "Floodwater depth and current are difficult to judge. Never walk or drive through it."
+  },
+  "chapter": "Prologue",
+  "mission_number": 4,
+  "briefing": "Continuous rain and overflowing waterways inundate the low settlement. Coordinate residents, distribute supplies, and move vulnerable neighbors to safe ground. A damaged recording and the component can help trace the signal to the North West Plateau.",
+  "landmark": "hilltop school",
+  "items_total": 4,
+  "story_clue": "A damaged recording says: “The system is still active. The regional stabilizers have failed.”",
+  "ground_palette": [
+    [
+      99,
+      145,
+      105
+    ],
+    [
+      69,
+      115,
+      83
+    ],
+    [
+      132,
+      169,
+      112
+    ]
+  ]
+}

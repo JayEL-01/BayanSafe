@@ -1,0 +1,310 @@
+{
+  "name": "Typhoon in the North East Plains",
+  "map_size": [
+    640,
+    360
+  ],
+  "player_start": [
+    320,
+    180
+  ],
+  "walls": [
+    [
+      80,
+      110,
+      14,
+      125
+    ],
+    [
+      180,
+      70,
+      105,
+      14
+    ],
+    [
+      325,
+      70,
+      14,
+      105
+    ],
+    [
+      390,
+      185,
+      130,
+      14
+    ],
+    [
+      275,
+      235,
+      14,
+      90
+    ],
+    [
+      120,
+      285,
+      130,
+      14
+    ]
+  ],
+  "npcs": [
+    {
+      "id": "aling_nena",
+      "name": "Kuya Ben",
+      "pos": [
+        138,
+        136
+      ],
+      "color": [
+        230,
+        130,
+        90
+      ],
+      "dialogue": [
+        "The typhoon is crossing the open plains. The farms and power lines are exposed to the wind.",
+        "Leave tools and crops behind; bring the go-bag and guide everyone to the inland shelter."
+      ],
+      "after_dialogue": [
+        "We are in the shelter. Stay inside and keep away from windows until officials give the all-clear."
+      ],
+      "choice": {
+        "prompt": "Should we board up the windows now? It takes time, and the storm is getting closer.",
+        "options": [
+          {
+            "text": "Board windows (storm pressure +10 sec)",
+            "flag": "boarded",
+            "time_cost": 10,
+            "points": 200,
+            "result": "Windows boarded! The storm pressure rises, but the home is protected.",
+            "mascot": "Boarding takes time, but it protects the home from wind-borne glass.",
+            "consequence": "You boarded the windows. It cost time, but the glass stayed intact and the house was protected."
+          },
+          {
+            "text": "Leave now (home damage: 150 pts)",
+            "flag": "skipped",
+            "time_cost": 0,
+            "points": 0,
+            "result": "You left immediately. The family is safer, but the house is exposed.",
+            "mascot": "Leaving quickly protects people. The unboarded windows may still break.",
+            "consequence": "You skipped the windows. You saved time, but strong wind broke the glass and damaged the house.",
+            "property_damage": 150
+          }
+        ]
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "go_bag",
+      "name": "Go-bag",
+      "pos": [
+        52,
+        298
+      ],
+      "color": [
+        80,
+        200,
+        120
+      ]
+    },
+    {
+      "id": "flashlight",
+      "name": "Flashlight",
+      "pos": [
+        240,
+        310
+      ],
+      "color": [
+        240,
+        240,
+        120
+      ]
+    },
+    {
+      "id": "radio",
+      "name": "Radio",
+      "pos": [
+        60,
+        170
+      ],
+      "color": [
+        120,
+        170,
+        250
+      ]
+    },
+    {
+      "id": "first_aid",
+      "name": "First-aid kit",
+      "pos": [
+        400,
+        234
+      ],
+      "color": [
+        230,
+        90,
+        140
+      ]
+    },
+    {
+      "id": "plains_typhoon_supply",
+      "name": "Battery radio",
+      "pos": [
+        60,
+        106
+      ],
+      "color": [
+        120,
+        170,
+        250
+      ]
+    }
+  ],
+  "areas": [
+    {
+      "id": "evac_center",
+      "name": "Community Evacuation Center",
+      "rect": [
+        308,
+        72,
+        88,
+        75
+      ],
+      "color": [
+        92,
+        205,
+        230
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "id": "supplies",
+      "title": "Find emergency supplies",
+      "type": "collect",
+      "target": "go_bag"
+    },
+    {
+      "id": "flashlight",
+      "title": "Find the flashlight",
+      "type": "collect",
+      "target": "flashlight"
+    },
+    {
+      "id": "talk_nena",
+      "title": "Talk to Kuya Ben",
+      "type": "talk",
+      "target": "aling_nena"
+    },
+    {
+      "id": "evac",
+      "title": "Reach Community Evacuation Center",
+      "type": "reach",
+      "target": "evac_center"
+    },
+    {
+      "id": "extra_supply",
+      "title": "Find a first-aid kit before the storm reaches the evacuation center.",
+      "type": "collect",
+      "target": "first_aid"
+    },
+    {
+      "id": "community_supply",
+      "title": "Find Battery radio for the response team",
+      "type": "collect",
+      "target": "plains_typhoon_supply"
+    }
+  ],
+  "mascot": {
+    "intro": "I'm Tarsi! Move with WASD or arrows. E: talk, Q: ability, H: hint, P: pause. Finish your tasks and reach safety.",
+    "quests": {
+      "supplies": "Look for the green go-bag. Every family needs one ready for an emergency.",
+      "flashlight": "A flashlight is important when the power goes out. Look for the yellow item.",
+      "talk_nena": "Kuya Ben needs help. Walk up to the orange person and press E.",
+      "evac": "Head to the blue Evacuation Center in the bottom-right corner.",
+      "extra_supply": "Find First-aid kit."
+    }
+  },
+  "hazards": {
+    "disasters": [
+      "typhoon"
+    ],
+    "danger_ramp_seconds": 67,
+    "hazard_start_seconds": 11.4,
+    "rain": {
+      "drops": 60
+    },
+    "wind": {
+      "strength": 45
+    },
+    "debris": {
+      "damage": 15,
+      "min_interval": 1.2,
+      "max_interval": 3.5
+    },
+    "seed": 604,
+    "safe_zones": [
+      [
+        308,
+        72,
+        88,
+        75
+      ]
+    ]
+  },
+  "safe_zones": [
+    [
+      308,
+      72,
+      88,
+      75
+    ]
+  ],
+  "lessons": [
+    "Follow PAGASA bulletins and local evacuation orders.",
+    "Prepare a go-bag and family communication plan before conditions worsen.",
+    "Stay away from floodwater and wind-borne debris."
+  ],
+  "quiz": {
+    "question": "Local officials order evacuation before a typhoon arrives. What is safest?",
+    "options": [
+      "Leave early using the designated route with essential supplies",
+      "Wait for the strongest winds before leaving",
+      "Take a shortcut through floodwater"
+    ],
+    "answer": 0,
+    "explanation": "Follow local evacuation orders early and avoid floodwater and exposed routes."
+  },
+  "chapter": "North East Plains",
+  "mission_number": 14,
+  "briefing": "A typhoon damages farms and storage buildings. Move farmers to shelter and protect food and water that can be secured safely. After the storm, investigate reports of unusual ground movement near the drainage channel.",
+  "landmark": "river crossing",
+  "items_total": 5,
+  "story_clue": "A farmer reports tremors near a drainage control structure.",
+  "ground_palette": [
+    [
+      139,
+      150,
+      102
+    ],
+    [
+      104,
+      123,
+      79
+    ],
+    [
+      177,
+      169,
+      103
+    ]
+  ],
+  "campaign_region": "North East Plains",
+  "region_level": 1,
+  "hazard_join_levels": {
+    "typhoon": 1,
+    "flash_flood": 2,
+    "severe_flood": 2,
+    "landslide": 3,
+    "earthquake": 4,
+    "volcano": 4
+  }
+}

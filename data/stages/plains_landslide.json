@@ -1,0 +1,355 @@
+{
+  "name": "Landslide Across the Plains",
+  "map_size": [
+    640,
+    360
+  ],
+  "player_start": [
+    320,
+    180
+  ],
+  "walls": [
+    [
+      80,
+      95,
+      135,
+      14
+    ],
+    [
+      245,
+      95,
+      14,
+      105
+    ],
+    [
+      300,
+      55,
+      145,
+      14
+    ],
+    [
+      475,
+      90,
+      14,
+      145
+    ],
+    [
+      110,
+      255,
+      150,
+      14
+    ],
+    [
+      340,
+      260,
+      14,
+      60
+    ]
+  ],
+  "npcs": [
+    {
+      "id": "kapitan_jo",
+      "name": "Kuya Ben",
+      "pos": [
+        70,
+        232
+      ],
+      "color": [
+        210,
+        165,
+        100
+      ],
+      "dialogue": [
+        "Typhoon rain and floodwater have weakened the hillside above the monitoring station. It is slipping.",
+        "Use the stable detour and report the blocked farm road to the response team."
+      ],
+      "after_dialogue": [
+        "The route is clear enough for the team. No one should cross the fresh slide."
+      ],
+      "choice": {
+        "prompt": "The research team is near a moving slope. What is safest?",
+        "options": [
+          {
+            "text": "Use the stable detour and report their location",
+            "flag": "plains_landslide_safe",
+            "time_cost": 0,
+            "points": 100,
+            "result": "Responders approach from stable ground.",
+            "consequence": "You used the stable detour.",
+            "mascot": "Following official warnings and protecting people is the safer choice."
+          },
+          {
+            "text": "Climb across the fresh slide",
+            "flag": "plains_landslide_risk",
+            "time_cost": 0,
+            "points": -50,
+            "property_damage": 140,
+            "result": "A fresh slide can move again without warning.",
+            "consequence": "You crossed the fresh landslide.",
+            "mascot": "Taking a shortcut through a hazard can injure people and damage resources."
+          }
+        ]
+      }
+    },
+    {
+      "id": "researcher_ana",
+      "name": "Dr. Elena Reyes",
+      "pos": [
+        42,
+        48
+      ],
+      "color": [
+        205,
+        145,
+        105
+      ],
+      "dialogue": [
+        "My station recorded a pulse just before the slope failed. These notes bear Dr. Elias Voss's name.",
+        "I hurt my leg. Please bring the first-aid kit; the facility records may explain the pulse."
+      ],
+      "after_dialogue": [
+        "Thank you. The readings show the machine sent a pulse before the landslide."
+      ],
+      "rescue_item": "plains_landslide_supply",
+      "rescue_dialogue": [
+        "I hurt my leg. Please bring the first-aid kit so I can get to safety."
+      ],
+      "rescue_success_dialogue": [
+        "Thank you. I can follow you to the evacuation route now."
+      ],
+      "rescue_hint": "Find the first-aid kit and talk to Dr. Elena Reyes again.",
+      "needs_carry": false
+    }
+  ],
+  "items": [
+    {
+      "id": "radio",
+      "name": "Emergency radio",
+      "pos": [
+        232,
+        314
+      ],
+      "color": [
+        120,
+        170,
+        250
+      ]
+    },
+    {
+      "id": "first_aid",
+      "name": "First-aid kit",
+      "pos": [
+        44,
+        174
+      ],
+      "color": [
+        230,
+        90,
+        140
+      ]
+    },
+    {
+      "id": "research_records",
+      "name": "Monitoring station records",
+      "pos": [
+        400,
+        234
+      ],
+      "color": [
+        211,
+        177,
+        104
+      ]
+    },
+    {
+      "id": "flashlight",
+      "name": "Emergency flashlight",
+      "pos": [
+        68,
+        294
+      ],
+      "color": [
+        245,
+        215,
+        110
+      ]
+    },
+    {
+      "id": "plains_landslide_supply",
+      "name": "First-aid kit",
+      "pos": [
+        384,
+        214
+      ],
+      "color": [
+        230,
+        90,
+        140
+      ]
+    }
+  ],
+  "areas": [
+    {
+      "id": "evac_center",
+      "name": "Community Evacuation Center",
+      "rect": [
+        3,
+        268,
+        82,
+        75
+      ],
+      "color": [
+        92,
+        205,
+        230
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "id": "radio",
+      "title": "Find the emergency radio for route updates",
+      "type": "collect",
+      "target": "radio"
+    },
+    {
+      "id": "first_aid",
+      "title": "Collect a first-aid kit for the stranded researcher",
+      "type": "collect",
+      "target": "first_aid"
+    },
+    {
+      "id": "check_in",
+      "title": "Check the safe route with Kuya Ben",
+      "type": "talk",
+      "target": "kapitan_jo"
+    },
+    {
+      "id": "records",
+      "title": "Recover the monitoring station records",
+      "type": "collect",
+      "target": "research_records"
+    },
+    {
+      "id": "rescue_researcher",
+      "title": "Help Dr. Elena Reyes reach safety",
+      "type": "rescue",
+      "target": "researcher_ana"
+    },
+    {
+      "id": "evacuate",
+      "title": "Reach the stable evacuation route",
+      "type": "reach",
+      "target": "evac_center"
+    },
+    {
+      "id": "response_supply",
+      "title": "Leave a first-aid kit for responders",
+      "type": "collect",
+      "target": "plains_landslide_supply"
+    }
+  ],
+  "mascot": {
+    "intro": "I'm Tarsi! Move with WASD or arrows. E: talk, Q: ability, H: hint, P: pause. Finish your tasks and reach safety. During shaking: Drop, Cover, Hold On.",
+    "quests": {
+      "supplies": "Find Emergency radio.",
+      "second_supply": "Find First-aid kit.",
+      "community": "Find Kuya Ben and press E.",
+      "evacuate": "Reach Sturdy Shelter and stay clear of danger.",
+      "cover": "When shaking starts, get under the sturdy table in the green cover field.",
+      "extra_supply": "Find Emergency flashlight."
+    }
+  },
+  "hazards": {
+    "disasters": [
+      "typhoon",
+      "flash_flood",
+      "severe_flood",
+      "landslide"
+    ],
+    "danger_ramp_seconds": 61,
+    "hazard_start_seconds": 10.2,
+    "rain": {
+      "drops": 54
+    },
+    "wind": {
+      "strength": 40
+    },
+    "debris": {
+      "damage": 13,
+      "min_interval": 1.7,
+      "max_interval": 4.0
+    },
+    "seed": 642,
+    "safe_zones": [
+      [
+        3,
+        268,
+        82,
+        75
+      ]
+    ],
+    "landslide_interval": 5.2,
+    "flood_start_seconds": 8,
+    "flood_rate": 2.3,
+    "flood_rate_initial": 0.9,
+    "flood_escalation_seconds": 18,
+    "landslide_start_seconds": 8
+  },
+  "lessons": [
+    "Learn local landslide warning signs, hazard maps, and evacuation routes before heavy rain.",
+    "If a slide threatens, avoid its path and move to a safe area as directed by local officials.",
+    "After a slide, stay away from the affected slope because further movement may occur."
+  ],
+  "safe_zones": [
+    [
+      3,
+      268,
+      82,
+      75
+    ]
+  ],
+  "quiz": {
+    "question": "You see signs of a possible landslide near your route. What is safest?",
+    "options": [
+      "Avoid the slide path and move to a safe area following local instructions",
+      "Go closer to inspect the slope",
+      "Cross the debris to reach the road"
+    ],
+    "answer": 0,
+    "explanation": "Avoid landslide paths, move to a safe area, and follow local authority guidance."
+  },
+  "chapter": "North East Plains",
+  "mission_number": 16,
+  "briefing": "Saturated hillsides trigger landslides along the route to the research facility. Keep out of unstable slopes, choose safe access, and help the stranded research team. Retrieve only records that can be reached without putting anyone at risk.",
+  "landmark": "hilltop school",
+  "items_total": 5,
+  "story_clue": "A recovered file identifies Dr. Elias Voss as the machine’s creator.",
+  "ground_palette": [
+    [
+      139,
+      150,
+      102
+    ],
+    [
+      104,
+      123,
+      79
+    ],
+    [
+      177,
+      169,
+      103
+    ]
+  ],
+  "campaign_region": "North East Plains",
+  "region_level": 3,
+  "hazard_join_levels": {
+    "typhoon": 1,
+    "flash_flood": 2,
+    "severe_flood": 2,
+    "landslide": 3,
+    "earthquake": 4,
+    "volcano": 4
+  }
+}

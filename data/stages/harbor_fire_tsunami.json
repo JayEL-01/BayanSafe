@@ -1,0 +1,357 @@
+{
+  "name": "Fire and Tsunami at the Harbor",
+  "map_size": [
+    640,
+    360
+  ],
+  "player_start": [
+    320,
+    180
+  ],
+  "walls": [
+    [
+      105,
+      70,
+      115,
+      14
+    ],
+    [
+      270,
+      45,
+      14,
+      112
+    ],
+    [
+      390,
+      90,
+      130,
+      14
+    ],
+    [
+      130,
+      205,
+      14,
+      100
+    ],
+    [
+      290,
+      260,
+      130,
+      14
+    ],
+    [
+      480,
+      205,
+      14,
+      92
+    ]
+  ],
+  "npcs": [
+    {
+      "id": "tarsi_lead",
+      "name": "Rico Dela Cruz",
+      "pos": [
+        534,
+        2
+      ],
+      "color": [
+        230,
+        145,
+        100
+      ],
+      "dialogue": [
+        "Floodwater and typhoon damage already block the harbor road. Now fire and a tsunami warning add danger.",
+        "Use the inland evacuation path. Do not go to the beach, cross floodwater, or enter smoke."
+      ],
+      "after_dialogue": [
+        "The harbor group is moving inland. Keep everyone together and follow official alerts."
+      ],
+      "choice": {
+        "prompt": "Fire blocks the dock road while the tsunami alarm sounds. What route?",
+        "options": [
+          {
+            "text": "Guide people inland to marked high ground",
+            "flag": "harbor_fire_tsunami_safe",
+            "time_cost": 0,
+            "points": 100,
+            "result": "Residents move away from fire and the coast.",
+            "consequence": "You chose a route away from both hazards.",
+            "mascot": "Following official warnings and protecting people is the safer choice."
+          },
+          {
+            "text": "Use the dock road before it closes",
+            "flag": "harbor_fire_tsunami_risk",
+            "time_cost": 0,
+            "points": -50,
+            "property_damage": 150,
+            "result": "The dock route moves people toward both hazards.",
+            "consequence": "You sent residents toward the fire and shoreline.",
+            "mascot": "Taking a shortcut through a hazard can injure people and damage resources."
+          }
+        ]
+      }
+    },
+    {
+      "id": "lola_pilar",
+      "name": "Dr. Mira Santos",
+      "pos": [
+        526,
+        2
+      ],
+      "color": [
+        155,
+        115,
+        190
+      ],
+      "dialogue": [
+        "I hurt my ankle when the harbor road cracked. The smoke is getting closer.",
+        "Please bring the emergency radio so I can call for help, then carry me inland."
+      ],
+      "after_dialogue": [
+        "I can hear the response team. Please carry me away from the shore and smoke."
+      ],
+      "rescue_item": "first_aid",
+      "rescue_dialogue": [
+        "I cannot walk safely with my injured leg. Bring the first-aid kit, then carry me to inland high ground."
+      ],
+      "rescue_success_dialogue": [
+        "Thank you. Please carry me to inland high ground."
+      ],
+      "rescue_hint": "Collect the first-aid kit, then speak with Dr. Mira Santos again.",
+      "needs_carry": true
+    }
+  ],
+  "items": [
+    {
+      "id": "go_bag",
+      "name": "Emergency go-bag",
+      "pos": [
+        552,
+        0
+      ],
+      "color": [
+        80,
+        200,
+        120
+      ]
+    },
+    {
+      "id": "radio",
+      "name": "Emergency radio",
+      "pos": [
+        544,
+        0
+      ],
+      "color": [
+        120,
+        170,
+        250
+      ]
+    },
+    {
+      "id": "water",
+      "name": "Drinking water",
+      "pos": [
+        588,
+        0
+      ],
+      "color": [
+        85,
+        175,
+        235
+      ]
+    },
+    {
+      "id": "first_aid",
+      "name": "First-aid kit",
+      "pos": [
+        580,
+        0
+      ],
+      "color": [
+        215,
+        90,
+        88
+      ]
+    },
+    {
+      "id": "harbor_fire_tsunami_supply",
+      "name": "Fire blanket",
+      "pos": [
+        568,
+        0
+      ],
+      "color": [
+        235,
+        125,
+        60
+      ]
+    }
+  ],
+  "areas": [
+    {
+      "id": "evac_center",
+      "name": "Community Evacuation Center",
+      "rect": [
+        516,
+        0,
+        72,
+        72
+      ],
+      "color": [
+        92,
+        205,
+        230
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "id": "go_bag",
+      "title": "Take the emergency go-bag",
+      "type": "collect",
+      "target": "go_bag"
+    },
+    {
+      "id": "radio",
+      "title": "Recover the harbor emergency radio",
+      "type": "collect",
+      "target": "radio"
+    },
+    {
+      "id": "first_aid",
+      "title": "Find first aid for injured residents",
+      "type": "collect",
+      "target": "first_aid"
+    },
+    {
+      "id": "fire_blanket",
+      "title": "Secure the fire blanket if the route is safe",
+      "type": "collect",
+      "target": "harbor_fire_tsunami_supply"
+    },
+    {
+      "id": "check_in",
+      "title": "Get the harbor evacuation plan from Tarsi",
+      "type": "talk",
+      "target": "tarsi_lead"
+    },
+    {
+      "id": "rescue_pilar",
+      "title": "Help Dr. Mira Santos reach higher ground",
+      "type": "rescue",
+      "target": "lola_pilar"
+    },
+    {
+      "id": "evacuate",
+      "title": "Evacuate beyond both hazards",
+      "type": "reach",
+      "target": "evac_center"
+    }
+  ],
+  "mascot": {
+    "intro": "I'm Tarsi! Move with WASD or arrows. E: talk, Q: ability, H: hint, P: pause. Finish your tasks and reach safety.",
+    "quests": {
+      "supplies": "Find Emergency go-bag.",
+      "second_supply": "Collect the remaining emergency supply.",
+      "rescue_pilar": "Find Dr. Mira Santos and give her the radio so she can call the response team.",
+      "community": "Find Rico Dela Cruz and press E.",
+      "evacuate": "Reach the marked inland safe zone.",
+      "cover": "When shaking starts, get under the sturdy table in the green cover field.",
+      "extra_supply": "Find Eye protection."
+    }
+  },
+  "hazards": {
+    "disasters": [
+      "flash_flood",
+      "typhoon",
+      "severe_flood",
+      "tsunami",
+      "flash_fire"
+    ],
+    "danger_ramp_seconds": 70,
+    "hazard_start_seconds": 12.0,
+    "rain": {
+      "drops": 58
+    },
+    "wind": {
+      "strength": 42
+    },
+    "debris": {
+      "damage": 14,
+      "min_interval": 1.25,
+      "max_interval": 3.5
+    },
+    "seed": 585,
+    "flood_rate": 2.3,
+    "wildfire_speed": 14.2,
+    "tsunami_warning_seconds": 28,
+    "tsunami_surge_seconds": 28,
+    "safe_zones": [
+      [
+        516,
+        0,
+        72,
+        72
+      ]
+    ],
+    "flood_start_seconds": 8,
+    "flood_rate_initial": 0.9,
+    "flood_escalation_seconds": 18
+  },
+  "lessons": [
+    "Use the planned safe exit and go to the family or community meeting place.",
+    "Stay with your group and tell responders if someone is missing.",
+    "Do not return to a fire-affected building until authorities say it is safe."
+  ],
+  "safe_zones": [
+    [
+      516,
+      0,
+      72,
+      72
+    ]
+  ],
+  "quiz": {
+    "question": "Smoke blocks your usual exit during a fire. What should you do?",
+    "options": [
+      "Use a planned alternate safe exit and meet at the designated point",
+      "Hide in a room and wait without telling anyone",
+      "Go back inside after reaching safety to collect supplies"
+    ],
+    "answer": 0,
+    "explanation": "Know alternate escape routes and a meeting place. Do not re-enter until authorities say it is safe."
+  },
+  "chapter": "Harbor",
+  "mission_number": 13,
+  "briefing": "A fuel-area fire blocks one route just as a tsunami warning sounds. Lead residents away from both hazards toward safe high ground, help vulnerable people first, and skip nonessential supplies. Reach the departure point after the headcount.",
+  "landmark": "coastal homes",
+  "items_total": 5,
+  "story_clue": "Coordinates point to a facility in the North East Plains.",
+  "ground_palette": [
+    [
+      79,
+      135,
+      136
+    ],
+    [
+      56,
+      107,
+      113
+    ],
+    [
+      117,
+      165,
+      149
+    ]
+  ],
+  "campaign_region": "Harbor",
+  "region_level": 4,
+  "hazard_join_levels": {
+    "flash_flood": 1,
+    "typhoon": 2,
+    "severe_flood": 3,
+    "tsunami": 4,
+    "flash_fire": 4
+  }
+}

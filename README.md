@@ -1,4 +1,4 @@
-# BayanSafe
+ye# BayanSafe
 
 A disaster preparedness game that teaches players what to do before, during, and after a disaster.
 
@@ -532,12 +532,3 @@ git push
 | `git checkout --ours file` | On conflict, keep the version from your current branch |
 | `git checkout --theirs file` | On conflict, keep the version from the branch you merged in |
 | `git log main..dev --oneline` | Preview commits that `dev` has and `main` doesn't |
-# Reference asset pack
-
-The NPC, player, terrain, building, item, and animated effect art in
-`assets/images/game_art` is cropped from the BayanSafe reference pack in
-`assets/images/bayan_pack`. `tools/prepare_bayan_pack.py` rebuilds the game art
-from those source sheets and the exported animation frames in
-`assets/images/sprite_frames`. The supplied labeled map remains the in-game
-map reference; it is not used as walkable ground art.
-

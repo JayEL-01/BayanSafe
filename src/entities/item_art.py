@@ -2,7 +2,7 @@ from functools import lru_cache
 from pathlib import Path
 
 import pygame
-from src.entities.reference_art import scaled
+from src.entities.game_art import item_sprite
 
 
 _ASSET_DIR = Path(__file__).resolve().parents[2] / "assets" / "images" / "ui"
@@ -69,30 +69,8 @@ def draw_item(surface, rect, item_id, color, item_name=""):
     x, y = rect.center
     pygame.draw.ellipse(surface, (20, 30, 28), (x - 5, y + 3, 10, 3))
     kind = _item_kind(item_id, item_name)
-    pack_item = {
-        "first_aid": "first_aid", "water": "water_bottle", "food": "food_pack",
-        "flashlight": "flashlight", "radio": "radio", "mask": "gas_mask",
-        "backpack": "backpack", "rope": "rope", "tools": "tool_kit",
-        "documents": "research_log", "keycard": "key_card", "key": "key_card",
-        "battery": "battery", "fuel": "fuel_can", "medicine": "medicine",
-        "bandage": "bandage", "supply": "electronic_part",
-        "fire_blanket": "bandage", "goggles": "gas_mask",
-    }.get(kind)
-    if pack_item:
-        # Mission objects are small readable pickups, below the player's
-        # 20px sprite height and close to the 8px collision footprint.
-        art = scaled("items", pack_item, (12, 12))
-        if art:
-            surface.blit(art, art.get_rect(center=(x, y)))
-            return
-    reference_item = {
-        "first_aid": 1, "water": 2, "food": 3, "flashlight": 4,
-        "radio": 5, "mask": 6, "backpack": 7, "rope": 8,
-        "tools": 9, "documents": 12, "keycard": 11, "key": 11,
-        "battery": 14, "fuel": 17, "medicine": 15, "bandage": 16,
-        "goggles": 6, "fire_blanket": 16, "supply": 13,
-    }.get(kind, 13)
-    art = scaled("items", f"item_{reference_item:02}", (12, 12))
+
+    art = item_sprite(kind, (12, 12))
     if art:
         surface.blit(art, art.get_rect(center=(x, y)))
         return

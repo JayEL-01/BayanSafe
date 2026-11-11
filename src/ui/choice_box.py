@@ -51,11 +51,13 @@ class ChoiceBox:
 
         old_clip = surface.get_clip()
         surface.set_clip(box.clip(old_clip))
-        panel = pygame.Surface(box.size, pygame.SRCALPHA)
-        panel.fill((13, 20, 37, 248))
+        # Cozy carved wood choice container with antique brass trim
+        pygame.draw.rect(surface, theme.SHADOW, box.move(0, 2))
+        panel = pygame.Surface(box.size)
+        panel.fill(theme.WOOD_DARK)
         surface.blit(panel, box.topleft)
-        pygame.draw.rect(surface, (249, 200, 91), box, 1)
-        pygame.draw.line(surface, (97, 119, 145), (box.x + 5, box.y + 13),
+        pygame.draw.rect(surface, theme.BRASS, box, 1)
+        pygame.draw.line(surface, theme.WOOD_BORDER, (box.x + 5, box.y + 13),
                          (box.right - 5, box.y + 13), 1)
 
         theme.draw_text(surface, self.speaker.upper(), (box.x + 8, box.y + 2),
@@ -72,14 +74,17 @@ class ChoiceBox:
             selected = index == self.selected
             row = pygame.Rect(box.x + 4, y, box.w - 8, row_height - 1)
             if selected:
-                pygame.draw.rect(surface, (91, 72, 40), row)
-                pygame.draw.rect(surface, (249, 200, 91), row, 1)
-                pygame.draw.polygon(surface, theme.HONEY,
+                selected_bg = (142, 96, 60)  # warm amber brown highlight
+                pygame.draw.rect(surface, selected_bg, row)
+                pygame.draw.rect(surface, theme.BRASS_LIGHT, row, 1)
+                pygame.draw.polygon(surface, theme.BRASS_LIGHT,
                                     [(row.x + 4, row.centery), (row.x + 8, row.centery - 3),
                                      (row.x + 8, row.centery + 3)])
             else:
-                pygame.draw.rect(surface, (35, 45, 62), row)
-            color = (255, 250, 225) if selected else (204, 218, 235)
+                unselected_bg = (46, 30, 18)  # carved dark walnut plank
+                pygame.draw.rect(surface, unselected_bg, row)
+                pygame.draw.rect(surface, (70, 48, 30), row, 1)
+            color = theme.CREAM if selected else theme.CREAM_DIM
             for line_index, line in enumerate(lines):
                 theme.draw_text(surface, line, (row.x + 12, row.y + 1 + line_index * 9),
                                 self.font, color, shadow=False)
@@ -87,5 +92,5 @@ class ChoiceBox:
 
         theme.draw_text(surface, "UP / DOWN choose     ENTER select",
                         (box.centerx, box.bottom - 9), self.font,
-                        (176, 194, 218), anchor="midtop", shadow=False)
+                        theme.CREAM_DIM, anchor="midtop", shadow=False)
         surface.set_clip(old_clip)

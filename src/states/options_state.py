@@ -9,11 +9,11 @@ from src.ui.image_backdrop import ImageBackdrop
 
 
 # the sewn-on canvas patch (matches the tan bag, instead of the old purple panel)
-CANVAS = (158, 122, 76)
-CANVAS_LIGHT = (196, 158, 102)
-CANVAS_DARK = (88, 58, 36)
-CANVAS_LINE = (144, 108, 66)     # faint weave lines
-STITCH = (236, 212, 160)
+CANVAS = theme.mix(theme.WOOD, theme.CREAM, 0.35)       # ~ (158, 122, 76)
+CANVAS_LIGHT = theme.mix(theme.WOOD_LIGHT, theme.CREAM, 0.3)  # ~ (196, 158, 102)
+CANVAS_DARK = theme.mix(theme.WOOD_DARK, theme.NIGHT, 0.2)    # ~ (88, 58, 36)
+CANVAS_LINE = theme.mix(theme.WOOD, theme.WOOD_DARK, 0.5)     # ~ (144, 108, 66) - faint weave lines
+STITCH = theme.mix(theme.WOOD_LIGHT, theme.CREAM, 0.4)        # ~ (236, 212, 160)
 PATCH = pygame.Rect(62, 22, 196, 106)
 
 
@@ -44,8 +44,9 @@ def draw_patch(surface, rect, title):
     for rx, ry in ((rect.x + 5, rect.y + 5), (rect.right - 6, rect.y + 5),
                    (rect.x + 5, rect.bottom - 6), (rect.right - 6, rect.bottom - 6)):
         pygame.draw.circle(surface, CANVAS_DARK, (rx, ry + 1), 2)             # metal rivets
-        pygame.draw.circle(surface, (190, 190, 184), (rx, ry), 2)
-        surface.set_at((rx - 1, ry - 1), (255, 255, 250))
+        rivet_highlight = theme.mix(theme.WOOD_LIGHT, theme.CREAM, 0.5)
+        pygame.draw.circle(surface, rivet_highlight, (rx, ry), 2)
+        surface.set_at((rx - 1, ry - 1), theme.CREAM)
 
     theme.draw_text(surface, title, (rect.centerx, rect.y + 8), "button", theme.CREAM,
                     anchor="center")
@@ -134,7 +135,7 @@ class OptionsState(BaseState):
             b.draw(surface, self.time)
 
         strip = pygame.Surface((settings.INTERNAL_WIDTH, 14), pygame.SRCALPHA)   # keeps the hint readable
-        strip.fill((14, 10, 8, 170))
+        strip.fill((theme.NIGHT[0], theme.NIGHT[1], theme.NIGHT[2], 170))
         surface.blit(strip, (0, 158))
         theme.draw_text(surface, tr("hint_options"), (settings.INTERNAL_WIDTH // 2, 165),
                         "tiny", theme.CREAM, shadow=False, anchor="center")

@@ -3,7 +3,6 @@ import pygame
 
 from src.core import settings
 from src.states.base_state import BaseState
-from src.states.mission_prep import MissionPrep
 from src.ui import theme
 from src.utils.data_loader import BASE_DIR, load_json
 
@@ -22,8 +21,6 @@ class WorldMap(BaseState):
             try:
                 loaded = pygame.image.load(str(BASE_DIR / entry["image"])).convert()
                 width, height = loaded.get_size()
-                # Preserve the map's full-size detail; the opaque footer covers its
-                # lower edge instead of shrinking every label across the island.
                 scale = min(settings.INTERNAL_WIDTH / width,
                             settings.INTERNAL_HEIGHT / height)
                 size = (max(1, round(width * scale)), max(1, round(height * scale)))
@@ -39,8 +36,9 @@ class WorldMap(BaseState):
             self.page = (self.page + step) % len(self.pages)
 
     def begin_journey(self):
-        stage_id = self.game.session.current_stage
-        self.game.state_manager.change(MissionPrep(self.game, stage_id))
+        stage_id = self.game.session.current_stage or "prologue"
+        from src.states.chapter import ChapterState
+        self.game.state_manager.change(ChapterState(self.game, stage_id))
 
     def handle_event(self, event):
         if event.type == pygame.KEYDOWN:
@@ -73,8 +71,6 @@ class WorldMap(BaseState):
         else:
             surface.fill((43, 80, 75))
 
-        # The full reference is split into readable route, region, and hazard
-        # pages; it is not replaced by a separate selectable-mission map.
         rail = pygame.Surface((settings.INTERNAL_WIDTH, self.FOOTER_HEIGHT), pygame.SRCALPHA)
         rail.fill((17, 27, 39, 245))
         surface.blit(rail, (0, self.FOOTER_TOP))

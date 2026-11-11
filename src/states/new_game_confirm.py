@@ -56,7 +56,7 @@ class NewGameConfirm(BaseState):
                     break
 
     def draw(self, surface):
-        surface.fill((19, 24, 40))
+        theme.draw_background(surface)
         theme.draw_panel(surface, pygame.Rect(30, 43, 260, 88), title="START A NEW CAMPAIGN", accent=theme.CORAL)
         theme.draw_text(surface, "This replaces your saved campaign progress.", (160, 76), "tiny", theme.CREAM, anchor="center")
         theme.draw_text(surface, "Mission progress resets; local high scores stay saved.", (160, 88), "tiny", theme.CREAM_DIM, anchor="center")

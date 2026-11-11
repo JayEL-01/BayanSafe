@@ -9,7 +9,6 @@ from src.states.high_scores import HighScores
 from src.states.loading import LoadingScreen
 from src.states.options_state import OptionsState
 from src.states.new_game_confirm import NewGameConfirm
-from src.states.mission_prep import MissionPrep
 from src.ui import menu_fx, theme
 from src.ui.backdrop import MenuBackdrop
 from src.ui.button import Button
@@ -86,9 +85,9 @@ class MainMenu(BaseState):
             if all(stage in self.game.session.completed for stage in self.game.session.STAGE_ORDER):
                 self.continue_message = "Your story is complete. Start a new journey to play again."
                 return
-            stage_id = self.game.session.current_stage
+            from src.states.world_map import WorldMap
             self.game.state_manager.push(LoadingScreen(
-                self.game, lambda: MissionPrep(self.game, stage_id), "RESUMING YOUR JOURNEY"))
+                self.game, lambda: WorldMap(self.game), "RESUMING ISLAND EXPEDITION"))
         else:
             self.game.session.erase()
             self._refresh_buttons()

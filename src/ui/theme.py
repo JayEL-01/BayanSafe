@@ -8,25 +8,38 @@ from src.core import settings
 from src.utils.data_loader import BASE_DIR
 
 # ------------------------------------------------------------------
-# COLORS
+# COLORS - Warm Handcrafted Wood, Brass & Storybook Parchment
 # ------------------------------------------------------------------
-NIGHT      = (10, 35, 61)      # deep ocean navy
-PLUM       = (18, 65, 94)      # blue interface panels
-PLUM_LIGHT = (42, 116, 145)    # teal panel highlight
-CREAM      = (248, 252, 244)   # main text
-CREAM_DIM  = (198, 222, 227)   # secondary text
-HONEY      = (255, 190, 61)    # warm accent, selection, titles
-CORAL      = (232, 76, 64)     # danger, health, bad
-SAGE       = (69, 178, 101)    # good, done
-SKY        = (76, 173, 224)    # info, water
-LAVENDER   = (114, 160, 205)   # locked / special
-SHADOW     = (5, 24, 42)      # text and panel shadows
+NIGHT      = (28, 18, 12)      # warm dark oak base
+PLUM       = (38, 25, 16)      # rich warm dark cedar/walnut wood panel body
+PLUM_LIGHT = (78, 52, 32)      # warm carved wood border / highlight
+CREAM      = (248, 244, 230)   # main parchment cream text
+CREAM_DIM  = (195, 180, 155)   # secondary warm tan parchment text
+HONEY      = (255, 190, 61)    # warm amber gold accent, selection, titles
+CORAL      = (226, 75, 58)     # danger, health, emergency
+SAGE       = (76, 165, 98)     # good, safety, completed
+SKY        = (88, 168, 212)    # info, water
+LAVENDER   = (148, 132, 172)   # locked / special
+SHADOW     = (14, 9, 6)        # deep warm umber shadow
 
-WOOD       = (20, 91, 122)     # active blue button
-WOOD_DARK  = (12, 54, 82)      # unselected blue button
-WOOD_LIGHT = (47, 143, 170)    # selected button highlight
+WOOD       = (120, 80, 50)     # warm natural brown button
+WOOD_DARK  = (62, 42, 26)      # rich dark cedar/walnut wood plank
+WOOD_LIGHT = (145, 98, 62)     # warm amber oak highlight
+WOOD_FRAME = (78, 52, 32)      # carved wood frame/border (mid-tone)
+WOOD_BORDER= (122, 88, 56)     # carved wood border
+BRASS      = (195, 150, 78)    # antique brass trim
+BRASS_LIGHT= (225, 180, 95)    # polished brass highlight
 
-STRIPE     = NIGHT             # hazard stripes on the selected button (the menu tints this per hazard)
+DARK_OAK   = (32, 20, 13)      # desk table / screen background base
+WOOD_GRAIN = (42, 27, 18)      # subtle desk grain line
+
+PARCHMENT       = (238, 228, 210)
+PARCHMENT_LIGHT = (248, 244, 230)
+PARCHMENT_DARK  = (212, 196, 168)
+
+STRIPE     = (168, 118, 72)    # warm amber-gold stripes on selected button
+
+INK        = (34, 22, 12)      # near-black brown: maximum contrast on cream paper
 
 LEVEL_COLORS = {               # Danger Meter levels
     "NORMAL": SAGE,
@@ -128,6 +141,31 @@ def set_stripe(color):
     STRIPE = color
 
 
+_bg_surface = None
+
+
+def draw_background(surface):
+    """Draw a cozy, handcrafted dark walnut desk table surface with subtle wood grain and soft vignette."""
+    global _bg_surface
+    w, h = surface.get_size()
+    if _bg_surface is None or _bg_surface.get_size() != (w, h):
+        s = pygame.Surface((w, h))
+        s.fill(DARK_OAK)
+        plank_h = 36
+        for y in range(0, h, plank_h):
+            pygame.draw.line(s, (22, 14, 9), (0, y), (w, y), 1)
+            pygame.draw.line(s, (44, 29, 19), (0, y + 1), (w, y + 1), 1)
+            for gx0, gx1, gy in ((20, 90, 8), (140, 220, 14), (60, 180, 22), (240, 310, 28)):
+                if y + gy < h:
+                    pygame.draw.line(s, WOOD_GRAIN, (gx0, y + gy), (gx1, y + gy), 1)
+        vignette = pygame.Surface((w, h), pygame.SRCALPHA)
+        pygame.draw.rect(vignette, (10, 6, 4, 70), (0, 0, w, h))
+        pygame.draw.rect(vignette, (0, 0, 0, 0), (8, 8, w - 16, h - 16))
+        s.blit(vignette, (0, 0))
+        _bg_surface = s
+    surface.blit(_bg_surface, (0, 0))
+
+
 def fill_bg(surface, color=NIGHT):
     surface.fill(color)
 
@@ -207,7 +245,7 @@ def draw_bar(surface, rect, value, maximum, color):
         pygame.draw.rect(surface, color, fill)
         pygame.draw.line(surface, mix(color, CREAM, 0.45),
                          (fill.x, fill.y), (fill.right - 1, fill.y))
-    _notched_border(surface, rect, CREAM_DIM)
+    _notched_border(surface, rect, WOOD_BORDER)
 
 
 # ------------------------------------------------------------------
@@ -248,30 +286,34 @@ def draw_button(surface, rect, text, selected=False, font=None, icon=None, t=Non
     hot = selected and not disabled
 
     if disabled:
-        fill = mix(WOOD_DARK, NIGHT, 0.55)
-        border = mix(WOOD_DARK, CREAM_DIM, 0.3)
-        text_color = mix(CREAM_DIM, NIGHT, 0.45)
+        fill = (52, 40, 32)
+        border = (78, 65, 54)
+        text_color = (130, 118, 105)
     elif selected:
-        fill, border, text_color = HONEY, CREAM, NIGHT
+        fill = (142, 96, 60)       # warm amber brown
+        border = (225, 180, 95)     # polished brass gold
+        text_color = (255, 252, 240)# parchment cream
     else:
-        fill, border, text_color = WOOD_DARK, mix(WOOD_DARK, WOOD_LIGHT, 0.6), CREAM
+        fill = WOOD_DARK            # (62, 42, 26) warm dark cedar/walnut
+        border = (122, 88, 56)      # carved wood border
+        text_color = (238, 228, 210)# soft parchment cream
 
     # plank body + drop shadow
-    pygame.draw.rect(surface, SHADOW, rect.move(0, 2))
+    pygame.draw.rect(surface, (14, 9, 6), rect.move(0, 2))
     pygame.draw.rect(surface, fill, rect.inflate(-2, 0))
     pygame.draw.rect(surface, fill, rect.inflate(0, -2))
-    pygame.draw.line(surface, mix(fill, CREAM, 0.25),
+    pygame.draw.line(surface, (168, 118, 78) if selected else (88, 58, 38),
                      (rect.x + 2, rect.y + 1), (rect.right - 3, rect.y + 1))
 
     # wood grain
-    grain = mix(fill, SHADOW, 0.25)
+    grain = (80, 52, 32) if selected else (46, 30, 18)
     for gy, x0, x1 in ((5, 14, 60), (11, 40, rect.w - 14), (16, 20, 70)):
         if rect.y + gy < rect.bottom - 2:
             pygame.draw.line(surface, grain, (rect.x + x0, rect.y + gy),
                              (min(rect.right - 4, rect.x + x1), rect.y + gy))
 
     if hot:
-        # scrolling hazard stripes on both ends
+        # warm amber/brass stripes on both ends
         shift = int(t * 10)
         for x0 in (rect.x + 2, rect.right - 10):
             for x in range(x0, x0 + 8):
@@ -279,23 +321,23 @@ def draw_button(surface, rect, text, selected=False, font=None, icon=None, t=Non
                     if ((x + y - shift) // 3) % 2 == 0:
                         surface.set_at((x, y), STRIPE)
     else:
-        # nails in the corners
+        # antique brass nails in the corners
         for nx, ny in ((rect.x + 3, rect.y + 3), (rect.right - 4, rect.y + 3),
                        (rect.x + 3, rect.bottom - 4), (rect.right - 4, rect.bottom - 4)):
-            surface.set_at((nx, ny), CREAM_DIM)
+            surface.set_at((nx, ny), (185, 142, 74))
 
     _notched_border(surface, rect, border)
 
     if icon:
-        icon_color = NIGHT if hot else (text_color if disabled else HONEY)
+        icon_color = (255, 252, 240) if hot else (text_color if disabled else HONEY)
         draw_icon(surface, icon, (rect.x + 14, rect.centery - 4), icon_color)
     draw_text(surface, text, (rect.centerx + (5 if icon else 0), rect.centery),
-              font or "button", text_color, shadow=not selected and not disabled, anchor="center")
+              font or "button", text_color, shadow=not disabled, anchor="center")
 
     if selected:  # pointer arrows that bounce
         b = int(round(math.sin(t * 8) * 1.5))
         cy = rect.centery
-        arrow = HONEY if hot else CREAM_DIM
+        arrow = (225, 180, 95) if hot else (160, 145, 125)
         pygame.draw.polygon(surface, arrow, [(rect.x - 7 - b, cy - 3), (rect.x - 7 - b, cy + 3), (rect.x - 3 - b, cy)])
         pygame.draw.polygon(surface, arrow, [(rect.right + 6 + b, cy - 3), (rect.right + 6 + b, cy + 3), (rect.right + 2 + b, cy)])
 

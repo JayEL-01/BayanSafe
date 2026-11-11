@@ -96,18 +96,18 @@ class ConfirmDialog:
         drop = -int((1 - min(1.0, self.t / 0.2)) ** 2 * 50)      # the sign drops in from above
         r = self.RECT.move(0, drop)
 
-        # wooden sign
+        # handcrafted wooden sign with brass trim
         pygame.draw.rect(surface, theme.SHADOW, r.move(2, 3))
-        pygame.draw.rect(surface, theme.WOOD_DARK, r)
+        sign_bg = theme.mix(theme.NIGHT, theme.WOOD_DARK, 0.5)  # ~ (44, 28, 18)
+        pygame.draw.rect(surface, sign_bg, r)
         for gy in range(r.y + 5, r.bottom - 3, 6):
-            pygame.draw.line(surface, theme.mix(theme.WOOD_DARK, theme.SHADOW, 0.25),
-                             (r.x + 6, gy), (r.right - 7, gy))
-        pygame.draw.rect(surface, theme.WOOD_LIGHT, r, 1)
-        pygame.draw.line(surface, theme.mix(theme.WOOD_DARK, theme.CREAM, 0.25),
-                         (r.x + 2, r.y + 1), (r.right - 3, r.y + 1))
+            pygame.draw.line(surface, theme.WOOD_DARK, (r.x + 6, gy), (r.right - 7, gy))
+        pygame.draw.rect(surface, theme.WOOD_FRAME, r, 1)
+        pygame.draw.rect(surface, theme.BRASS, r.inflate(-2, -2), 1)
+        pygame.draw.line(surface, theme.BRASS_LIGHT, (r.x + 2, r.y + 1), (r.right - 3, r.y + 1))
         for nx, ny in ((r.x + 4, r.y + 4), (r.right - 5, r.y + 4),
                        (r.x + 4, r.bottom - 5), (r.right - 5, r.bottom - 5)):
-            pygame.draw.rect(surface, theme.CREAM_DIM, (nx, ny, 2, 2))          # nails
+            pygame.draw.rect(surface, theme.BRASS_LIGHT, (nx, ny, 2, 2))          # antique brass nails
 
         theme.draw_text(surface, self.title, (r.centerx, r.y + 6), "button", theme.HONEY, anchor="midtop")
         for n, line in enumerate(self.lines):

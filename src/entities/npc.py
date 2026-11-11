@@ -4,7 +4,7 @@ import random
 from collections import deque
 
 import pygame
-from src.entities.reference_art import character_sprite_for, npc_walk_sheet_for
+from src.entities.game_art import npc_walk_sheet_for, npc_portrait_for
 
 
 SKIN_TONES = ((235, 190, 150), (211, 158, 118), (181, 125, 91), (244, 204, 162))
@@ -18,12 +18,11 @@ class NPC:
     def __init__(self, data):
         self.id = data["id"]
         self.name = data["name"]
-        self.reference_sprite = character_sprite_for(self.name, data.get("id", ""))
-        self.walk_sheet = npc_walk_sheet_for(self.name, data.get("id", ""))
         self.home = pygame.Vector2(data["pos"][0] + 6, data["pos"][1] + 6)
         self.pos = self.home.copy()
         self.rect = pygame.Rect(0, 0, 12, 12)
         self.rect.center = self.home
+        self.walk_sheet = npc_walk_sheet_for(self.name, self.id, height=27)
         self.color = tuple(data["color"])
         seed = sum((index + 1) * ord(char) for index, char in enumerate(self.id))
         self.rng = random.Random(seed)
@@ -254,7 +253,7 @@ class NPC:
         self.rect.center = (round(self.pos.x), round(self.pos.y))
         self.walk_time += dt
 
-    def draw(self, surface, camera, carried_by=None):
+    def draw(self, surface, camera, carried_by=None, has_active_quest=False, is_current_objective=False):
         if self.carried and carried_by is None:
             return
         screen_rect = camera.apply(carried_by.rect if carried_by else self.rect)
@@ -277,18 +276,7 @@ class NPC:
             surface.blit(art, art.get_rect(midbottom=(screen_rect.centerx,
                                                        screen_rect.bottom + round(2 * zoom))))
             return
-        if self.reference_sprite:
-            draw_size = (max(1, round(20 * zoom)), max(1, round(29 * zoom)))
-            art = pygame.transform.scale(self.reference_sprite, draw_size)
-            if self.facing.x < -0.15:
-                art = pygame.transform.flip(art, True, False)
-            bob = round(1 * zoom) if self.walk_time > 0 and int(self.walk_time * 8) % 2 else 0
-            shadow = pygame.Rect(0, 0, max(8, round(16 * zoom)), max(3, round(5 * zoom)))
-            shadow.midbottom = (screen_rect.centerx, screen_rect.bottom + max(1, round(2 * zoom)))
-            pygame.draw.ellipse(surface, (28, 58, 48), shadow)
-            surface.blit(art, art.get_rect(midbottom=(screen_rect.centerx,
-                                                       screen_rect.bottom + round(2 * zoom) - bob)))
-            return
+
 
         sprite = pygame.Surface((24, 36), pygame.SRCALPHA)
         x = 12

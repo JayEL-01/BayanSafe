@@ -57,7 +57,10 @@ class GameOver(BaseState):
                     break
 
     def draw(self, surface):
-        theme.fill_bg(surface, theme.mix(theme.NIGHT, theme.CORAL, 0.12))
+        theme.draw_background(surface)
+        vignette = pygame.Surface(surface.get_size(), pygame.SRCALPHA)
+        vignette.fill((*theme.mix(theme.SHADOW, theme.CORAL, 0.15), 140))
+        surface.blit(vignette, (0, 0))
         theme.draw_text(surface, "Game Over", (160, 12), "title",
                         theme.CORAL, anchor="midtop")
 

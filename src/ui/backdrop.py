@@ -42,27 +42,27 @@ BLEND_STEPS = 6
 START_PHASE = 1           # 0 morning, 1 day, 2 evening, 3 night
 START_HAZARD = 0          # index in HAZARDS the menu starts with (0 = typhoon)
 PHASES = [
-    ("morning", (255, 236, 205), 0.0),
-    ("day",     (255, 255, 255), 0.0),
-    ("evening", (255, 175, 120), 0.35),
-    ("night",   (70, 95, 165),   1.0),
+    ("morning", theme.mix(theme.CREAM, theme.HONEY, 0.2), 0.0),
+    ("day",     theme.CREAM, 0.0),
+    ("evening", theme.mix(theme.HONEY, theme.CORAL, 0.3), 0.35),
+    ("night",   theme.mix(theme.PLUM, theme.NIGHT, 0.5), 1.0),
 ]
 LIGHTS = [(24, 116, 6, 12), (232, 130, 10, 4), (250, 130, 10, 4)]   # window glow rects
 
 # the scene is multiplied toward this color, scaled by HAZARD_K, as danger rises
 HAZARD_TINTS = {
-    "typhoon": (170, 180, 205),
-    "flood": (160, 182, 205),
-    "earthquake": (205, 195, 180),
-    "volcano": (185, 140, 120),
-    "wildfire": (255, 170, 110),
+    "typhoon": theme.mix(theme.SKY, theme.PLUM, 0.3),
+    "flood": theme.mix(theme.SKY, theme.PLUM, 0.4),
+    "earthquake": theme.mix(theme.WOOD, theme.CREAM, 0.4),
+    "volcano": theme.mix(theme.CORAL, theme.WOOD, 0.4),
+    "wildfire": theme.mix(theme.CORAL, theme.HONEY, 0.4),
 }
 HAZARD_K = {"typhoon": 0.5, "flood": 0.5, "earthquake": 0.35, "volcano": 0.75, "wildfire": 0.6}
 
 # the casing: a rubber shell that hugs the letters of the logo (it only fits the title)
-CASE_BODY = (74, 128, 92)      # rubber body
-CASE_LIGHT = (150, 205, 150)   # highlights
-CASE_DARK = (40, 78, 56)       # outline and shadows
+CASE_BODY = theme.mix(theme.SAGE, theme.WOOD, 0.3)      # rubber body
+CASE_LIGHT = theme.mix(theme.SAGE, theme.CREAM, 0.3)    # highlights
+CASE_DARK = theme.mix(theme.SAGE, theme.NIGHT, 0.4)     # outline and shadows
 CASE_T = 4                     # how far the casing reaches out from the letters (pixels)
 TITLE_STAGES = 8               # ash / burn / crack steps baked for the casing
 ENTRANCE_DELAY = 0.15          # seconds before the title drops in when the menu opens
@@ -70,8 +70,13 @@ ENTRANCE_TIME = 1.3            # how long the drop, bounce and settle take
 SHOW_HINT = False             # True shows the small "click to repair" text under the logo
 HINT_FROM, HINT_TO = 3.0, 11.0 # seconds on screen during which "CLICK THE TITLE" shows
 # stripe color of the selected button (blended in as the danger rises)
-HAZARD_STRIPE = {"typhoon": (40, 90, 130), "flood": (30, 70, 140), "earthquake": (120, 80, 40),
-                 "volcano": (150, 40, 40), "wildfire": (170, 70, 20)}
+HAZARD_STRIPE = {
+    "typhoon": theme.mix(theme.SKY, theme.NIGHT, 0.4),
+    "flood": theme.mix(theme.SKY, theme.NIGHT, 0.5),
+    "earthquake": theme.mix(theme.HONEY, theme.CORAL, 0.3),
+    "volcano": theme.mix(theme.CORAL, theme.NIGHT, 0.3),
+    "wildfire": theme.mix(theme.CORAL, theme.HONEY, 0.4),
+}
 
 
 # ------------------------------------------------------------------
@@ -524,9 +529,11 @@ class MenuBackdrop:
                 fx = x + math.sin(t * speed + phase) * 10
                 fy = y + math.sin(t * speed * 1.7 + phase) * 5
                 if math.sin(t * 3 + phase) > -0.2:
-                    surface.fill((40, 36, 10), (int(fx) - 1, int(fy) - 1, 4, 4),
+                    firefly_glow = theme.mix(theme.WOOD_DARK, theme.NIGHT, 0.5)
+                    surface.fill(firefly_glow, (int(fx) - 1, int(fy) - 1, 4, 4),
                                  special_flags=pygame.BLEND_RGB_ADD)      # soft glow
-                    pygame.draw.rect(surface, (255, 235, 120), (int(fx), int(fy), 2, 2))
+                    firefly_color = theme.mix(theme.HONEY, theme.CREAM, 0.3)
+                    pygame.draw.rect(surface, firefly_color, (int(fx), int(fy), 2, 2))
 
     # ---------- drawing ----------
     def draw(self, surface, t=0.0):

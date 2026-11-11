@@ -1,6 +1,7 @@
 import pygame
 
-from src.entities.walk_sheet import ReferencePlayerSheet, WalkSheet
+from src.entities.game_art import GameArtPlayerSheet
+from src.entities.walk_sheet import WalkSheet
 from src.ui.pixel_art import character_sprite
 
 
@@ -12,20 +13,19 @@ class Player:
         self.speed = speed
         self.color = tuple(color)
 
-        # Use the supplied walking sheet when available, with drawn pixel art
-        # as a fallback so a missing asset never turns the character into a box.
+        # Character animation from game_art/player_frames, with walk_path as fallback
         self.sheet = None
         self.fallback_sprite = None
         character_id = "maria" if "maria" in str(walk_path).lower() else "juan"
         try:
-            self.sheet = ReferencePlayerSheet(character_id, height=20)
-        except (OSError, pygame.error, ValueError):
+            self.sheet = GameArtPlayerSheet(character_id, height=24)
+        except Exception:
             self.sheet = None
         if self.sheet is None and walk_path:
             try:
-                self.sheet = WalkSheet(walk_path, height=20)
-            except (OSError, pygame.error, ValueError):
-                pass
+                self.sheet = WalkSheet(walk_path, height=24)
+            except Exception:
+                self.sheet = None
         if self.sheet is None:
             self.fallback_sprite = pygame.transform.scale(character_sprite(self.color), (16, 20))
 
@@ -69,8 +69,6 @@ class Player:
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]: direction.x += 1
         if keys[pygame.K_UP] or keys[pygame.K_w]: direction.y -= 1
         if keys[pygame.K_DOWN] or keys[pygame.K_s]: direction.y += 1
-        # Pygame-compatible USB HID gamepads can drive the same single-player
-        # movement. Custom controller firmware should emit these same axes.
         if pygame.joystick.get_init() and pygame.joystick.get_count():
             try:
                 joystick = pygame.joystick.Joystick(0)
@@ -82,7 +80,7 @@ class Player:
                     if abs(y) > deadzone:
                         direction.y += y
             except pygame.error:
-                pass  # a disconnected controller falls back to keyboard control
+                pass
         if direction.length_squared() > 0:
             direction = direction.normalize()
         return direction

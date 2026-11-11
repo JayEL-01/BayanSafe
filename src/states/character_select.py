@@ -5,13 +5,13 @@ import time
 import pygame
 
 from src.core import audio
-from src.entities.reference_art import player_sprite
+from src.entities.game_art import GameArtPlayerSheet
+from src.entities.walk_sheet import WalkSheet
 from src.states.base_state import BaseState
 from src.states.loading import LoadingScreen
-from src.states.mission_prep import MissionPrep
 from src.ui import theme
 from src.ui.select_backdrop import SelectBackdrop
-from src.utils.data_loader import load_json
+from src.utils.data_loader import BASE_DIR, load_json
 from src.utils.helpers import wrap_text
 
 CENTERS = [90, 230]     # x of each hero on the 320x180 canvas
@@ -138,18 +138,23 @@ class CharacterSelect(BaseState):
 
         self.down, self.up, self.dimmed = [], [], []
         for c in self.characters:
-            reference = player_sprite(c.get("id", "juan"))
-            if reference:
-                height = 62
-                width = round(reference.get_width() * height / reference.get_height())
-                hero = pygame.transform.scale(reference, (width, height))
-                # Keep one stable front-facing pose; the exit animation moves
-                # the whole sprite rather than changing direction every frame.
-                down = up = [hero] * 4
-            else:
-                box = pygame.Surface((32, 56), pygame.SRCALPHA)
-                box.fill((*tuple(c["color"]), 255))
-                down = up = [box] * 4
+            char_id = c.get("id", "juan")
+            try:
+                sheet = GameArtPlayerSheet(char_id, height=36)
+                zoom = lambda f: pygame.transform.scale(f, (f.get_width() * ZOOM, f.get_height() * ZOOM))
+                down = [zoom(f) for f in sheet.frames["down"]]
+                up = [zoom(f) for f in sheet.frames["up"]]
+            except Exception:
+                path = c.get("walk")
+                if path:
+                    sheet = WalkSheet(str(BASE_DIR / path), height=36)
+                    zoom = lambda f: pygame.transform.scale(f, (f.get_width() * ZOOM, f.get_height() * ZOOM))
+                    down = [zoom(f) for f in sheet.frames["down"]]
+                    up = [zoom(f) for f in sheet.frames["up"]]
+                else:
+                    box = pygame.Surface((24, 40))
+                    box.fill(tuple(c["color"]))
+                    down = up = [box] * 4
             dim = down[0].copy()
             dim.fill((125, 125, 150, 255), special_flags=pygame.BLEND_RGBA_MULT)
             self.down.append(down)
@@ -209,9 +214,9 @@ class CharacterSelect(BaseState):
     def _finish(self):
         self.game.session.character = self.characters[self.selected]
         self.game.session.save()
-        stage_id = self.game.session.current_stage
+        from src.states.world_map import WorldMap
         self.game.state_manager.change(LoadingScreen(
-            self.game, lambda: MissionPrep(self.game, stage_id), "PREPARING YOUR JOURNEY"))
+            self.game, lambda: WorldMap(self.game), "PREPARING YOUR JOURNEY"))
 
     # ---------- input ----------
     def handle_event(self, event):

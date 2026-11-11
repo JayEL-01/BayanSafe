@@ -89,33 +89,37 @@ class DialogueBox:
                                       (self.BUBBLE_TOP + self.BUBBLE_BOTTOM - height) // 2),
                                   width, height)
                 tail_side = "top"
-            pygame.draw.rect(surface, (10, 15, 26), box.inflate(2, 2))
-            pygame.draw.rect(surface, (248, 244, 222), box)
-            pygame.draw.rect(surface, (245, 190, 76), box, 1)
+            # Storybook parchment dialogue bubble with warm wood & brass border
+            pygame.draw.rect(surface, theme.SHADOW, box.inflate(2, 2))
+            panel_main = theme.PARCHMENT  # warm storybook parchment (238, 228, 210)
+            pygame.draw.rect(surface, panel_main, box)
+            panel_border = theme.BRASS    # antique brass border (195, 150, 78)
+            pygame.draw.rect(surface, panel_border, box, 1)
+            speaker_color = (120, 65, 30)  # rich chestnut ink
             theme.draw_text(surface, self.speaker, (box.x + 7, box.y + 3),
-                            self.font, (143, 85, 40), shadow=False)
+                            self.font, speaker_color, shadow=False)
             text_x, text_y, line_gap = box.x + 7, box.y + 13, 10
             tip_x = max(box.x + 9, min(anchor[0], box.right - 9))
             tip_y = max(box.y + 8, min(anchor[1], box.bottom - 8))
             if tail_side == "bottom":
-                pygame.draw.polygon(surface, (248, 244, 222),
-                                    [(tip_x - 4, box.bottom - 1), (tip_x + 4, box.bottom - 1),
-                                     (tip_x, box.bottom + 6)])
+                pts = [(tip_x - 4, box.bottom - 1), (tip_x + 4, box.bottom - 1), (tip_x, box.bottom + 6)]
+                pygame.draw.polygon(surface, panel_main, pts)
+                pygame.draw.polygon(surface, panel_border, pts, 1)
             elif tail_side == "top":
-                pygame.draw.polygon(surface, (248, 244, 222),
-                                    [(tip_x - 4, box.y + 1), (tip_x + 4, box.y + 1),
-                                     (tip_x, box.y - 6)])
+                pts = [(tip_x - 4, box.y + 1), (tip_x + 4, box.y + 1), (tip_x, box.y - 6)]
+                pygame.draw.polygon(surface, panel_main, pts)
+                pygame.draw.polygon(surface, panel_border, pts, 1)
             elif tail_side == "right":
-                pygame.draw.polygon(surface, (248, 244, 222),
-                                    [(box.right - 1, tip_y - 4), (box.right - 1, tip_y + 4),
-                                     (box.right + 6, tip_y)])
+                pts = [(box.right - 1, tip_y - 4), (box.right - 1, tip_y + 4), (box.right + 6, tip_y)]
+                pygame.draw.polygon(surface, panel_main, pts)
+                pygame.draw.polygon(surface, panel_border, pts, 1)
             else:
-                pygame.draw.polygon(surface, (248, 244, 222),
-                                    [(box.x + 1, tip_y - 4), (box.x + 1, tip_y + 4),
-                                     (box.x - 6, tip_y)])
+                pts = [(box.x + 1, tip_y - 4), (box.x + 1, tip_y + 4), (box.x - 6, tip_y)]
+                pygame.draw.polygon(surface, panel_main, pts)
+                pygame.draw.polygon(surface, panel_border, pts, 1)
 
         for i, line in enumerate(lines):
-            color = theme.CREAM if anchor is None else (36, 43, 46)
+            color = theme.CREAM if anchor is None else theme.INK
             theme.draw_text(surface, line, (text_x, text_y + i * line_gap),
                             self.font, color, shadow=False)
 

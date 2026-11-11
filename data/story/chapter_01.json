@@ -1,0 +1,16 @@
+{
+  "id": "chapter_01",
+  "title": "Chapter 1",
+  "map_color": [42, 60, 48],
+  "map_size": [640, 360],
+  "player_start": [120, 180],
+  "scenes": [],
+  "npcs": [
+    {
+      "id": "tanod_tomas",
+      "name": "Tanod Tomas",
+      "pos": [200, 180],
+      "dialogue": ["Stay alert. Disasters can strike when least expected."]
+    }
+  ]
+}

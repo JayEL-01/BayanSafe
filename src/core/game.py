@@ -81,7 +81,7 @@ class Game:
                 break
 
             theme.TEXT_QUEUE.clear()
-            self.canvas.fill((0, 0, 0))
+            self.canvas.fill(theme.NIGHT)
             state.draw(self.canvas)
 
             if self.dialog_open:

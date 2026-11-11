@@ -32,7 +32,7 @@ def write_save(data):
 def load_save():
     try:
         data = json.loads(SAVE_PATH.read_text(encoding="utf-8"))
-        return data if isinstance(data, dict) and data.get("version") in (1, 2, 3) else None
+        return data if isinstance(data, dict) and data.get("version") in (1, 2, 3, 4) else None
     except (OSError, ValueError, TypeError):
         return None
 

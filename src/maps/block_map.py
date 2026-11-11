@@ -90,6 +90,7 @@ class BlockMap:
 
         self.elements: List[MapElement] = []
         self.collision_rects: List[pygame.Rect] = []
+        self._water_collision: List[pygame.Rect] = []  # water pieces currently blocking movement
         self.hazard_zones: List[MapElement] = []
         self.safe_zones: List[MapElement] = []
         self.triggers: List[MapElement] = []
@@ -124,13 +125,56 @@ class BlockMap:
     def add_water(self, x: int, y: int, w: int, h: int):
         elem = MapElement("water", pygame.Rect(x, y, w, h), COLOR_WATER, label="WATER", solid=True)
         self.elements.append(elem)
-        self.collision_rects.append(elem.rect)
+        self._sync_water_collision()
         return elem
 
     def add_bridge(self, x: int, y: int, w: int, h: int):
         elem = MapElement("bridge", pygame.Rect(x, y, w, h), COLOR_BRIDGE, label="BRIDGE", solid=False)
         self.elements.append(elem)
+        # A bridge is a walkable crossing over water: its footprint is carved
+        # out of the water collision (see _sync_water_collision).
+        self._sync_water_collision()
         return elem
+
+    def _sync_water_collision(self):
+        """Rebuild the water collision pieces.
+
+        Water blocks movement, but bridge footprints carved through it stay
+        walkable, and safe zones must remain clear. Rebuilding from the element
+        list keeps this true regardless of the order elements are added in.
+        """
+        for piece in self._water_collision:
+            if piece in self.collision_rects:
+                self.collision_rects.remove(piece)
+        self._water_collision = []
+
+        gaps = [e.rect for e in self.elements if e.elem_type in ("bridge", "safe_zone")]
+        for water in (e for e in self.elements if e.elem_type == "water"):
+            pieces = [water.rect]
+            for gap in gaps:
+                pieces = [part for piece in pieces for part in self._split_rect_around(piece, gap)]
+            for piece in pieces:
+                if piece.w > 0 and piece.h > 0:
+                    self.collision_rects.append(piece)
+                    self._water_collision.append(piece)
+
+    @staticmethod
+    def _split_rect_around(rect: pygame.Rect, gap: pygame.Rect) -> List[pygame.Rect]:
+        """Split `rect` into up to four sub-rects that exclude the overlap with `gap`."""
+        carve = gap.clip(rect)
+        if carve.w <= 0 or carve.h <= 0:
+            return [rect]
+        pieces: List[pygame.Rect] = []
+        if carve.top > rect.top:
+            pieces.append(pygame.Rect(rect.x, rect.y, rect.w, carve.top - rect.top))
+        if rect.bottom > carve.bottom:
+            pieces.append(pygame.Rect(rect.x, carve.bottom, rect.w, rect.bottom - carve.bottom))
+        if carve.left > rect.x:
+            pieces.append(pygame.Rect(rect.x, carve.top, carve.left - rect.x, carve.h))
+        if rect.right > carve.right:
+            pieces.append(pygame.Rect(carve.right, carve.top, rect.right - carve.right, carve.h))
+        return pieces
+
 
     def add_building(
         self,

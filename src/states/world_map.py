@@ -21,8 +21,10 @@ class WorldMap(BaseState):
             try:
                 loaded = pygame.image.load(str(BASE_DIR / entry["image"])).convert()
                 width, height = loaded.get_size()
+                # Fit each page into the map area above the footer rail so no
+                # part of the image hides behind it.
                 scale = min(settings.INTERNAL_WIDTH / width,
-                            settings.INTERNAL_HEIGHT / height)
+                            (self.FOOTER_TOP - 8) / height)
                 size = (max(1, round(width * scale)), max(1, round(height * scale)))
                 self.pages.append((pygame.transform.smoothscale(loaded, size), entry["title"]))
             except (pygame.error, OSError, KeyError):
@@ -67,7 +69,7 @@ class WorldMap(BaseState):
             surface.fill((228, 211, 173))
             image, title = self.pages[self.page]
             surface.blit(image, ((settings.INTERNAL_WIDTH - image.get_width()) // 2,
-                                 (settings.INTERNAL_HEIGHT - image.get_height()) // 2))
+                                 (self.FOOTER_TOP - image.get_height()) // 2))
         else:
             surface.fill((43, 80, 75))
 

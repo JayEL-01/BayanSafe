@@ -47,6 +47,8 @@ class Chapter5Level4TyphoonSevereFlood(BaseLevel):
         # Deep lahar roaring channel
         bm.add_water(160, 0, 90, 360)
         bm.add_road(30, 160, 580, 40)
+        # Road bridge over the chasm is the crossing before the mud crests
+        bm.add_bridge(160, 160, 90, 40)
         bm.add_hazard_zone("flood", 140, 160, 130, 40, label="ROARING LAHAR")
 
         # Canyon wall ascent path

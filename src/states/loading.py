@@ -23,7 +23,7 @@ class LoadingScreen(BaseState):
         self.shade.fill(shade_color)
         if journey_map:
             try:
-                image = pygame.image.load(str(BASE_DIR / "assets/images/world/bayan_safe_route_map.png")).convert()
+                image = pygame.image.load(str(BASE_DIR / "assets/images/world/mount_talon_island_map.png")).convert()
                 self.map_image = pygame.transform.smoothscale(
                     image, (settings.INTERNAL_WIDTH, settings.INTERNAL_HEIGHT)
                 )

@@ -45,6 +45,8 @@ class Chapter4Level2FlashFlood(BaseLevel):
         # Breached canal water spreading across road
         bm.add_water(150, 0, 60, 360)
         bm.add_road(30, 160, 580, 40)
+        # Road causeway over the breach is the only crossable route to the terminal
+        bm.add_bridge(150, 160, 60, 40)
         bm.add_hazard_zone("flood", 180, 160, 220, 40, label="CANAL SURGE")
 
         # Buildings

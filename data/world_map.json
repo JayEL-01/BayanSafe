@@ -1,6 +1,6 @@
 {
   "reference_image": "assets/images/world/bayan_safe_story_map.jpg",
-  "route_image": "assets/images/world/bayan_safe_route_map.png",
+  "route_image": "assets/images/world/mount_talon_island_map.png",
   "journey": [
     "Home Village",
     "North West Plateau",
@@ -14,7 +14,7 @@
   "selection_mode": "continuous_story",
   "pages": [
     {
-      "image": "assets/images/world/bayan_safe_route_map.png",
+      "image": "assets/images/world/mount_talon_island_map.png",
       "title": "THE ISLAND AND STORY ROUTE"
     },
     {

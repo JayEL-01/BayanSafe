@@ -13,7 +13,8 @@ import pygame
 
 from src.core import settings
 from src.core.strings import tips, tr
-from src.ui import code_art, menu_fx, theme
+from src.ui import menu_fx, theme
+from src.utils.data_loader import BASE_DIR
 from src.core import audio
 W, H = settings.INTERNAL_WIDTH, settings.INTERNAL_HEIGHT
 
@@ -606,6 +607,7 @@ class MenuFX:
 _footer = None
 
 
+UI_DIR = BASE_DIR / "assets" / "images" / "ui"      # sprites made from your AI sheets
 _ui_cache = {}
 _silhouettes = {}
 
@@ -623,9 +625,16 @@ _last_filled = [0]
 
 
 def _ui(name):
-    """The code-drawn UI sprite (see src/ui/code_art.py). Returns None if unknown."""
+    """Loads assets/images/ui/<name>.png once. Returns None if it is missing."""
     if name not in _ui_cache:
-        _ui_cache[name] = code_art.icon(name)
+        path = UI_DIR / (name + ".png")
+        img = None
+        try:
+            if path.exists():
+                img = pygame.image.load(str(path)).convert_alpha()
+        except (pygame.error, OSError):
+            img = None
+        _ui_cache[name] = img
     return _ui_cache[name]
 
 

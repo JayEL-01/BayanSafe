@@ -81,16 +81,28 @@ class MainMenu(BaseState):
 
     def continue_game(self):
         characters = load_json("data/characters.json")
-        if self.game.session.load(characters):
-            if all(stage in self.game.session.completed for stage in self.game.session.STAGE_ORDER):
-                self.continue_message = "Your story is complete. Start a new journey to play again."
-                return
-            from src.states.world_map import WorldMap
-            self.game.state_manager.push(LoadingScreen(
-                self.game, lambda: WorldMap(self.game), "RESUMING ISLAND EXPEDITION"))
-        else:
-            self.game.session.erase()
+        session = self.game.session
+        if not session.load(characters):
+            session.erase()
             self._refresh_buttons()
+            return
+
+        self.continue_message = ""
+        if all(stage in session.completed for stage in session.STAGE_ORDER):
+            from src.story.chapter_registry import launch_ending
+            session.clear_level_progress()
+            self.game.state_manager.push(LoadingScreen(
+                self.game,
+                lambda: launch_ending(self.game, session.score_system),
+                "REVISITING THE FINAL OUTCOME"))
+            return
+
+        chapter_id, level_id = session.resume_mission()
+        from src.story.chapter_registry import load_level
+        self.game.state_manager.push(LoadingScreen(
+            self.game,
+            lambda: load_level(self.game, chapter_id, level_id, resume=True),
+            "RESUMING ISLAND EXPEDITION"))
 
     def guide(self):
         self.game.state_manager.push(GuideState(self.game))

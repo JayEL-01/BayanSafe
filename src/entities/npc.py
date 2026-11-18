@@ -253,6 +253,37 @@ class NPC:
         self.rect.center = (round(self.pos.x), round(self.pos.y))
         self.walk_time += dt
 
+    def sprite_screen_rect(self, camera, carried_by=None):
+        """Return the on-screen rect occupied by this NPC's drawn sprite.
+
+        Name labels use this so their anchor comes from the sprite's real
+        top edge and horizontal centre, for any NPC size.
+        """
+        screen_rect = camera.apply(carried_by.rect if carried_by else self.rect)
+        zoom = camera.zoom
+        if self.walk_sheet or not carried_by:
+            # Walk-sheet NPCs are drawn full-size; normal NPCs are anchored
+            # with their feet on the collision rect.
+            scale = zoom
+            anchor = (
+                screen_rect.centerx,
+                screen_rect.bottom + round(2 * zoom),
+            )
+        else:
+            # The procedural fallback shrinks slightly when carried.
+            scale = zoom * 0.78
+            anchor = (
+                screen_rect.centerx + round(6 * zoom),
+                screen_rect.y + round(12 * zoom),
+            )
+        rect = pygame.Rect(
+            0, 0,
+            max(1, round(self.WORLD_SPRITE_SIZE[0] * scale)),
+            max(1, round(self.WORLD_SPRITE_SIZE[1] * scale)),
+        )
+        rect.midbottom = anchor
+        return rect
+
     def draw(self, surface, camera, carried_by=None, has_active_quest=False, is_current_objective=False):
         if self.carried and carried_by is None:
             return

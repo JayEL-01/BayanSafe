@@ -5,11 +5,9 @@ import pygame
 
 from src.core import settings
 from src.core.strings import tr
-from src.ui import theme
+from src.ui import code_art, theme
 from src.ui.menu_fx import FIRE_FRAMES, HAZARDS, MenuFX, QUAKE_SHAKE
-from src.utils.data_loader import BASE_DIR
 
-MENU_DIR = BASE_DIR / "assets" / "images" / "menu"
 MAX_TITLE_WIDTH = 200
 SIZE = (settings.INTERNAL_WIDTH, settings.INTERNAL_HEIGHT)
 
@@ -83,10 +81,10 @@ HAZARD_STRIPE = {
 # HELPERS
 # ------------------------------------------------------------------
 def _load(name, alpha=False):
-    path = MENU_DIR / name
-    if not path.exists():
+    """The code-drawn replacement for a menu layer (see src/ui/code_art.py)."""
+    image = code_art.layer(name)
+    if image is None:
         return None
-    image = pygame.image.load(str(path))
     return image.convert_alpha() if alpha else image.convert()
 
 

@@ -6,13 +6,11 @@ import pygame
 from src.core import audio, settings
 from src.core.strings import guide, tr
 from src.states.base_state import BaseState
-from src.ui import theme
+from src.ui import code_art, theme
 from src.ui.button import Button
-from src.utils.data_loader import BASE_DIR
 
-BG_PATH = "assets/images/ui/guide_bg.png"       # the notebook-on-a-table image
-ICON_DIR = "assets/images/ui"                    # hz_typhoon.png, hz_earthquake.png, hz_flood.png, ...
-ICON_SCALE = 3                                   # whole-number zoom for the tiny hz_*.png icons (2 = smaller, 4 = bigger)
+BG_PATH = "assets/images/ui/guide_bg.png"       # the notebook-on-a-table scene (drawn in code)
+ICON_SCALE = 3                                   # whole-number zoom for the tiny hz_* icons (2 = smaller, 4 = bigger)
 
 # hazard id -> words that identify it in a page title (English + Filipino), used to pick hz_<id>.png
 HAZARD_WORDS = (
@@ -102,16 +100,20 @@ class GuideState(BaseState):
         self.flip_t = FLIP_TIME             # not flipping at the start
         self._rows = {}                     # page -> (rows, font name, row height)
 
-        bg = pygame.image.load(str(BASE_DIR / BG_PATH)).convert()
+        bg = code_art.layer(BG_PATH)
+        if bg is None:
+            bg = pygame.Surface((320, 180))
+            bg.fill(theme.NIGHT)
+        elif pygame.display.get_init() and pygame.display.get_surface() is not None:
+            bg = bg.convert()
         if bg.get_size() != (320, 180):
             bg = pygame.transform.smoothscale(bg, (320, 180))
         self.bg = bg
 
-        self.icons = {}                     # hazard id -> scaled hz_<id>.png (missing files just fall back to shapes)
+        self.icons = {}                     # hazard id -> scaled hz_<id> icon (missing ones fall back to shapes)
         for key in ICON_KEYS:
-            path = BASE_DIR / ICON_DIR / f"hz_{key}.png"
-            if path.exists():
-                img = pygame.image.load(str(path)).convert_alpha()
+            img = code_art.icon(f"hz_{key}")
+            if img is not None:
                 size = (img.get_width() * ICON_SCALE, img.get_height() * ICON_SCALE)
                 self.icons[key] = pygame.transform.scale(img, size)       # nearest-neighbour: keeps pixel art sharp
 

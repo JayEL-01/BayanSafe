@@ -170,11 +170,19 @@ def fill_bg(surface, color=NIGHT):
     surface.fill(color)
 
 
+def fade(surface, alpha, color=SHADOW):
+    """Draw a uniform pixel-art fade over everything already on *surface*."""
+    alpha = int(max(0, min(255, alpha)))
+    if alpha <= 0:
+        return
+    overlay = pygame.Surface(surface.get_size(), pygame.SRCALPHA)
+    overlay.fill((*color, alpha))
+    surface.blit(overlay, (0, 0))
+
+
 def dim(surface, alpha=150):
     """Darken everything drawn so far (pause / game over backdrops)."""
-    overlay = pygame.Surface(surface.get_size(), pygame.SRCALPHA)
-    overlay.fill((*SHADOW, alpha))
-    surface.blit(overlay, (0, 0))
+    fade(surface, alpha)
 
 
 def draw_text(surface, text, pos, size="small", color=CREAM, shadow=True, anchor="topleft"):
@@ -232,6 +240,72 @@ def draw_panel(surface, rect, title=None, accent=HONEY, alpha=235):
         pygame.draw.line(surface, mix(PLUM, accent, 0.35),
                          (rect.x + 4, rect.y + 15), (rect.right - 5, rect.y + 15))
     return rect
+
+
+def draw_footer(surface, text, y=None, color=CREAM_DIM, size="tiny"):
+    """Draw the shared one-line control/hint footer near the bottom of a screen."""
+    w, h = surface.get_size()
+    y = (h - 10) if y is None else y
+    return draw_text(surface, text, (w // 2, y), size, color,
+                     shadow=False, anchor="midtop")
+
+
+def draw_option_row(surface, rect, selected=False, accent=HONEY):
+    """Shared wooden choice/decision row. Caller queues the wrapped text."""
+    rect = pygame.Rect(rect)
+    fill = (142, 96, 60) if selected else WOOD_DARK
+    border = BRASS_LIGHT if selected else WOOD_BORDER
+    pygame.draw.rect(surface, SHADOW, rect.move(0, 2))
+    pygame.draw.rect(surface, fill, rect)
+    pygame.draw.rect(surface, border, rect, 1)
+    if selected:
+        cy = rect.centery
+        pygame.draw.polygon(surface, accent,
+                            [(rect.x + 4, cy - 3), (rect.x + 9, cy), (rect.x + 4, cy + 3)])
+    return rect
+
+
+def draw_title_card(surface, rect, title, subtitle="", body="", footer="",
+                    accent=HONEY, title_size="small"):
+    """Uniform story/chapter/transition card with wrapped body text.
+
+    All text is queued through ``draw_text`` so it is drawn after the canvas
+    is scaled, just like every other screen in the game.
+    """
+    rect = pygame.Rect(rect)
+    draw_panel(surface, rect, accent=accent)
+
+    from src.ui.text_utils import wrap_text
+
+    y = rect.y + 6
+    draw_text(surface, title, (rect.centerx, y), title_size, accent,
+              shadow=True, anchor="midtop")
+    y += get_font(title_size).get_height() + 2
+
+    if subtitle:
+        for line in wrap_text(subtitle, "tiny", rect.w - 14)[:2]:
+            draw_text(surface, line, (rect.centerx, y), "tiny", CREAM,
+                      shadow=False, anchor="midtop")
+            y += line_height("tiny") + 1
+
+    if body:
+        lines = body if isinstance(body, (list, tuple)) else wrap_text(body, "tiny", rect.w - 16)
+        room = max(0, rect.bottom - y - (18 if footer else 8))
+        max_lines = max(0, room // (line_height("tiny") + 1))
+        for line in list(lines)[:max_lines]:
+            draw_text(surface, line, (rect.x + 8, y), "tiny", CREAM_DIM,
+                      shadow=False, anchor="topleft")
+            y += line_height("tiny") + 1
+
+    if footer:
+        draw_text(surface, footer, (rect.centerx, rect.bottom - 8), "tiny", CREAM_DIM,
+                  shadow=False, anchor="midtop")
+    return rect
+
+
+def line_height(size="tiny"):
+    """Canvas-pixel line height for a named theme font."""
+    return get_font(size).get_height()
 
 
 def draw_bar(surface, rect, value, maximum, color):

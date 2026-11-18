@@ -4,13 +4,11 @@ import random
 import pygame
 
 from src.core import settings
-from src.ui import theme
+from src.ui import code_art, theme
 from src.ui.backdrop import PHASES, _bake_vignette      # same tints + vignette as the menu
-from src.utils.data_loader import BASE_DIR
 
 SIZE = (settings.INTERNAL_WIDTH, settings.INTERNAL_HEIGHT)
 MAX_NIGHT_REF = 1.0   # PHASES night value
-IMAGE = BASE_DIR / "assets" / "images" / "menu" / "select_bg.png"
 
 # ------------------------------------------------------------------
 # EDIT FREELY
@@ -39,13 +37,15 @@ class SelectBackdrop:
 
     def __init__(self, seed=3):
         rng = random.Random(seed)
-        if IMAGE.exists():
-            img = pygame.image.load(str(IMAGE)).convert()
+        img = code_art.layer("select_bg.png")
+        if img is not None:
+            if pygame.display.get_init() and pygame.display.get_surface() is not None:
+                img = img.convert()
             if img.get_size() != SIZE:
                 img = pygame.transform.scale(img, SIZE)       # nearest, like the menu
             self.bg = img
         else:
-            print(f"Missing {IMAGE}. Using a plain sky instead.")
+            print("No code art for select_bg.png. Using a plain sky instead.")
             self.bg = pygame.Surface(SIZE)
             self.bg.fill((90, 170, 230))
 

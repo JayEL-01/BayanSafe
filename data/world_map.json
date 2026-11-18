@@ -1,29 +1,63 @@
 {
-  "reference_image": "assets/images/world/bayan_safe_story_map.jpg",
-  "route_image": "assets/images/world/mount_talon_island_map.png",
-  "journey": [
-    "Home Village",
-    "North West Plateau",
-    "Central Town",
-    "Harbor",
-    "North East Plains",
-    "Volcano Valleys",
-    "Main Control Room"
-  ],
-  "region_levels": 4,
-  "selection_mode": "continuous_story",
-  "pages": [
+  "background_image": "assets/images/world/worldmap.png",
+  "title": "MOUNT TALON ISLAND",
+  "locations": [
     {
-      "image": "assets/images/world/mount_talon_island_map.png",
-      "title": "THE ISLAND AND STORY ROUTE"
+      "stage_id": "prologue",
+      "name": "BRGY. SAN ISIDRO",
+      "label": "SAN ISIDRO",
+      "description": "Your home barangay on the southwest coast. Pack the emergency go bag and guide your neighbors to the evacuation center before the typhoon arrives.",
+      "x": 0.11,
+      "y": 0.7
     },
     {
-      "image": "assets/images/world/bayan_safe_story_route.png",
-      "title": "DISASTER REGIONS AND STORY ROUTE"
+      "stage_id": "chapter_1",
+      "name": "NORTH WEST PLATEAU",
+      "label": "NW PLATEAU",
+      "description": "Mountain settlements on fractured ground. Survive the earthquake and the landslide, and follow the strange signal beneath the plateau.",
+      "x": 0.19,
+      "y": 0.28
     },
     {
-      "image": "assets/images/world/bayan_safe_hazard_schedule.png",
-      "title": "HAZARD BUILDUP AND ENDINGS"
+      "stage_id": "chapter_2",
+      "name": "CENTRAL TOWN",
+      "label": "CENTRAL TOWN",
+      "description": "The island's busy heart. Fire, quakes and floods strike the streets while the city struggles to shelter everyone who remains.",
+      "x": 0.38,
+      "y": 0.28
+    },
+    {
+      "stage_id": "chapter_3",
+      "name": "THE HARBOR",
+      "label": "HARBOR",
+      "description": "Docks and fishing boats trapped between land and sea. Help the harbor folk weather the storm, the flood and the fire.",
+      "x": 0.5,
+      "y": 0.71
+    },
+    {
+      "stage_id": "chapter_4",
+      "name": "NORTH EAST PLAINS",
+      "label": "NE PLAINS",
+      "description": "Wide farmlands beneath a sleeping giant. Protect the farming families and follow the road to the remote research facility.",
+      "x": 0.79,
+      "y": 0.22
+    },
+    {
+      "stage_id": "chapter_5",
+      "name": "VOLCANO VALLEY",
+      "label": "VOLCANO VALLEY",
+      "description": "A steep valley below the volcano. Reach the hidden research complex and learn the truth about the World Engine.",
+      "x": 0.5,
+      "y": 0.18
+    },
+    {
+      "stage_id": "final_mission",
+      "name": "MAIN CONTROL ROOM",
+      "label": "CONTROL ROOM",
+      "description": "The World Engine's core beneath the crater. Confront the machine and shut it down to end the disasters for good.",
+      "x": 0.58,
+      "y": 0.11,
+      "label_dx": 14
     }
   ]
 }

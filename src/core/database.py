@@ -123,12 +123,12 @@ class DatabaseManager:
                     )
                     player_id, uname, char_id, play_s = cur.fetchone()
 
-                    # Initialize stage 1 (home_island_tutorial or earthquake) as UNLOCKED
+                    # Initialize stage 1 (prologue) as UNLOCKED
                     cur.execute(
                         """INSERT INTO player_stage_progress (player_id, stage_id, status)
-                           VALUES (%s, 'home_island_tutorial', 'UNLOCKED'), (%s, 'earthquake', 'UNLOCKED')
+                           VALUES (%s, 'prologue', 'UNLOCKED'), (%s, 'home_island_tutorial', 'UNLOCKED'), (%s, 'earthquake', 'UNLOCKED')
                            ON CONFLICT DO NOTHING""",
-                        (player_id, player_id)
+                        (player_id, player_id, player_id)
                     )
             conn.close()
             return {
@@ -140,6 +140,29 @@ class DatabaseManager:
         except Exception as e:
             logger.error(f"Error getting/creating player: {e}")
             return None
+
+    def reset_player_progress(self, player_id: int) -> bool:
+        """Reset campaign stage progress for a new campaign (preserves stage_runs and achievements)."""
+        if not self._connected:
+            return False
+        try:
+            conn = self.get_connection()
+            with conn, conn.cursor() as cur:
+                cur.execute(
+                    "DELETE FROM player_stage_progress WHERE player_id = %s",
+                    (player_id,)
+                )
+                cur.execute(
+                    """INSERT INTO player_stage_progress (player_id, stage_id, status)
+                       VALUES (%s, 'prologue', 'UNLOCKED')
+                       ON CONFLICT (player_id, stage_id) DO UPDATE SET status = 'UNLOCKED'""",
+                    (player_id,)
+                )
+            conn.close()
+            return True
+        except Exception as e:
+            logger.error(f"Error resetting player progress: {e}")
+            return False
 
     def update_player_character(self, player_id: int, character_id: str) -> bool:
         """Update selected hero character for player."""

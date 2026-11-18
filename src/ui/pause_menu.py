@@ -13,6 +13,7 @@ from src.config.palette import COLOR_UI_PANEL, COLOR_UI_BORDER, COLOR_UI_TEXT, C
 class PauseMenu:
     MENU_OPTIONS = [
         ("RESUME", "resume"),
+        ("RESTART LEVEL", "restart"),
         ("COLOR LEGEND", "legend"),
         ("WORLD MAP", "world_map"),
         ("MAIN MENU", "main_menu"),
@@ -96,11 +97,29 @@ class PauseMenu:
             if level and hasattr(level, "legend_screen"):
                 level.legend_screen.show()
             return True
+        elif opt_key == "restart":
+            return self._restart_level(level)
         elif opt_key == "world_map":
             return self._go_world_map()
         elif opt_key == "main_menu":
             return self._go_main_menu()
         return False
+
+    def _restart_level(self, level=None) -> bool:
+        """Rebuild the current mission from scratch without stale quest state."""
+        self.hide()
+        chapter_id = getattr(level, "chapter_id", None)
+        level_id = getattr(level, "level_id", None)
+        if not chapter_id or not level_id:
+            return False
+        from src.story.chapter_registry import load_level
+        try:
+            load_level(self.game, chapter_id, level_id, resume=False)
+        except Exception as exc:  # keep the menu responsive if a rebuild fails
+            print(f"[BayanSafe] Could not restart level: {exc}")
+            self.show()
+            return False
+        return True
 
     def _go_world_map(self) -> bool:
         self.hide()
@@ -119,44 +138,51 @@ class PauseMenu:
             return
 
         w, h = surface.get_size()
-        overlay = pygame.Surface((w, h), pygame.SRCALPHA)
-        overlay.fill((10, 14, 20, 215))
-        surface.blit(overlay, (0, 0))
+        theme.fade(surface, 215)
 
-        panel_w = 160
-        panel_h = 130
+        # Dynamic sizing: measure the widest option label
+        font = theme.get_font("tiny")
+        max_label_w = 0
+        for label, _ in self.MENU_OPTIONS:
+            lw, _ = font.size(label)
+            max_label_w = max(max_label_w, lw)
+
+        btn_w = max(130, max_label_w + 24)   # text + padding
+        btn_h = 16
+        gap = 4
+
+        # Title height
+        title_h = 20
+        footer_h = 12
+
+        panel_w = btn_w + 16
+        panel_h = title_h + len(self.MENU_OPTIONS) * (btn_h + gap) + footer_h + 16
         panel_x = (w - panel_w) // 2
         panel_y = (h - panel_h) // 2
         panel_rect = pygame.Rect(panel_x, panel_y, panel_w, panel_h)
 
-        pygame.draw.rect(surface, COLOR_UI_PANEL, panel_rect)
-        pygame.draw.rect(surface, COLOR_UI_BORDER, panel_rect, 2)
+        theme.draw_panel(surface, panel_rect, accent=theme.HONEY, alpha=240)
 
         theme.draw_text(
             surface,
             "PAUSED",
-            (w // 2, panel_y + 8),
+            (w // 2, panel_y + 6),
             size="small",
             color=COLOR_UI_ACCENT,
             anchor="center",
             shadow=True,
         )
 
-        btn_w = 130
-        btn_h = 16
-        start_y = panel_y + 26
+        start_y = panel_y + 24
         for idx, (label, _) in enumerate(self.MENU_OPTIONS):
-            by = start_y + idx * 20
+            by = start_y + idx * (btn_h + gap)
             bx = (w - btn_w) // 2
             is_sel = idx == self.selection
             b_rect = pygame.Rect(bx, by, btn_w, btn_h)
 
-            bg_col = (55, 40, 24) if is_sel else (25, 20, 18)
-            border_col = COLOR_UI_ACCENT if is_sel else (90, 70, 45)
-            pygame.draw.rect(surface, bg_col, b_rect)
-            pygame.draw.rect(surface, border_col, b_rect, 1)
+            theme.draw_option_row(surface, b_rect, selected=is_sel, accent=theme.HONEY)
 
-            text_col = COLOR_UI_ACCENT if is_sel else COLOR_UI_TEXT
+            text_col = theme.HONEY if is_sel else theme.CREAM
             prefix = "> " if is_sel else "  "
             theme.draw_text(
                 surface,
@@ -173,7 +199,7 @@ class PauseMenu:
             "ESC: Resume  ·  ENTER: Select",
             (w // 2, panel_y + panel_h - 10),
             size="tiny",
-            color=(180, 165, 140),
+            color=theme.CREAM_DIM,
             anchor="center",
             shadow=False,
         )

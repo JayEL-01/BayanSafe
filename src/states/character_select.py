@@ -5,6 +5,7 @@ import time
 import pygame
 
 from src.core import audio
+from src.core.database import db_manager
 from src.entities.game_art import GameArtPlayerSheet
 from src.entities.walk_sheet import WalkSheet
 from src.states.base_state import BaseState
@@ -186,6 +187,8 @@ class CharacterSelect(BaseState):
             return
         self.game.session.challenger_id = tag
         self.game.session.challenger_name = tag
+        self.game.session.db_player_id = None
+        self.game.session._db_player_username = None
         self.identity_editing = False
         pygame.key.stop_text_input()
         self.leaving = True
@@ -213,7 +216,16 @@ class CharacterSelect(BaseState):
 
     def _finish(self):
         self.game.session.character = self.characters[self.selected]
+        self.game.session.unlocked = {self.game.session.STAGE_ORDER[0]}
+        self.game.session.completed = set()
+        self.game.session.records = {}
+        self.game.session.campaign_results = {}
+        self.game.session.current_stage = self.game.session.STAGE_ORDER[0]
         self.game.session.save()
+        if db_manager.is_connected:
+            p_id = self.game.session._ensure_db_player()
+            if p_id:
+                db_manager.reset_player_progress(p_id)
         from src.states.world_map import WorldMap
         self.game.state_manager.change(LoadingScreen(
             self.game, lambda: WorldMap(self.game), "PREPARING YOUR JOURNEY"))

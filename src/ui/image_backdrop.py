@@ -3,11 +3,9 @@ import math
 import pygame
 
 from src.core import settings
-from src.ui import theme
-from src.utils.data_loader import BASE_DIR
+from src.ui import code_art, theme
 
 SIZE = (settings.INTERNAL_WIDTH, settings.INTERNAL_HEIGHT)
-MENU_DIR = BASE_DIR / "assets" / "images" / "ui"
 
 
 class ImageBackdrop:
@@ -23,14 +21,15 @@ class ImageBackdrop:
     SPEED = 8.0             # how fast the light follows the selection
 
     def __init__(self, filename, light_pos=None):
-        path = MENU_DIR / filename
+        img = code_art.layer(filename)
         self.fallback = None
         self.image = None
-        if path.exists():
-            img = pygame.image.load(str(path)).convert()
+        if img is not None:
+            if pygame.display.get_init() and pygame.display.get_surface() is not None:
+                img = img.convert()
             self.image = img if img.get_size() == SIZE else pygame.transform.scale(img, SIZE)
         else:
-            print(f"Missing {path}. Using the old backdrop instead.")
+            print(f"No code art for {filename}. Using the old backdrop instead.")
             self.fallback = theme.CozyBackdrop()
 
         self.light = list(light_pos or (SIZE[0] / 2, SIZE[1] / 2))

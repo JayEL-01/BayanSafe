@@ -1,9 +1,9 @@
 """Interactive story-progression world map for BayanSafe.
 
-The island chart is drawn in code (``src/ui/code_art.py``). Story locations
-are configured in ``data/world_map.json`` and pinned onto the art at
-config-driven normalized positions that follow the island's geography. Each
-location renders in one of three live-computed states:
+The player's island painting (``assets/images/world/worldmap.png``) is the
+map. Story locations are configured in ``data/world_map.json`` and pinned
+onto the art at config-driven normalized positions that follow the island's
+geography. Each location renders in one of three live-computed states:
 
 * ``locked``    - veiled in grey with a padlock; clicking does nothing
 * ``active``    - pulsing warm glow plus a "CURRENTLY EXPLORING" tag
@@ -20,8 +20,8 @@ from src.core import settings
 from src.core.audio import play
 from src.core.database import db_manager
 from src.states.base_state import BaseState
-from src.ui import code_art, theme
-from src.utils.data_loader import load_json
+from src.ui import theme
+from src.utils.data_loader import BASE_DIR, load_json
 from src.utils.helpers import wrap_text
 
 # Progression states (computed from the session for every draw).
@@ -91,9 +91,12 @@ class WorldMap(BaseState):
 
     # ------------------------------------------------------------- setup
     def _load_background(self):
-        """Aspect-fit the island chart above the info rail (drawn in code)."""
-        image = code_art.layer(self.data.get("background_image", "worldmap.png"))
-        if image is None:
+        """Aspect-fit the player's island painting above the info rail."""
+        try:
+            image = pygame.image.load(
+                str(BASE_DIR / str(self.data.get("background_image", "")))
+            )
+        except (pygame.error, OSError, ValueError):
             return
         if pygame.display.get_init() and pygame.display.get_surface() is not None:
             image = image.convert()

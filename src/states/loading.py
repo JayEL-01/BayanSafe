@@ -2,7 +2,8 @@ import pygame
 
 from src.core import settings
 from src.states.base_state import BaseState
-from src.ui import code_art, theme
+from src.ui import theme
+from src.utils.data_loader import BASE_DIR
 
 
 class LoadingScreen(BaseState):
@@ -21,11 +22,13 @@ class LoadingScreen(BaseState):
         self.shade = pygame.Surface((settings.INTERNAL_WIDTH, settings.INTERNAL_HEIGHT), pygame.SRCALPHA)
         self.shade.fill(shade_color)
         if journey_map:
-            image = code_art.layer("mount_talon_island_map.png")
-            if image is not None:
+            try:
+                image = pygame.image.load(str(BASE_DIR / "assets/images/world/mount_talon_island_map.png")).convert()
                 self.map_image = pygame.transform.smoothscale(
                     image, (settings.INTERNAL_WIDTH, settings.INTERNAL_HEIGHT)
                 )
+            except (pygame.error, OSError):
+                self.map_image = None
 
     def update(self, dt):
         self.elapsed += dt

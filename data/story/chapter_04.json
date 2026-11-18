@@ -1,9 +1,0 @@
-{
-  "id": "chapter_04",
-  "title": "Chapter 4",
-  "map_color": [55, 45, 40],
-  "map_size": [640, 360],
-  "player_start": [120, 180],
-  "scenes": [],
-  "npcs": []
-}

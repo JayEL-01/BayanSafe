@@ -1,112 +1,66 @@
 """Ending 1: Complete Victory - A Community Restored.
 
-Triggered when the player maintains high preparedness (>= 75%) and low unsafe actions.
+Triggered when the player keeps high preparedness (>= 75%) and low unsafe
+actions. Presented as three polished pages: the epilogue, the preparedness
+audit and the roll of honor.
 """
 
-from typing import Dict, Any
-import pygame
-from src.states.base_state import BaseState
+from typing import Any, Dict, List
+
+from src.story.endings.ending_base import EndingState
 from src.ui import theme
-from src.config.palette import (
-    COLOR_UI_PANEL,
-    COLOR_UI_BORDER,
-    COLOR_UI_TEXT,
-    COLOR_UI_ACCENT,
-    COLOR_UI_SAFE,
-)
 
 
-class Ending1CompleteVictoryState(BaseState):
-    def __init__(self, game, summary: Dict[str, Any]):
-        super().__init__(game)
-        self.summary = summary
-        self.timer = 0.0
+class Ending1CompleteVictoryState(EndingState):
+    ending_id = "ending_1_complete_victory"
+    title = "ENDING 1  -  COMPLETE VICTORY"
+    subtitle = "A COMMUNITY RESTORED THROUGH PREPAREDNESS"
+    accent = theme.SAGE
+    mood = (18, 46, 30)
+    mood_alpha = 54
+    particle_kind = "mote"
+    emblem = "medal"
 
-    def handle_event(self, event: pygame.Event) -> bool:
-        if event.type == pygame.KEYDOWN:
-            if event.key in (pygame.K_SPACE, pygame.K_RETURN, pygame.K_ESCAPE):
-                from src.states.main_menu import MainMenu
-                self.game.state_manager.change(MainMenu(self.game))
-                return True
-        return False
+    def _build_pages(self) -> List[Dict[str, Any]]:
+        prep = self.summary.get("preparedness_ratio", 100)
+        res = self.summary.get("residents_assisted", 8)
+        warn = self.summary.get("warnings_followed", 10)
+        unsafe = self.summary.get("unsafe_actions", 0)
 
-    def update(self, dt: float):
-        self.timer += dt
-
-    def draw(self, surface: pygame.Surface):
-        w, h = surface.get_size()
-        surface.fill((14, 28, 20))
-
-        box_w = min(w - 20, 300)
-        box_h = min(h - 16, 168)
-        box_x = (w - box_w) // 2
-        box_y = (h - box_h) // 2
-
-        pygame.draw.rect(surface, COLOR_UI_PANEL, (box_x, box_y, box_w, box_h))
-        pygame.draw.rect(surface, COLOR_UI_SAFE, (box_x, box_y, box_w, box_h), 2)
-
-        theme.draw_text(
-            surface,
-            "ENDING 1: COMPLETE VICTORY",
-            (w // 2, box_y + 8),
-            size="small",
-            color=COLOR_UI_SAFE,
-            anchor="center",
-            shadow=True,
-        )
-
-        theme.draw_text(
-            surface,
-            "A COMMUNITY RESTORED THROUGH PREPAREDNESS",
-            (w // 2, box_y + 22),
-            size="tiny",
-            color=COLOR_UI_ACCENT,
-            anchor="center",
-            shadow=False,
-        )
-
-        epilogue_lines = [
-            "The Aegis-Terra machine hums to a gentle, permanent standstill.",
-            "Because your community heeded every official NDRRMC advisory,",
-            "packed Go-Bags early, and prioritized the vulnerable,",
-            "not a single resident was lost to the storm, flood, or eruption.",
-            "Bayanihan triumphed over disaster. The island rebuilds together!",
+        return [
+            {
+                "heading": "EPILOGUE",
+                "sub": "THE MACHINE FALLS SILENT - THE ISLAND BREATHES AGAIN",
+                "body": [
+                    "The Aegis-Terra machine hums to a gentle, permanent standstill.",
+                    "In Central Town, Kuya Ben's jeepney now delivers relief food and water.",
+                    "At the Harbor, Rico dela Cruz's VHF radio guided Coast Guard cutters to dock.",
+                    "Tito Ramon watched the tsunami recede safely from the cliff lookout.",
+                    "Dr. Elias Voss smiles: 'True resilience is an educated community.'",
+                    "Not a single life was lost. Bayanihan triumphed over disaster.",
+                ],
+            },
+            {
+                "heading": "PREPAREDNESS AUDIT",
+                "sub": "OFFICIAL MUNICIPAL READINESS METRICS",
+                "bar": ("PREPAREDNESS RATING", prep / 100.0, theme.SAGE),
+                "stats": [
+                    ("RESIDENTS ASSISTED", f"{res} citizens safe", theme.CREAM),
+                    ("ADVISORIES HEEDED", f"{warn} bulletins", theme.CREAM),
+                    ("SUPPLIES SECURED", "Go-Bags & radios ready", theme.CREAM),
+                    ("UNSAFE ACTIONS", f"{unsafe}  [EXEMPLARY]", theme.SAGE),
+                ],
+            },
+            {
+                "heading": "ROLL OF HONOR",
+                "sub": "DEDICATED TO PHILIPPINE DISASTER RESPONDERS",
+                "body": [
+                    "Prepared in line with official national disaster protocols:",
+                    "NDRRMC - Disaster Risk Reduction & Management",
+                    "DOST-PAGASA - Cyclones, Rain and Storm Surges",
+                    "DOST-PHIVOLCS - Earthquakes, Tsunami and Volcanoes",
+                    "BFP and NTC - Fire Response and Emergency Telecoms",
+                    "Preparedness is the shield that preserves every Filipino family.",
+                ],
+            },
         ]
-        curr_y = box_y + 36
-        for line in epilogue_lines:
-            theme.draw_text(
-                surface,
-                line,
-                (w // 2, curr_y),
-                size="tiny",
-                color=COLOR_UI_TEXT,
-                anchor="center",
-                shadow=False,
-            )
-            curr_y += 11
-
-        curr_y += 4
-        stats_line = (
-            f"Preparedness: {self.summary.get('preparedness_ratio', 100)}%  |  "
-            f"Residents Saved: {self.summary.get('residents_assisted', 0)}  |  "
-            f"Warnings Heeded: {self.summary.get('warnings_followed', 0)}"
-        )
-        theme.draw_text(
-            surface,
-            stats_line,
-            (w // 2, curr_y),
-            size="tiny",
-            color=COLOR_UI_SAFE,
-            anchor="center",
-            shadow=True,
-        )
-
-        theme.draw_text(
-            surface,
-            "[SPACE] / [ENTER] Return to Main Menu",
-            (w // 2, box_y + box_h - 12),
-            size="tiny",
-            color=COLOR_UI_ACCENT,
-            anchor="center",
-            shadow=True,
-        )

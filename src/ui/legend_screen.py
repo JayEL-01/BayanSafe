@@ -29,6 +29,7 @@ from src.config.palette import (
     COLOR_UI_ACCENT,
 )
 from src.ui import theme
+from src.ui import text_utils as tu
 
 
 class LegendScreen:
@@ -79,60 +80,88 @@ class LegendScreen:
         overlay.fill((10, 12, 16, 220))
         surface.blit(overlay, (0, 0))
 
-        box_w = min(w - 20, 300)
-        box_h = min(h - 16, 168)
+        # Padding and layout
+        PAD = 8
+        INNER_GAP = 12
+        COL_GAP = 10
+
+        box_w = min(w - 16, 304)
+        # We'll calculate height based on content
+        col_w = (box_w - PAD * 2 - COL_GAP) // 2
+
+        # Prepare content and measure
+        half = (len(self.LEGEND_ENTRIES) + 1) // 2
+        col1_items = self.LEGEND_ENTRIES[:half]
+        col2_items = self.LEGEND_ENTRIES[half:]
+
+        def measure_col(items, width):
+            total_h = 0
+            measured = []
+            for label, color, desc in items:
+                # Label is tiny
+                lh = theme.get_font("tiny").get_height()
+                # Description wrapped to col_w - swatch_offset
+                swatch_w = 12
+                desc_w = width - swatch_w
+                desc_lines = tu.wrap_text(desc, "tiny", desc_w)
+                item_h = max(lh, len(desc_lines) * (lh - 1)) + 4
+                measured.append((label, color, desc_lines, item_h))
+                total_h += item_h + 2
+            return total_h, measured
+
+        h1, m1 = measure_col(col1_items, col_w)
+        h2, m2 = measure_col(col2_items, col_w)
+
+        content_h = max(h1, h2)
+        title_h = 16
+        footer_h = 12
+        box_h = PAD * 2 + title_h + content_h + footer_h + 4
+
+        # Clamp height to screen
+        if box_h > h - 10:
+            box_h = h - 10
+            # If it's still too tall, we might need to skip descriptions or scroll
+            # For now, let's just use the height we have.
+
         box_x = (w - box_w) // 2
         box_y = (h - box_h) // 2
+        box_rect = pygame.Rect(box_x, box_y, box_w, box_h)
 
-        pygame.draw.rect(surface, COLOR_UI_PANEL, (box_x, box_y, box_w, box_h))
-        pygame.draw.rect(surface, COLOR_UI_BORDER, (box_x, box_y, box_w, box_h), 2)
+        theme.draw_panel(surface, box_rect, title="ENVIRONMENT COLOR LEGEND", accent=COLOR_UI_ACCENT)
 
-        # Title
-        theme.draw_text(
-            surface,
-            "ENVIRONMENT COLOR LEGEND",
-            (w // 2, box_y + 6),
-            size="small",
-            color=COLOR_UI_ACCENT,
-            anchor="center",
-            shadow=True,
-        )
+        start_y = box_y + title_h + PAD + 2
 
-        # Draw entries in 2 columns
-        col1_x = box_x + 8
-        col2_x = box_x + box_w // 2 + 4
-        start_y = box_y + 22
-        row_height = 10
+        def draw_col(items_measured, start_x, start_y):
+            curr_y = start_y
+            for label, color, desc_lines, item_h in items_measured:
+                # Color swatch
+                swatch_rect = pygame.Rect(start_x, curr_y + 1, 8, 7)
+                pygame.draw.rect(surface, color, swatch_rect)
+                pygame.draw.rect(surface, (255, 255, 255), swatch_rect, 1)
 
-        half = (len(self.LEGEND_ENTRIES) + 1) // 2
-        for idx, (label, color, desc) in enumerate(self.LEGEND_ENTRIES):
-            is_col2 = idx >= half
-            rx = col2_x if is_col2 else col1_x
-            row_idx = idx - half if is_col2 else idx
-            ry = start_y + row_idx * row_height
+                # Label (bold-ish accent)
+                theme.draw_text(surface, label, (start_x + 11, curr_y), "tiny", COLOR_UI_ACCENT, shadow=False)
 
-            # Color swatch block
-            pygame.draw.rect(surface, color, (rx, ry + 1, 8, 7))
-            pygame.draw.rect(surface, (255, 255, 255), (rx, ry + 1, 8, 7), 1)
+                # Descriptions (small cream text below or beside label)
+                # If label is long, desc starts below it. Let's stack them for clarity.
+                lh = theme.get_font("tiny").get_height()
+                desc_y = curr_y + lh - 1
+                for i, line in enumerate(desc_lines):
+                    if desc_y + (i+1)*lh > box_rect.bottom - footer_h - PAD: break
+                    theme.draw_text(surface, line, (start_x + 11, desc_y + i * (lh - 1)), "tiny", COLOR_UI_TEXT, shadow=False)
 
-            # Text label
-            theme.draw_text(
-                surface,
-                label,
-                (rx + 11, ry),
-                size="tiny",
-                color=COLOR_UI_TEXT,
-                anchor="topleft",
-                shadow=False,
-            )
+                curr_y += item_h + 2
+
+        draw_col(m1, box_x + PAD, start_y)
+        draw_col(m2, box_x + PAD + col_w + COL_GAP, start_y)
 
         # Bottom dismiss prompt
         theme.draw_text(
             surface,
             "[L] or [ESC] / [SPACE] to Close",
-            (w // 2, box_y + box_h - 10),
+            (w // 2, box_rect.bottom - PAD - 2),
             size="tiny",
             color=COLOR_UI_ACCENT,
-            anchor="center",
+            anchor="midbottom",
             shadow=False,
         )

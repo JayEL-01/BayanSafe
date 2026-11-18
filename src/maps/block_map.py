@@ -44,6 +44,7 @@ from src.config.palette import (
     COLOR_UI_ACCENT,
 )
 from src.ui import theme
+from src.entities.world_art import icon_surface, item_art_name
 
 
 class MapItem:
@@ -375,21 +376,24 @@ class BlockMap:
             elif elem.elem_type == "wall":
                 pygame.draw.rect(surface, (15, 15, 20), s_rect, 1)
 
-        # Items
+        # Items (hard-coded pixel sprites, shared with the pickup system)
         for item in self.items:
-            if not item.collected:
-                s_rect = to_screen(item.rect)
-                bob = int(math.sin(self.anim_timer * 6.0) * 2)
-                item_rect = pygame.Rect(s_rect.x, s_rect.y + bob, s_rect.w, s_rect.h)
-                pygame.draw.rect(surface, item.color, item_rect)
-                pygame.draw.rect(surface, (255, 255, 255), item_rect, 1)
-                if 20 <= item_rect.centerx <= 300 and 14 <= item_rect.top <= 166:
-                    theme.draw_text(
-                        surface,
-                        item.label,
-                        (item_rect.centerx, item_rect.top - 6),
-                        size="tiny",
-                        color=COLOR_UI_ACCENT,
-                        anchor="center",
-                        shadow=True,
-                    )
+            if item.collected:
+                continue
+            s_rect = to_screen(item.rect)
+            bob = int(math.sin(self.anim_timer * 6.0) * 2)
+            cx = s_rect.centerx
+            cy = s_rect.centery + bob
+            pygame.draw.ellipse(surface, (10, 14, 12), (cx - 5, cy + 5, 10, 4))
+            icon = icon_surface(item_art_name(item.item_id, item.label), 1)
+            surface.blit(icon, icon.get_rect(center=(cx, cy)))
+            if 20 <= cx <= 300 and 14 <= s_rect.top <= 166:
+                theme.draw_text(
+                    surface,
+                    item.label,
+                    (cx, s_rect.top - 6 + bob),
+                    size="tiny",
+                    color=COLOR_UI_ACCENT,
+                    anchor="center",
+                    shadow=True,
+                )

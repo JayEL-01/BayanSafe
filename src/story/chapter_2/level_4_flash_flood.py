@@ -92,6 +92,7 @@ class Chapter2Level4FlashFlood(BaseLevel):
         self.set_meter("water", "WATER", 0.0, good_high=False)
         self.start_countdown(self.FLOOD_SECONDS, "FLOOD PEAK", on_expire=self._flood_peak)
         self.show_hint("Grab the WALKING STICK to probe for open drains, then find Liza.", 6.0)
+        self.enable_world_ambience()
 
     # ------------------------------------------------------------------
     # World

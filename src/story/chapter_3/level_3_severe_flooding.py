@@ -131,6 +131,7 @@ class Chapter3Level3SevereFlooding(BaseLevel):
         ])
 
         self.show_hint("Heavy saltwater flood! Watch out for submerged industrial equipment.", 5.0)
+        self.enable_world_ambience()
 
     # ------------------------------------------------------------------
     # World Layout

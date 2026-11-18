@@ -1,0 +1,10022 @@
+{
+  "canvas": {
+    "width": 320,
+    "height": 180
+  },
+  "chapter_animation": {
+    "prologue": {
+      "representative_level": "tutorial",
+      "frames": 60,
+      "differs_over_time": true,
+      "unique_hashes": 60,
+      "contact_sheet": "C:\\CODING\\bayansafe\\artifacts\\ambience\\contact_prologue.png",
+      "key_frames": {
+        "0": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_prologue_tutorial_f00.png",
+        "15": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_prologue_tutorial_f15.png",
+        "30": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_prologue_tutorial_f30.png",
+        "45": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_prologue_tutorial_f45.png",
+        "59": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_prologue_tutorial_f59.png"
+      }
+    },
+    "chapter_1": {
+      "representative_level": "level_1_earthquake",
+      "frames": 60,
+      "differs_over_time": true,
+      "unique_hashes": 60,
+      "contact_sheet": "C:\\CODING\\bayansafe\\artifacts\\ambience\\contact_chapter_1.png",
+      "key_frames": {
+        "0": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_chapter_1_level_1_earthquake_f00.png",
+        "15": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_chapter_1_level_1_earthquake_f15.png",
+        "30": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_chapter_1_level_1_earthquake_f30.png",
+        "45": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_chapter_1_level_1_earthquake_f45.png",
+        "59": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_chapter_1_level_1_earthquake_f59.png"
+      }
+    },
+    "chapter_2": {
+      "representative_level": "level_1_fire",
+      "frames": 60,
+      "differs_over_time": true,
+      "unique_hashes": 60,
+      "contact_sheet": "C:\\CODING\\bayansafe\\artifacts\\ambience\\contact_chapter_2.png",
+      "key_frames": {
+        "0": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_chapter_2_level_1_fire_f00.png",
+        "15": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_chapter_2_level_1_fire_f15.png",
+        "30": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_chapter_2_level_1_fire_f30.png",
+        "45": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_chapter_2_level_1_fire_f45.png",
+        "59": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_chapter_2_level_1_fire_f59.png"
+      }
+    },
+    "chapter_3": {
+      "representative_level": "level_1_flash_flood",
+      "frames": 60,
+      "differs_over_time": true,
+      "unique_hashes": 60,
+      "contact_sheet": "C:\\CODING\\bayansafe\\artifacts\\ambience\\contact_chapter_3.png",
+      "key_frames": {
+        "0": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_chapter_3_level_1_flash_flood_f00.png",
+        "15": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_chapter_3_level_1_flash_flood_f15.png",
+        "30": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_chapter_3_level_1_flash_flood_f30.png",
+        "45": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_chapter_3_level_1_flash_flood_f45.png",
+        "59": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_chapter_3_level_1_flash_flood_f59.png"
+      }
+    },
+    "chapter_4": {
+      "representative_level": "level_1_typhoon",
+      "frames": 60,
+      "differs_over_time": true,
+      "unique_hashes": 60,
+      "contact_sheet": "C:\\CODING\\bayansafe\\artifacts\\ambience\\contact_chapter_4.png",
+      "key_frames": {
+        "0": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_chapter_4_level_1_typhoon_f00.png",
+        "15": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_chapter_4_level_1_typhoon_f15.png",
+        "30": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_chapter_4_level_1_typhoon_f30.png",
+        "45": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_chapter_4_level_1_typhoon_f45.png",
+        "59": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_chapter_4_level_1_typhoon_f59.png"
+      }
+    },
+    "chapter_5": {
+      "representative_level": "level_1_earthquake_landslide",
+      "frames": 60,
+      "differs_over_time": true,
+      "unique_hashes": 60,
+      "contact_sheet": "C:\\CODING\\bayansafe\\artifacts\\ambience\\contact_chapter_5.png",
+      "key_frames": {
+        "0": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_chapter_5_level_1_earthquake_landslide_f00.png",
+        "15": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_chapter_5_level_1_earthquake_landslide_f15.png",
+        "30": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_chapter_5_level_1_earthquake_landslide_f30.png",
+        "45": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_chapter_5_level_1_earthquake_landslide_f45.png",
+        "59": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_chapter_5_level_1_earthquake_landslide_f59.png"
+      }
+    },
+    "final_mission": {
+      "representative_level": "shutdown_machine",
+      "frames": 60,
+      "differs_over_time": true,
+      "unique_hashes": 60,
+      "contact_sheet": "C:\\CODING\\bayansafe\\artifacts\\ambience\\contact_final_mission.png",
+      "key_frames": {
+        "0": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_final_mission_shutdown_machine_f00.png",
+        "15": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_final_mission_shutdown_machine_f15.png",
+        "30": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_final_mission_shutdown_machine_f30.png",
+        "45": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_final_mission_shutdown_machine_f45.png",
+        "59": "C:\\CODING\\bayansafe\\artifacts\\ambience\\seq_final_mission_shutdown_machine_f59.png"
+      }
+    }
+  },
+  "player_npc_sprite_pixel_diffs_count": 0,
+  "player_npc_sprite_pixel_diffs": [],
+  "player_npc_transparent_bg_tint_only_count": 225,
+  "player_npc_transparent_bg_tint_only": [
+    {
+      "chapter": "prologue",
+      "level": "tutorial",
+      "step": 0,
+      "who": "player",
+      "rect": [
+        100,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "tutorial",
+      "step": 0,
+      "who": "Lola Teresa",
+      "rect": [
+        207,
+        71,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "tutorial",
+      "step": 1,
+      "who": "player",
+      "rect": [
+        100,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "tutorial",
+      "step": 1,
+      "who": "Lola Teresa",
+      "rect": [
+        207,
+        71,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "tutorial",
+      "step": 2,
+      "who": "player",
+      "rect": [
+        100,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "tutorial",
+      "step": 2,
+      "who": "Lola Teresa",
+      "rect": [
+        207,
+        71,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "tutorial",
+      "step": 3,
+      "who": "player",
+      "rect": [
+        100,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "tutorial",
+      "step": 3,
+      "who": "Lola Teresa",
+      "rect": [
+        207,
+        71,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "tutorial",
+      "step": 4,
+      "who": "player",
+      "rect": [
+        100,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "tutorial",
+      "step": 4,
+      "who": "Lola Teresa",
+      "rect": [
+        207,
+        71,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "tutorial",
+      "step": 5,
+      "who": "player",
+      "rect": [
+        100,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "tutorial",
+      "step": 5,
+      "who": "Lola Teresa",
+      "rect": [
+        207,
+        71,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "tutorial",
+      "step": 6,
+      "who": "player",
+      "rect": [
+        100,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "tutorial",
+      "step": 6,
+      "who": "Lola Teresa",
+      "rect": [
+        207,
+        71,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "tutorial",
+      "step": 7,
+      "who": "player",
+      "rect": [
+        100,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "tutorial",
+      "step": 7,
+      "who": "Lola Teresa",
+      "rect": [
+        207,
+        71,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_1_typhoon",
+      "step": 0,
+      "who": "player",
+      "rect": [
+        60,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_1_typhoon",
+      "step": 0,
+      "who": "Lola Teresa",
+      "rect": [
+        127,
+        36,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_1_typhoon",
+      "step": 0,
+      "who": "Kuya Ben",
+      "rect": [
+        317,
+        61,
+        3,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_1_typhoon",
+      "step": 1,
+      "who": "player",
+      "rect": [
+        58,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_1_typhoon",
+      "step": 1,
+      "who": "Lola Teresa",
+      "rect": [
+        127,
+        35,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_1_typhoon",
+      "step": 1,
+      "who": "Kuya Ben",
+      "rect": [
+        317,
+        60,
+        3,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_1_typhoon",
+      "step": 2,
+      "who": "player",
+      "rect": [
+        57,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_1_typhoon",
+      "step": 2,
+      "who": "Lola Teresa",
+      "rect": [
+        127,
+        35,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_1_typhoon",
+      "step": 2,
+      "who": "Kuya Ben",
+      "rect": [
+        317,
+        60,
+        3,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_1_typhoon",
+      "step": 3,
+      "who": "player",
+      "rect": [
+        55,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_1_typhoon",
+      "step": 3,
+      "who": "Lola Teresa",
+      "rect": [
+        127,
+        34,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_1_typhoon",
+      "step": 3,
+      "who": "Kuya Ben",
+      "rect": [
+        317,
+        59,
+        3,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_1_typhoon",
+      "step": 4,
+      "who": "player",
+      "rect": [
+        54,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_1_typhoon",
+      "step": 4,
+      "who": "Lola Teresa",
+      "rect": [
+        127,
+        33,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_1_typhoon",
+      "step": 4,
+      "who": "Kuya Ben",
+      "rect": [
+        317,
+        58,
+        3,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_1_typhoon",
+      "step": 5,
+      "who": "player",
+      "rect": [
+        52,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_1_typhoon",
+      "step": 5,
+      "who": "Lola Teresa",
+      "rect": [
+        127,
+        33,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_1_typhoon",
+      "step": 5,
+      "who": "Kuya Ben",
+      "rect": [
+        317,
+        58,
+        3,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_1_typhoon",
+      "step": 6,
+      "who": "player",
+      "rect": [
+        51,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_1_typhoon",
+      "step": 6,
+      "who": "Lola Teresa",
+      "rect": [
+        127,
+        32,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_1_typhoon",
+      "step": 6,
+      "who": "Kuya Ben",
+      "rect": [
+        317,
+        57,
+        3,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_1_typhoon",
+      "step": 7,
+      "who": "player",
+      "rect": [
+        49,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_1_typhoon",
+      "step": 7,
+      "who": "Lola Teresa",
+      "rect": [
+        127,
+        32,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_1_typhoon",
+      "step": 7,
+      "who": "Kuya Ben",
+      "rect": [
+        317,
+        57,
+        3,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_2_flash_flood",
+      "step": 0,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_2_flash_flood",
+      "step": 0,
+      "who": "Mila",
+      "rect": [
+        107,
+        46,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_2_flash_flood",
+      "step": 0,
+      "who": "Berto",
+      "rect": [
+        272,
+        68,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_2_flash_flood",
+      "step": 1,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_2_flash_flood",
+      "step": 1,
+      "who": "Mila",
+      "rect": [
+        107,
+        46,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_2_flash_flood",
+      "step": 1,
+      "who": "Berto",
+      "rect": [
+        272,
+        68,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_2_flash_flood",
+      "step": 2,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_2_flash_flood",
+      "step": 2,
+      "who": "Mila",
+      "rect": [
+        107,
+        46,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_2_flash_flood",
+      "step": 2,
+      "who": "Berto",
+      "rect": [
+        272,
+        68,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_2_flash_flood",
+      "step": 3,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_2_flash_flood",
+      "step": 3,
+      "who": "Mila",
+      "rect": [
+        107,
+        46,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_2_flash_flood",
+      "step": 3,
+      "who": "Berto",
+      "rect": [
+        272,
+        68,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_2_flash_flood",
+      "step": 4,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_2_flash_flood",
+      "step": 4,
+      "who": "Mila",
+      "rect": [
+        107,
+        46,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_2_flash_flood",
+      "step": 4,
+      "who": "Berto",
+      "rect": [
+        272,
+        68,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_2_flash_flood",
+      "step": 5,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_2_flash_flood",
+      "step": 5,
+      "who": "Mila",
+      "rect": [
+        107,
+        46,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_2_flash_flood",
+      "step": 5,
+      "who": "Berto",
+      "rect": [
+        272,
+        68,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_2_flash_flood",
+      "step": 6,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_2_flash_flood",
+      "step": 6,
+      "who": "Mila",
+      "rect": [
+        107,
+        46,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_2_flash_flood",
+      "step": 6,
+      "who": "Berto",
+      "rect": [
+        272,
+        68,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_2_flash_flood",
+      "step": 7,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_2_flash_flood",
+      "step": 7,
+      "who": "Mila",
+      "rect": [
+        107,
+        46,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_2_flash_flood",
+      "step": 7,
+      "who": "Berto",
+      "rect": [
+        272,
+        68,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_3_severe_flooding",
+      "step": 0,
+      "who": "player",
+      "rect": [
+        60,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_3_severe_flooding",
+      "step": 1,
+      "who": "player",
+      "rect": [
+        60,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_3_severe_flooding",
+      "step": 2,
+      "who": "player",
+      "rect": [
+        60,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_3_severe_flooding",
+      "step": 3,
+      "who": "player",
+      "rect": [
+        60,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_3_severe_flooding",
+      "step": 4,
+      "who": "player",
+      "rect": [
+        60,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_3_severe_flooding",
+      "step": 5,
+      "who": "player",
+      "rect": [
+        60,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_3_severe_flooding",
+      "step": 6,
+      "who": "player",
+      "rect": [
+        60,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "prologue",
+      "level": "level_3_severe_flooding",
+      "step": 7,
+      "who": "player",
+      "rect": [
+        60,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_1",
+      "level": "level_3_calm_wave",
+      "step": 0,
+      "who": "player",
+      "rect": [
+        60,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_1",
+      "level": "level_3_calm_wave",
+      "step": 1,
+      "who": "player",
+      "rect": [
+        60,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_1",
+      "level": "level_3_calm_wave",
+      "step": 2,
+      "who": "player",
+      "rect": [
+        60,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_1",
+      "level": "level_3_calm_wave",
+      "step": 3,
+      "who": "player",
+      "rect": [
+        60,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_1",
+      "level": "level_3_calm_wave",
+      "step": 4,
+      "who": "player",
+      "rect": [
+        60,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_1",
+      "level": "level_3_calm_wave",
+      "step": 5,
+      "who": "player",
+      "rect": [
+        60,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_1",
+      "level": "level_3_calm_wave",
+      "step": 6,
+      "who": "player",
+      "rect": [
+        60,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_1",
+      "level": "level_3_calm_wave",
+      "step": 7,
+      "who": "player",
+      "rect": [
+        60,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_1",
+      "level": "level_4_tsunami",
+      "step": 0,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_1",
+      "level": "level_4_tsunami",
+      "step": 1,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_1",
+      "level": "level_4_tsunami",
+      "step": 2,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_1",
+      "level": "level_4_tsunami",
+      "step": 3,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_1",
+      "level": "level_4_tsunami",
+      "step": 4,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_1",
+      "level": "level_4_tsunami",
+      "step": 5,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_1",
+      "level": "level_4_tsunami",
+      "step": 6,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_1",
+      "level": "level_4_tsunami",
+      "step": 7,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_2",
+      "level": "level_1_fire",
+      "step": 0,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_2",
+      "level": "level_1_fire",
+      "step": 1,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_2",
+      "level": "level_1_fire",
+      "step": 2,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_2",
+      "level": "level_1_fire",
+      "step": 3,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_2",
+      "level": "level_1_fire",
+      "step": 4,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_2",
+      "level": "level_1_fire",
+      "step": 5,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_2",
+      "level": "level_1_fire",
+      "step": 6,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_2",
+      "level": "level_1_fire",
+      "step": 7,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_2",
+      "level": "level_3_typhoon",
+      "step": 0,
+      "who": "player",
+      "rect": [
+        49,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_2",
+      "level": "level_3_typhoon",
+      "step": 1,
+      "who": "player",
+      "rect": [
+        47,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_2",
+      "level": "level_3_typhoon",
+      "step": 2,
+      "who": "player",
+      "rect": [
+        45,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_2",
+      "level": "level_3_typhoon",
+      "step": 3,
+      "who": "player",
+      "rect": [
+        43,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_2",
+      "level": "level_3_typhoon",
+      "step": 4,
+      "who": "player",
+      "rect": [
+        40,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_2",
+      "level": "level_3_typhoon",
+      "step": 5,
+      "who": "player",
+      "rect": [
+        38,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_2",
+      "level": "level_3_typhoon",
+      "step": 6,
+      "who": "player",
+      "rect": [
+        36,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_2",
+      "level": "level_3_typhoon",
+      "step": 7,
+      "who": "player",
+      "rect": [
+        34,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_2",
+      "level": "level_4_flash_flood",
+      "step": 0,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_2",
+      "level": "level_4_flash_flood",
+      "step": 1,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_2",
+      "level": "level_4_flash_flood",
+      "step": 2,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_2",
+      "level": "level_4_flash_flood",
+      "step": 3,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_2",
+      "level": "level_4_flash_flood",
+      "step": 4,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_2",
+      "level": "level_4_flash_flood",
+      "step": 5,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_2",
+      "level": "level_4_flash_flood",
+      "step": 6,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_2",
+      "level": "level_4_flash_flood",
+      "step": 7,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_1_flash_flood",
+      "step": 0,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_1_flash_flood",
+      "step": 0,
+      "who": "Tito Ramon",
+      "rect": [
+        127,
+        46,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_1_flash_flood",
+      "step": 1,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_1_flash_flood",
+      "step": 1,
+      "who": "Tito Ramon",
+      "rect": [
+        127,
+        46,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_1_flash_flood",
+      "step": 2,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_1_flash_flood",
+      "step": 2,
+      "who": "Tito Ramon",
+      "rect": [
+        127,
+        46,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_1_flash_flood",
+      "step": 3,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_1_flash_flood",
+      "step": 3,
+      "who": "Tito Ramon",
+      "rect": [
+        127,
+        46,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_1_flash_flood",
+      "step": 4,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_1_flash_flood",
+      "step": 4,
+      "who": "Tito Ramon",
+      "rect": [
+        127,
+        46,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_1_flash_flood",
+      "step": 5,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_1_flash_flood",
+      "step": 5,
+      "who": "Tito Ramon",
+      "rect": [
+        127,
+        46,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_1_flash_flood",
+      "step": 6,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_1_flash_flood",
+      "step": 6,
+      "who": "Tito Ramon",
+      "rect": [
+        127,
+        46,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_1_flash_flood",
+      "step": 7,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_1_flash_flood",
+      "step": 7,
+      "who": "Tito Ramon",
+      "rect": [
+        127,
+        46,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_2_typhoon",
+      "step": 0,
+      "who": "player",
+      "rect": [
+        49,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_2_typhoon",
+      "step": 1,
+      "who": "player",
+      "rect": [
+        47,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_2_typhoon",
+      "step": 2,
+      "who": "player",
+      "rect": [
+        45,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_2_typhoon",
+      "step": 3,
+      "who": "player",
+      "rect": [
+        43,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_2_typhoon",
+      "step": 4,
+      "who": "player",
+      "rect": [
+        40,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_2_typhoon",
+      "step": 5,
+      "who": "player",
+      "rect": [
+        38,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_2_typhoon",
+      "step": 6,
+      "who": "player",
+      "rect": [
+        36,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_2_typhoon",
+      "step": 7,
+      "who": "player",
+      "rect": [
+        34,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_3_severe_flooding",
+      "step": 0,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_3_severe_flooding",
+      "step": 0,
+      "who": "Rico dela Cruz",
+      "rect": [
+        232,
+        36,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_3_severe_flooding",
+      "step": 1,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_3_severe_flooding",
+      "step": 1,
+      "who": "Rico dela Cruz",
+      "rect": [
+        232,
+        36,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_3_severe_flooding",
+      "step": 2,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_3_severe_flooding",
+      "step": 2,
+      "who": "Rico dela Cruz",
+      "rect": [
+        232,
+        36,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_3_severe_flooding",
+      "step": 3,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_3_severe_flooding",
+      "step": 3,
+      "who": "Rico dela Cruz",
+      "rect": [
+        232,
+        36,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_3_severe_flooding",
+      "step": 4,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_3_severe_flooding",
+      "step": 4,
+      "who": "Rico dela Cruz",
+      "rect": [
+        232,
+        36,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_3_severe_flooding",
+      "step": 5,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_3_severe_flooding",
+      "step": 5,
+      "who": "Rico dela Cruz",
+      "rect": [
+        232,
+        36,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_3_severe_flooding",
+      "step": 6,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_3_severe_flooding",
+      "step": 6,
+      "who": "Rico dela Cruz",
+      "rect": [
+        232,
+        36,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_3_severe_flooding",
+      "step": 7,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_3_severe_flooding",
+      "step": 7,
+      "who": "Rico dela Cruz",
+      "rect": [
+        232,
+        36,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_4_fire_tsunami",
+      "step": 0,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_4_fire_tsunami",
+      "step": 1,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_4_fire_tsunami",
+      "step": 2,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_4_fire_tsunami",
+      "step": 3,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_4_fire_tsunami",
+      "step": 4,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_4_fire_tsunami",
+      "step": 5,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_4_fire_tsunami",
+      "step": 6,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_3",
+      "level": "level_4_fire_tsunami",
+      "step": 7,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_4",
+      "level": "level_1_typhoon",
+      "step": 0,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_4",
+      "level": "level_1_typhoon",
+      "step": 1,
+      "who": "player",
+      "rect": [
+        48,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_4",
+      "level": "level_1_typhoon",
+      "step": 2,
+      "who": "player",
+      "rect": [
+        47,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_4",
+      "level": "level_1_typhoon",
+      "step": 3,
+      "who": "player",
+      "rect": [
+        45,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_4",
+      "level": "level_1_typhoon",
+      "step": 4,
+      "who": "player",
+      "rect": [
+        44,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_4",
+      "level": "level_1_typhoon",
+      "step": 5,
+      "who": "player",
+      "rect": [
+        42,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_4",
+      "level": "level_1_typhoon",
+      "step": 6,
+      "who": "player",
+      "rect": [
+        41,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_4",
+      "level": "level_1_typhoon",
+      "step": 7,
+      "who": "player",
+      "rect": [
+        39,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_4",
+      "level": "level_2_flash_flood",
+      "step": 0,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_4",
+      "level": "level_2_flash_flood",
+      "step": 1,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_4",
+      "level": "level_2_flash_flood",
+      "step": 2,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_4",
+      "level": "level_2_flash_flood",
+      "step": 3,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_4",
+      "level": "level_2_flash_flood",
+      "step": 4,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_4",
+      "level": "level_2_flash_flood",
+      "step": 5,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_4",
+      "level": "level_2_flash_flood",
+      "step": 6,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_4",
+      "level": "level_2_flash_flood",
+      "step": 7,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_4",
+      "level": "level_4_earthquake_volcano",
+      "step": 0,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_4",
+      "level": "level_4_earthquake_volcano",
+      "step": 1,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_4",
+      "level": "level_4_earthquake_volcano",
+      "step": 2,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_4",
+      "level": "level_4_earthquake_volcano",
+      "step": 3,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_4",
+      "level": "level_4_earthquake_volcano",
+      "step": 4,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_4",
+      "level": "level_4_earthquake_volcano",
+      "step": 5,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_4",
+      "level": "level_4_earthquake_volcano",
+      "step": 6,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_4",
+      "level": "level_4_earthquake_volcano",
+      "step": 7,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_1_earthquake_landslide",
+      "step": 6,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_2_volcano",
+      "step": 0,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_2_volcano",
+      "step": 0,
+      "who": "Rhea",
+      "rect": [
+        112,
+        36,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_2_volcano",
+      "step": 1,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_2_volcano",
+      "step": 1,
+      "who": "Rhea",
+      "rect": [
+        112,
+        36,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_2_volcano",
+      "step": 2,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_2_volcano",
+      "step": 2,
+      "who": "Rhea",
+      "rect": [
+        112,
+        36,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_2_volcano",
+      "step": 3,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_2_volcano",
+      "step": 3,
+      "who": "Rhea",
+      "rect": [
+        112,
+        36,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_2_volcano",
+      "step": 4,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_2_volcano",
+      "step": 4,
+      "who": "Rhea",
+      "rect": [
+        112,
+        36,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_2_volcano",
+      "step": 5,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_2_volcano",
+      "step": 5,
+      "who": "Rhea",
+      "rect": [
+        112,
+        36,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_2_volcano",
+      "step": 6,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_2_volcano",
+      "step": 6,
+      "who": "Rhea",
+      "rect": [
+        112,
+        36,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_2_volcano",
+      "step": 7,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_2_volcano",
+      "step": 7,
+      "who": "Rhea",
+      "rect": [
+        112,
+        36,
+        18,
+        27
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_3_flash_fire",
+      "step": 0,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_3_flash_fire",
+      "step": 1,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_3_flash_fire",
+      "step": 2,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_3_flash_fire",
+      "step": 3,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_3_flash_fire",
+      "step": 4,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_3_flash_fire",
+      "step": 5,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_3_flash_fire",
+      "step": 6,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_3_flash_fire",
+      "step": 7,
+      "who": "player",
+      "rect": [
+        50,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_4_typhoon_severe_flood",
+      "step": 0,
+      "who": "player",
+      "rect": [
+        49,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_4_typhoon_severe_flood",
+      "step": 1,
+      "who": "player",
+      "rect": [
+        46,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_4_typhoon_severe_flood",
+      "step": 2,
+      "who": "player",
+      "rect": [
+        43,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_4_typhoon_severe_flood",
+      "step": 3,
+      "who": "player",
+      "rect": [
+        40,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_4_typhoon_severe_flood",
+      "step": 4,
+      "who": "player",
+      "rect": [
+        37,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_4_typhoon_severe_flood",
+      "step": 5,
+      "who": "player",
+      "rect": [
+        34,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_4_typhoon_severe_flood",
+      "step": 6,
+      "who": "player",
+      "rect": [
+        31,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "chapter_5",
+      "level": "level_4_typhoon_severe_flood",
+      "step": 7,
+      "who": "player",
+      "rect": [
+        28,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "final_mission",
+      "level": "shutdown_machine",
+      "step": 0,
+      "who": "player",
+      "rect": [
+        60,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "final_mission",
+      "level": "shutdown_machine",
+      "step": 1,
+      "who": "player",
+      "rect": [
+        60,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "final_mission",
+      "level": "shutdown_machine",
+      "step": 2,
+      "who": "player",
+      "rect": [
+        60,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "final_mission",
+      "level": "shutdown_machine",
+      "step": 3,
+      "who": "player",
+      "rect": [
+        60,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "final_mission",
+      "level": "shutdown_machine",
+      "step": 4,
+      "who": "player",
+      "rect": [
+        60,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "final_mission",
+      "level": "shutdown_machine",
+      "step": 5,
+      "who": "player",
+      "rect": [
+        60,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "final_mission",
+      "level": "shutdown_machine",
+      "step": 6,
+      "who": "player",
+      "rect": [
+        60,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    },
+    {
+      "chapter": "final_mission",
+      "level": "shutdown_machine",
+      "step": 7,
+      "who": "player",
+      "rect": [
+        60,
+        84,
+        12,
+        12
+      ],
+      "sprite_pixels_changed": false,
+      "transparent_bg_tint_only": true
+    }
+  ],
+  "timing_heaviest": {
+    "level": {
+      "chapter": "prologue",
+      "level": "tutorial"
+    },
+    "avg_before_s": 0.04546583332897474,
+    "avg_after_s": 0.04952820166363381,
+    "delta_pct": 8.934991480888964,
+    "runs": 60,
+    "warmup": 10
+  },
+  "state_diffs_count": 0,
+  "state_diffs": [],
+  "states_dump": {
+    "prologue/tutorial": {
+      "before": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            320,
+            640,
+            40
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            40,
+            40,
+            12,
+            12
+          ],
+          [
+            60,
+            250,
+            12,
+            12
+          ],
+          [
+            80,
+            80,
+            70,
+            50
+          ],
+          [
+            120,
+            220,
+            70,
+            50
+          ],
+          [
+            180,
+            70,
+            60,
+            50
+          ],
+          [
+            240,
+            40,
+            12,
+            12
+          ],
+          [
+            260,
+            250,
+            12,
+            12
+          ],
+          [
+            360,
+            220,
+            70,
+            50
+          ],
+          [
+            480,
+            40,
+            12,
+            12
+          ],
+          [
+            500,
+            250,
+            12,
+            12
+          ],
+          [
+            540,
+            40,
+            12,
+            12
+          ],
+          [
+            560,
+            250,
+            12,
+            12
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "board",
+            "label": "ADVISORY",
+            "rect": [
+              250,
+              135,
+              18,
+              14
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "drain",
+            "label": "DRAIN",
+            "rect": [
+              322,
+              198,
+              18,
+              12
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "evac",
+            "label": "EVAC CENTER",
+            "rect": [
+              372,
+              134,
+              110,
+              26
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": false
+          },
+          {
+            "key": "radio",
+            "label": "RADIO",
+            "rect": [
+              484,
+              100,
+              16,
+              12
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "roof",
+            "label": "ROOF",
+            "rect": [
+              205,
+              128,
+              18,
+              12
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "whistle",
+            "rect": [
+              264,
+              172,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "firstaid",
+            "rect": [
+              130,
+              140,
+              10,
+              10
+            ],
+            "source": "map_item"
+          },
+          {
+            "key": "flashlight",
+            "rect": [
+              145,
+              140,
+              10,
+              10
+            ],
+            "source": "map_item"
+          },
+          {
+            "key": "food",
+            "rect": [
+              115,
+              140,
+              10,
+              10
+            ],
+            "source": "map_item"
+          },
+          {
+            "key": "game",
+            "rect": [
+              330,
+              205,
+              10,
+              10
+            ],
+            "source": "map_item"
+          },
+          {
+            "key": "jewelry",
+            "rect": [
+              235,
+              205,
+              10,
+              10
+            ],
+            "source": "map_item"
+          },
+          {
+            "key": "tv",
+            "rect": [
+              150,
+              205,
+              10,
+              10
+            ],
+            "source": "map_item"
+          },
+          {
+            "key": "water",
+            "rect": [
+              100,
+              140,
+              10,
+              10
+            ],
+            "source": "map_item"
+          }
+        ],
+        "player_spawn": [
+          100,
+          175,
+          12,
+          12,
+          106,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Aling Rosa",
+            "rect": [
+              105,
+              135,
+              12,
+              12
+            ],
+            "center": [
+              111,
+              141
+            ]
+          },
+          {
+            "name": "Captain Reyes",
+            "rect": [
+              440,
+              128,
+              12,
+              12
+            ],
+            "center": [
+              446,
+              134
+            ]
+          },
+          {
+            "name": "Lola Teresa",
+            "rect": [
+              210,
+              175,
+              12,
+              12
+            ],
+            "center": [
+              216,
+              181
+            ]
+          }
+        ]
+      },
+      "after": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            320,
+            640,
+            40
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            40,
+            40,
+            12,
+            12
+          ],
+          [
+            60,
+            250,
+            12,
+            12
+          ],
+          [
+            80,
+            80,
+            70,
+            50
+          ],
+          [
+            120,
+            220,
+            70,
+            50
+          ],
+          [
+            180,
+            70,
+            60,
+            50
+          ],
+          [
+            240,
+            40,
+            12,
+            12
+          ],
+          [
+            260,
+            250,
+            12,
+            12
+          ],
+          [
+            360,
+            220,
+            70,
+            50
+          ],
+          [
+            480,
+            40,
+            12,
+            12
+          ],
+          [
+            500,
+            250,
+            12,
+            12
+          ],
+          [
+            540,
+            40,
+            12,
+            12
+          ],
+          [
+            560,
+            250,
+            12,
+            12
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "board",
+            "label": "ADVISORY",
+            "rect": [
+              250,
+              135,
+              18,
+              14
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "drain",
+            "label": "DRAIN",
+            "rect": [
+              322,
+              198,
+              18,
+              12
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "evac",
+            "label": "EVAC CENTER",
+            "rect": [
+              372,
+              134,
+              110,
+              26
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": false
+          },
+          {
+            "key": "radio",
+            "label": "RADIO",
+            "rect": [
+              484,
+              100,
+              16,
+              12
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "roof",
+            "label": "ROOF",
+            "rect": [
+              205,
+              128,
+              18,
+              12
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "whistle",
+            "rect": [
+              264,
+              172,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "firstaid",
+            "rect": [
+              130,
+              140,
+              10,
+              10
+            ],
+            "source": "map_item"
+          },
+          {
+            "key": "flashlight",
+            "rect": [
+              145,
+              140,
+              10,
+              10
+            ],
+            "source": "map_item"
+          },
+          {
+            "key": "food",
+            "rect": [
+              115,
+              140,
+              10,
+              10
+            ],
+            "source": "map_item"
+          },
+          {
+            "key": "game",
+            "rect": [
+              330,
+              205,
+              10,
+              10
+            ],
+            "source": "map_item"
+          },
+          {
+            "key": "jewelry",
+            "rect": [
+              235,
+              205,
+              10,
+              10
+            ],
+            "source": "map_item"
+          },
+          {
+            "key": "tv",
+            "rect": [
+              150,
+              205,
+              10,
+              10
+            ],
+            "source": "map_item"
+          },
+          {
+            "key": "water",
+            "rect": [
+              100,
+              140,
+              10,
+              10
+            ],
+            "source": "map_item"
+          }
+        ],
+        "player_spawn": [
+          100,
+          175,
+          12,
+          12,
+          106,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Aling Rosa",
+            "rect": [
+              105,
+              135,
+              12,
+              12
+            ],
+            "center": [
+              111,
+              141
+            ]
+          },
+          {
+            "name": "Captain Reyes",
+            "rect": [
+              440,
+              128,
+              12,
+              12
+            ],
+            "center": [
+              446,
+              134
+            ]
+          },
+          {
+            "name": "Lola Teresa",
+            "rect": [
+              210,
+              175,
+              12,
+              12
+            ],
+            "center": [
+              216,
+              181
+            ]
+          }
+        ]
+      }
+    },
+    "prologue/level_1_typhoon": {
+      "before": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            320,
+            640,
+            40
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            90,
+            80,
+            80,
+            55
+          ],
+          [
+            200,
+            80,
+            70,
+            50
+          ],
+          [
+            360,
+            80,
+            60,
+            50
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "branch",
+            "label": "BRANCH",
+            "rect": [
+              255,
+              140,
+              14,
+              12
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "canal",
+            "label": "CANAL",
+            "rect": [
+              345,
+              198,
+              20,
+              12
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "wire",
+            "label": "DOWNED WIRE",
+            "rect": [
+              425,
+              166,
+              22,
+              10
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "zinc",
+            "label": "ZINC",
+            "rect": [
+              215,
+              134,
+              16,
+              12
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "torch",
+            "rect": [
+              174,
+              199,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "firstaid",
+            "rect": [
+              100,
+              205,
+              10,
+              10
+            ],
+            "source": "map_item"
+          }
+        ],
+        "player_spawn": [
+          60,
+          175,
+          12,
+          12,
+          66,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Kuya Ben",
+            "rect": [
+              320,
+              165,
+              12,
+              12
+            ],
+            "center": [
+              326,
+              171
+            ]
+          },
+          {
+            "name": "Lola Teresa",
+            "rect": [
+              130,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              136,
+              146
+            ]
+          }
+        ]
+      },
+      "after": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            320,
+            640,
+            40
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            90,
+            80,
+            80,
+            55
+          ],
+          [
+            200,
+            80,
+            70,
+            50
+          ],
+          [
+            360,
+            80,
+            60,
+            50
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "branch",
+            "label": "BRANCH",
+            "rect": [
+              255,
+              140,
+              14,
+              12
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "canal",
+            "label": "CANAL",
+            "rect": [
+              345,
+              198,
+              20,
+              12
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "wire",
+            "label": "DOWNED WIRE",
+            "rect": [
+              425,
+              166,
+              22,
+              10
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "zinc",
+            "label": "ZINC",
+            "rect": [
+              215,
+              134,
+              16,
+              12
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "torch",
+            "rect": [
+              174,
+              199,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "firstaid",
+            "rect": [
+              100,
+              205,
+              10,
+              10
+            ],
+            "source": "map_item"
+          }
+        ],
+        "player_spawn": [
+          60,
+          175,
+          12,
+          12,
+          66,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Kuya Ben",
+            "rect": [
+              320,
+              165,
+              12,
+              12
+            ],
+            "center": [
+              326,
+              171
+            ]
+          },
+          {
+            "name": "Lola Teresa",
+            "rect": [
+              130,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              136,
+              146
+            ]
+          }
+        ]
+      }
+    },
+    "prologue/level_2_flash_flood": {
+      "before": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            70,
+            90,
+            75,
+            55
+          ],
+          [
+            180,
+            90,
+            65,
+            50
+          ],
+          [
+            310,
+            0,
+            70,
+            160
+          ],
+          [
+            310,
+            194,
+            70,
+            166
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "board",
+            "label": "WARNING",
+            "rect": [
+              55,
+              132,
+              18,
+              14
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "chairs",
+            "label": "PATIO CHAIRS",
+            "rect": [
+              265,
+              275,
+              22,
+              12
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "east_bank",
+            "label": "EAST BANK",
+            "rect": [
+              385,
+              150,
+              55,
+              50
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": false
+          }
+        ],
+        "pickups": [
+          {
+            "key": "battery",
+            "rect": [
+              204,
+              169,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "firstaid",
+            "rect": [
+              160,
+              205,
+              10,
+              10
+            ],
+            "source": "map_item"
+          }
+        ],
+        "player_spawn": [
+          50,
+          175,
+          12,
+          12,
+          56,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Berto",
+            "rect": [
+              275,
+              172,
+              12,
+              12
+            ],
+            "center": [
+              281,
+              178
+            ]
+          },
+          {
+            "name": "Mila",
+            "rect": [
+              110,
+              150,
+              12,
+              12
+            ],
+            "center": [
+              116,
+              156
+            ]
+          }
+        ]
+      },
+      "after": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            70,
+            90,
+            75,
+            55
+          ],
+          [
+            180,
+            90,
+            65,
+            50
+          ],
+          [
+            310,
+            0,
+            70,
+            160
+          ],
+          [
+            310,
+            194,
+            70,
+            166
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "board",
+            "label": "WARNING",
+            "rect": [
+              55,
+              132,
+              18,
+              14
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "chairs",
+            "label": "PATIO CHAIRS",
+            "rect": [
+              265,
+              275,
+              22,
+              12
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "east_bank",
+            "label": "EAST BANK",
+            "rect": [
+              385,
+              150,
+              55,
+              50
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": false
+          }
+        ],
+        "pickups": [
+          {
+            "key": "battery",
+            "rect": [
+              204,
+              169,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "firstaid",
+            "rect": [
+              160,
+              205,
+              10,
+              10
+            ],
+            "source": "map_item"
+          }
+        ],
+        "player_spawn": [
+          50,
+          175,
+          12,
+          12,
+          56,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Berto",
+            "rect": [
+              275,
+              172,
+              12,
+              12
+            ],
+            "center": [
+              281,
+              178
+            ]
+          },
+          {
+            "name": "Mila",
+            "rect": [
+              110,
+              150,
+              12,
+              12
+            ],
+            "center": [
+              116,
+              156
+            ]
+          }
+        ]
+      }
+    },
+    "prologue/level_3_severe_flooding": {
+      "before": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            70,
+            70,
+            70,
+            60
+          ],
+          [
+            160,
+            70,
+            70,
+            60
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "registry",
+            "label": "REGISTRY",
+            "rect": [
+              350,
+              152,
+              20,
+              12
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "radio",
+            "rect": [
+              304,
+              204,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "firstaid",
+            "rect": [
+              90,
+              235,
+              10,
+              10
+            ],
+            "source": "map_item"
+          }
+        ],
+        "player_spawn": [
+          60,
+          240,
+          12,
+          12,
+          66,
+          246
+        ],
+        "npc_spawns": [
+          {
+            "name": "Captain Reyes",
+            "rect": [
+              380,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              386,
+              146
+            ]
+          },
+          {
+            "name": "Nurse Joy",
+            "rect": [
+              530,
+              130,
+              12,
+              12
+            ],
+            "center": [
+              536,
+              136
+            ]
+          }
+        ]
+      },
+      "after": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            70,
+            70,
+            70,
+            60
+          ],
+          [
+            160,
+            70,
+            70,
+            60
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "registry",
+            "label": "REGISTRY",
+            "rect": [
+              350,
+              152,
+              20,
+              12
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "radio",
+            "rect": [
+              304,
+              204,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "firstaid",
+            "rect": [
+              90,
+              235,
+              10,
+              10
+            ],
+            "source": "map_item"
+          }
+        ],
+        "player_spawn": [
+          60,
+          240,
+          12,
+          12,
+          66,
+          246
+        ],
+        "npc_spawns": [
+          {
+            "name": "Captain Reyes",
+            "rect": [
+              380,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              386,
+              146
+            ]
+          },
+          {
+            "name": "Nurse Joy",
+            "rect": [
+              530,
+              130,
+              12,
+              12
+            ],
+            "center": [
+              536,
+              136
+            ]
+          }
+        ]
+      }
+    },
+    "chapter_1/level_1_earthquake": {
+      "before": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            70,
+            60,
+            95,
+            65
+          ],
+          [
+            200,
+            60,
+            80,
+            60
+          ],
+          [
+            380,
+            60,
+            75,
+            55
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "desk",
+            "label": "SCHOOL DESK",
+            "rect": [
+              86,
+              158,
+              22,
+              10
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "helmet",
+            "rect": [
+              114,
+              199,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          80,
+          175,
+          12,
+          12,
+          86,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Sari",
+            "rect": [
+              115,
+              135,
+              12,
+              12
+            ],
+            "center": [
+              121,
+              141
+            ]
+          }
+        ]
+      },
+      "after": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            70,
+            60,
+            95,
+            65
+          ],
+          [
+            200,
+            60,
+            80,
+            60
+          ],
+          [
+            380,
+            60,
+            75,
+            55
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "desk",
+            "label": "SCHOOL DESK",
+            "rect": [
+              86,
+              158,
+              22,
+              10
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "helmet",
+            "rect": [
+              114,
+              199,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          80,
+          175,
+          12,
+          12,
+          86,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Sari",
+            "rect": [
+              115,
+              135,
+              12,
+              12
+            ],
+            "center": [
+              121,
+              141
+            ]
+          }
+        ]
+      }
+    },
+    "chapter_1/level_2_landslide": {
+      "before": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            80,
+            80,
+            75,
+            55
+          ],
+          [
+            220,
+            150,
+            120,
+            50
+          ],
+          [
+            360,
+            220,
+            80,
+            60
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "crack_a",
+            "label": "TENSION CRACK",
+            "rect": [
+              92,
+              168,
+              22,
+              9
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "crack_b",
+            "label": "TENSION CRACK",
+            "rect": [
+              150,
+              176,
+              22,
+              9
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "pole",
+            "label": "LEANING POLE",
+            "rect": [
+              196,
+              128,
+              10,
+              26
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "fieldbook",
+            "rect": [
+              64,
+              209,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          60,
+          175,
+          12,
+          12,
+          66,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Mang Lito",
+            "rect": [
+              110,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              116,
+              146
+            ]
+          }
+        ]
+      },
+      "after": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            80,
+            80,
+            75,
+            55
+          ],
+          [
+            220,
+            150,
+            120,
+            50
+          ],
+          [
+            360,
+            220,
+            80,
+            60
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "crack_a",
+            "label": "TENSION CRACK",
+            "rect": [
+              92,
+              168,
+              22,
+              9
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "crack_b",
+            "label": "TENSION CRACK",
+            "rect": [
+              150,
+              176,
+              22,
+              9
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "pole",
+            "label": "LEANING POLE",
+            "rect": [
+              196,
+              128,
+              10,
+              26
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "fieldbook",
+            "rect": [
+              64,
+              209,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          60,
+          175,
+          12,
+          12,
+          66,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Mang Lito",
+            "rect": [
+              110,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              116,
+              146
+            ]
+          }
+        ]
+      }
+    },
+    "chapter_1/level_3_calm_wave": {
+      "before": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            310,
+            640,
+            50
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            70,
+            70,
+            75,
+            55
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "siren",
+            "label": "SIREN",
+            "rect": [
+              456,
+              128,
+              14,
+              14
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "viewpoint",
+            "label": "VIEWPOINT",
+            "rect": [
+              100,
+              128,
+              22,
+              10
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "binoculars",
+            "rect": [
+              174,
+              199,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          60,
+          175,
+          12,
+          12,
+          66,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Berto",
+            "rect": [
+              430,
+              135,
+              12,
+              12
+            ],
+            "center": [
+              436,
+              141
+            ]
+          },
+          {
+            "name": "Tatay Pio",
+            "rect": [
+              110,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              116,
+              146
+            ]
+          }
+        ]
+      },
+      "after": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            310,
+            640,
+            50
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            70,
+            70,
+            75,
+            55
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "siren",
+            "label": "SIREN",
+            "rect": [
+              456,
+              128,
+              14,
+              14
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "viewpoint",
+            "label": "VIEWPOINT",
+            "rect": [
+              100,
+              128,
+              22,
+              10
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "binoculars",
+            "rect": [
+              174,
+              199,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          60,
+          175,
+          12,
+          12,
+          66,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Berto",
+            "rect": [
+              430,
+              135,
+              12,
+              12
+            ],
+            "center": [
+              436,
+              141
+            ]
+          },
+          {
+            "name": "Tatay Pio",
+            "rect": [
+              110,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              116,
+              146
+            ]
+          }
+        ]
+      }
+    },
+    "chapter_1/level_4_tsunami": {
+      "before": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "radio",
+            "label": "VHF RADIO",
+            "rect": [
+              500,
+              110,
+              16,
+              10
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "torch",
+            "rect": [
+              144,
+              179,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "firstaid",
+            "rect": [
+              90,
+              182,
+              10,
+              10
+            ],
+            "source": "map_item"
+          }
+        ],
+        "player_spawn": [
+          50,
+          180,
+          12,
+          12,
+          56,
+          186
+        ],
+        "npc_spawns": [
+          {
+            "name": "Rico dela Cruz",
+            "rect": [
+              270,
+              95,
+              12,
+              12
+            ],
+            "center": [
+              276,
+              101
+            ]
+          }
+        ]
+      },
+      "after": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "radio",
+            "label": "VHF RADIO",
+            "rect": [
+              500,
+              110,
+              16,
+              10
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "torch",
+            "rect": [
+              144,
+              179,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "firstaid",
+            "rect": [
+              90,
+              182,
+              10,
+              10
+            ],
+            "source": "map_item"
+          }
+        ],
+        "player_spawn": [
+          50,
+          180,
+          12,
+          12,
+          56,
+          186
+        ],
+        "npc_spawns": [
+          {
+            "name": "Rico dela Cruz",
+            "rect": [
+              270,
+              95,
+              12,
+              12
+            ],
+            "center": [
+              276,
+              101
+            ]
+          }
+        ]
+      }
+    },
+    "chapter_2/level_1_fire": {
+      "before": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            60,
+            85,
+            60
+          ],
+          [
+            60,
+            220,
+            85,
+            60
+          ],
+          [
+            170,
+            60,
+            80,
+            60
+          ],
+          [
+            350,
+            60,
+            90,
+            60
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "fire",
+            "label": "",
+            "rect": [
+              160,
+              150,
+              90,
+              60
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "cloth",
+            "rect": [
+              62,
+              146,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "extinguisher",
+            "rect": [
+              150,
+              228,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          50,
+          175,
+          12,
+          12,
+          56,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Kuya Ben",
+            "rect": [
+              105,
+              135,
+              12,
+              12
+            ],
+            "center": [
+              111,
+              141
+            ]
+          }
+        ]
+      },
+      "after": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            60,
+            85,
+            60
+          ],
+          [
+            60,
+            220,
+            85,
+            60
+          ],
+          [
+            170,
+            60,
+            80,
+            60
+          ],
+          [
+            350,
+            60,
+            90,
+            60
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "fire",
+            "label": "",
+            "rect": [
+              160,
+              150,
+              90,
+              60
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "cloth",
+            "rect": [
+              62,
+              146,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "extinguisher",
+            "rect": [
+              150,
+              228,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          50,
+          175,
+          12,
+          12,
+          56,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Kuya Ben",
+            "rect": [
+              105,
+              135,
+              12,
+              12
+            ],
+            "center": [
+              111,
+              141
+            ]
+          }
+        ]
+      }
+    },
+    "chapter_2/level_2_earthquake": {
+      "before": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            60,
+            110,
+            70
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "courtyard",
+            "label": "ASSEMBLY COURTYARD",
+            "rect": [
+              270,
+              150,
+              100,
+              70
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": false
+          },
+          {
+            "key": "radio",
+            "label": "RADIO",
+            "rect": [
+              492,
+              98,
+              24,
+              18
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "hardhat",
+            "rect": [
+              90,
+              142,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "megaphone",
+            "rect": [
+              434,
+              226,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          70,
+          175,
+          12,
+          12,
+          76,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Mayor Cruz",
+            "rect": [
+              400,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              406,
+              146
+            ]
+          }
+        ]
+      },
+      "after": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            60,
+            110,
+            70
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "courtyard",
+            "label": "ASSEMBLY COURTYARD",
+            "rect": [
+              270,
+              150,
+              100,
+              70
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": false
+          },
+          {
+            "key": "radio",
+            "label": "RADIO",
+            "rect": [
+              492,
+              98,
+              24,
+              18
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "hardhat",
+            "rect": [
+              90,
+              142,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "megaphone",
+            "rect": [
+              434,
+              226,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          70,
+          175,
+          12,
+          12,
+          76,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Mayor Cruz",
+            "rect": [
+              400,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              406,
+              146
+            ]
+          }
+        ]
+      }
+    },
+    "chapter_2/level_3_typhoon": {
+      "before": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            50,
+            100,
+            90
+          ],
+          [
+            60,
+            220,
+            100,
+            70
+          ],
+          [
+            170,
+            150,
+            80,
+            60
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "generator",
+            "label": "GENERATOR",
+            "rect": [
+              500,
+              100,
+              30,
+              24
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "battery",
+            "rect": [
+              209,
+              234,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "flashlight",
+            "rect": [
+              204,
+              89,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          49,
+          175,
+          12,
+          12,
+          55,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Nurse Joy",
+            "rect": [
+              410,
+              150,
+              12,
+              12
+            ],
+            "center": [
+              416,
+              156
+            ]
+          }
+        ]
+      },
+      "after": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            50,
+            100,
+            90
+          ],
+          [
+            60,
+            220,
+            100,
+            70
+          ],
+          [
+            170,
+            150,
+            80,
+            60
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "generator",
+            "label": "GENERATOR",
+            "rect": [
+              500,
+              100,
+              30,
+              24
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "battery",
+            "rect": [
+              209,
+              234,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "flashlight",
+            "rect": [
+              204,
+              89,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          49,
+          175,
+          12,
+          12,
+          55,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Nurse Joy",
+            "rect": [
+              410,
+              150,
+              12,
+              12
+            ],
+            "center": [
+              416,
+              156
+            ]
+          }
+        ]
+      }
+    },
+    "chapter_2/level_4_flash_flood": {
+      "before": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            70,
+            70,
+            85,
+            65
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "ramp_debris",
+            "label": "RAMP DEBRIS",
+            "rect": [
+              232,
+              106,
+              24,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "gobag",
+            "rect": [
+              146,
+              144,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "stick",
+            "rect": [
+              86,
+              212,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          50,
+          175,
+          12,
+          12,
+          56,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Liza",
+            "rect": [
+              115,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              121,
+              146
+            ]
+          }
+        ]
+      },
+      "after": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            70,
+            70,
+            85,
+            65
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "ramp_debris",
+            "label": "RAMP DEBRIS",
+            "rect": [
+              232,
+              106,
+              24,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "gobag",
+            "rect": [
+              146,
+              144,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "stick",
+            "rect": [
+              86,
+              212,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          50,
+          175,
+          12,
+          12,
+          56,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Liza",
+            "rect": [
+              115,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              121,
+              146
+            ]
+          }
+        ]
+      }
+    },
+    "chapter_3/level_1_flash_flood": {
+      "before": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            260,
+            640,
+            100
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            60,
+            95,
+            70
+          ],
+          [
+            180,
+            60,
+            90,
+            70
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "locker",
+            "label": "LIFE VEST",
+            "rect": [
+              64,
+              132,
+              22,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "wet_0",
+            "label": "",
+            "rect": [
+              190,
+              154,
+              32,
+              20
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": false
+          },
+          {
+            "key": "wet_1",
+            "label": "",
+            "rect": [
+              305,
+              172,
+              36,
+              20
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": false
+          },
+          {
+            "key": "wet_2",
+            "label": "",
+            "rect": [
+              405,
+              152,
+              32,
+              20
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": false
+          }
+        ],
+        "pickups": [
+          {
+            "key": "firstaid",
+            "rect": [
+              219,
+              134,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "gobag",
+            "rect": [
+              429,
+              134,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "radio",
+            "rect": [
+              339,
+              132,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          50,
+          165,
+          12,
+          12,
+          56,
+          171
+        ],
+        "npc_spawns": [
+          {
+            "name": "Tito Ramon",
+            "rect": [
+              130,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              136,
+              146
+            ]
+          }
+        ]
+      },
+      "after": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            260,
+            640,
+            100
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            60,
+            95,
+            70
+          ],
+          [
+            180,
+            60,
+            90,
+            70
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "locker",
+            "label": "LIFE VEST",
+            "rect": [
+              64,
+              132,
+              22,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "wet_0",
+            "label": "",
+            "rect": [
+              190,
+              154,
+              32,
+              20
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": false
+          },
+          {
+            "key": "wet_1",
+            "label": "",
+            "rect": [
+              305,
+              172,
+              36,
+              20
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": false
+          },
+          {
+            "key": "wet_2",
+            "label": "",
+            "rect": [
+              405,
+              152,
+              32,
+              20
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": false
+          }
+        ],
+        "pickups": [
+          {
+            "key": "firstaid",
+            "rect": [
+              219,
+              134,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "gobag",
+            "rect": [
+              429,
+              134,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "radio",
+            "rect": [
+              339,
+              132,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          50,
+          165,
+          12,
+          12,
+          56,
+          171
+        ],
+        "npc_spawns": [
+          {
+            "name": "Tito Ramon",
+            "rect": [
+              130,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              136,
+              146
+            ]
+          }
+        ]
+      }
+    },
+    "chapter_3/level_2_typhoon": {
+      "before": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            240,
+            640,
+            120
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            60,
+            90,
+            70
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "lines",
+            "label": "MOORING LINES",
+            "rect": [
+              62,
+              134,
+              24,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "hardhat",
+            "rect": [
+              119,
+              138,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "megaphone",
+            "rect": [
+              419,
+              136,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "radio",
+            "rect": [
+              284,
+              136,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          49,
+          175,
+          12,
+          12,
+          55,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Tatay Pio",
+            "rect": [
+              330,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              336,
+              146
+            ]
+          }
+        ]
+      },
+      "after": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            240,
+            640,
+            120
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            60,
+            90,
+            70
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "lines",
+            "label": "MOORING LINES",
+            "rect": [
+              62,
+              134,
+              24,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "hardhat",
+            "rect": [
+              119,
+              138,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "megaphone",
+            "rect": [
+              419,
+              136,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "radio",
+            "rect": [
+              284,
+              136,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          49,
+          175,
+          12,
+          12,
+          55,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Tatay Pio",
+            "rect": [
+              330,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              336,
+              146
+            ]
+          }
+        ]
+      }
+    },
+    "chapter_3/level_3_severe_flooding": {
+      "before": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            275,
+            640,
+            85
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            50,
+            100,
+            80
+          ],
+          [
+            190,
+            50,
+            105,
+            80
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "breaker",
+            "label": "CIRCUIT BREAKER",
+            "rect": [
+              104,
+              126,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "radio_bench",
+            "label": "VHF TRANSCEIVER",
+            "rect": [
+              204,
+              132,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "battery",
+            "rect": [
+              269,
+              128,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "drybag",
+            "rect": [
+              70,
+              128,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "flashlight",
+            "rect": [
+              379,
+              132,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          50,
+          175,
+          12,
+          12,
+          56,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Rico dela Cruz",
+            "rect": [
+              235,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              241,
+              146
+            ]
+          }
+        ]
+      },
+      "after": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            275,
+            640,
+            85
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            50,
+            100,
+            80
+          ],
+          [
+            190,
+            50,
+            105,
+            80
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "breaker",
+            "label": "CIRCUIT BREAKER",
+            "rect": [
+              104,
+              126,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "radio_bench",
+            "label": "VHF TRANSCEIVER",
+            "rect": [
+              204,
+              132,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "battery",
+            "rect": [
+              269,
+              128,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "drybag",
+            "rect": [
+              70,
+              128,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "flashlight",
+            "rect": [
+              379,
+              132,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          50,
+          175,
+          12,
+          12,
+          56,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Rico dela Cruz",
+            "rect": [
+              235,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              241,
+              146
+            ]
+          }
+        ]
+      }
+    },
+    "chapter_3/level_4_fire_tsunami": {
+      "before": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            240,
+            640,
+            120
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            50,
+            95,
+            80
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "stairs",
+            "label": "CLIFF STAIRS",
+            "rect": [
+              420,
+              150,
+              30,
+              25
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "valve",
+            "label": "FUEL CUT-OFF VALVE",
+            "rect": [
+              272,
+              137,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "extinguisher",
+            "rect": [
+              129,
+              209,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "hood",
+            "rect": [
+              79,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "key",
+            "rect": [
+              234,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          50,
+          175,
+          12,
+          12,
+          56,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Tito Ramon",
+            "rect": [
+              115,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              121,
+              146
+            ]
+          }
+        ]
+      },
+      "after": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            240,
+            640,
+            120
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            50,
+            95,
+            80
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "stairs",
+            "label": "CLIFF STAIRS",
+            "rect": [
+              420,
+              150,
+              30,
+              25
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "valve",
+            "label": "FUEL CUT-OFF VALVE",
+            "rect": [
+              272,
+              137,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "extinguisher",
+            "rect": [
+              129,
+              209,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "hood",
+            "rect": [
+              79,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "key",
+            "rect": [
+              234,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          50,
+          175,
+          12,
+          12,
+          56,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Tito Ramon",
+            "rect": [
+              115,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              121,
+              146
+            ]
+          }
+        ]
+      }
+    },
+    "chapter_4/level_1_typhoon": {
+      "before": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            60,
+            85,
+            60
+          ],
+          [
+            180,
+            60,
+            80,
+            60
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "corral_gate",
+            "label": "LIVESTOCK PEN",
+            "rect": [
+              172,
+              127,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "dike_breach",
+            "label": "IRRIGATION DIKE",
+            "rect": [
+              272,
+              132,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "gloves",
+            "rect": [
+              214,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "rope",
+            "rect": [
+              134,
+              214,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "sandbag",
+            "rect": [
+              69,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          50,
+          175,
+          12,
+          12,
+          56,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Jun",
+            "rect": [
+              115,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              121,
+              146
+            ]
+          }
+        ]
+      },
+      "after": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            60,
+            85,
+            60
+          ],
+          [
+            180,
+            60,
+            80,
+            60
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "corral_gate",
+            "label": "LIVESTOCK PEN",
+            "rect": [
+              172,
+              127,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "dike_breach",
+            "label": "IRRIGATION DIKE",
+            "rect": [
+              272,
+              132,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "gloves",
+            "rect": [
+              214,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "rope",
+            "rect": [
+              134,
+              214,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "sandbag",
+            "rect": [
+              69,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          50,
+          175,
+          12,
+          12,
+          56,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Jun",
+            "rect": [
+              115,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              121,
+              146
+            ]
+          }
+        ]
+      }
+    },
+    "chapter_4/level_2_flash_flood": {
+      "before": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            60,
+            90,
+            70
+          ],
+          [
+            150,
+            0,
+            60,
+            160
+          ],
+          [
+            150,
+            200,
+            60,
+            160
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "harvest_rack",
+            "label": "GRAIN SACK RACK",
+            "rect": [
+              232,
+              132,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "road_probe",
+            "label": "SUBMERGED CROWN",
+            "rect": [
+              175,
+              168,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "firstaid",
+            "rect": [
+              279,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "stick",
+            "rect": [
+              79,
+              209,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "tarp",
+            "rect": [
+              139,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          50,
+          175,
+          12,
+          12,
+          56,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Aling Rosa",
+            "rect": [
+              115,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              121,
+              146
+            ]
+          }
+        ]
+      },
+      "after": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            60,
+            90,
+            70
+          ],
+          [
+            150,
+            0,
+            60,
+            160
+          ],
+          [
+            150,
+            200,
+            60,
+            160
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "harvest_rack",
+            "label": "GRAIN SACK RACK",
+            "rect": [
+              232,
+              132,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "road_probe",
+            "label": "SUBMERGED CROWN",
+            "rect": [
+              175,
+              168,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "firstaid",
+            "rect": [
+              279,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "stick",
+            "rect": [
+              79,
+              209,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "tarp",
+            "rect": [
+              139,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          50,
+          175,
+          12,
+          12,
+          56,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Aling Rosa",
+            "rect": [
+              115,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              121,
+              146
+            ]
+          }
+        ]
+      }
+    },
+    "chapter_4/level_3_landslide": {
+      "before": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            170,
+            150,
+            110,
+            60
+          ],
+          [
+            290,
+            60,
+            85,
+            65
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "conduit_terminal",
+            "label": "EXPOSED CONDUIT",
+            "rect": [
+              302,
+              127,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "scree_path",
+            "label": "UNSTABLE SCREE",
+            "rect": [
+              165,
+              160,
+              20,
+              20
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "hardhat",
+            "rect": [
+              364,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "logger",
+            "rect": [
+              89,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "multimeter",
+            "rect": [
+              239,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          50,
+          175,
+          12,
+          12,
+          56,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Dr. Elena Reyes",
+            "rect": [
+              420,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              426,
+              146
+            ]
+          }
+        ]
+      },
+      "after": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            170,
+            150,
+            110,
+            60
+          ],
+          [
+            290,
+            60,
+            85,
+            65
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "conduit_terminal",
+            "label": "EXPOSED CONDUIT",
+            "rect": [
+              302,
+              127,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "scree_path",
+            "label": "UNSTABLE SCREE",
+            "rect": [
+              165,
+              160,
+              20,
+              20
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "hardhat",
+            "rect": [
+              364,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "logger",
+            "rect": [
+              89,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "multimeter",
+            "rect": [
+              239,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          50,
+          175,
+          12,
+          12,
+          56,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Dr. Elena Reyes",
+            "rect": [
+              420,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              426,
+              146
+            ]
+          }
+        ]
+      }
+    },
+    "chapter_4/level_4_earthquake_volcano": {
+      "before": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            60,
+            90,
+            70
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "pdz_gate",
+            "label": "HIGHWAY BOOM BARRIER",
+            "rect": [
+              352,
+              142,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "sensor_array",
+            "label": "GAS SENSOR ARRAY",
+            "rect": [
+              107,
+              127,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "detector",
+            "rect": [
+              214,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "flare",
+            "rect": [
+              309,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "mask",
+            "rect": [
+              79,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          50,
+          175,
+          12,
+          12,
+          56,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Dr. Mira Santos",
+            "rect": [
+              115,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              121,
+              146
+            ]
+          }
+        ]
+      },
+      "after": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            60,
+            90,
+            70
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "pdz_gate",
+            "label": "HIGHWAY BOOM BARRIER",
+            "rect": [
+              352,
+              142,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "sensor_array",
+            "label": "GAS SENSOR ARRAY",
+            "rect": [
+              107,
+              127,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "detector",
+            "rect": [
+              214,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "flare",
+            "rect": [
+              309,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "mask",
+            "rect": [
+              79,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          50,
+          175,
+          12,
+          12,
+          56,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Dr. Mira Santos",
+            "rect": [
+              115,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              121,
+              146
+            ]
+          }
+        ]
+      }
+    },
+    "chapter_5/level_1_earthquake_landslide": {
+      "before": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            60,
+            85,
+            60
+          ],
+          [
+            160,
+            150,
+            120,
+            60
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "boulder_rubble",
+            "label": "FALLEN BOULDER",
+            "rect": [
+              182,
+              162,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "fissure_ledge",
+            "label": "BASALT LEDGE",
+            "rect": [
+              237,
+              162,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "boots",
+            "rect": [
+              354,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "compass",
+            "rect": [
+              214,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "prybar",
+            "rect": [
+              74,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          50,
+          175,
+          12,
+          12,
+          56,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Engr. Paolo Santos",
+            "rect": [
+              115,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              121,
+              146
+            ]
+          }
+        ]
+      },
+      "after": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            60,
+            85,
+            60
+          ],
+          [
+            160,
+            150,
+            120,
+            60
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "boulder_rubble",
+            "label": "FALLEN BOULDER",
+            "rect": [
+              182,
+              162,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "fissure_ledge",
+            "label": "BASALT LEDGE",
+            "rect": [
+              237,
+              162,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "boots",
+            "rect": [
+              354,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "compass",
+            "rect": [
+              214,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "prybar",
+            "rect": [
+              74,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          50,
+          175,
+          12,
+          12,
+          56,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Engr. Paolo Santos",
+            "rect": [
+              115,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              121,
+              146
+            ]
+          }
+        ]
+      }
+    },
+    "chapter_5/level_2_volcano": {
+      "before": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            60,
+            85,
+            60
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "bus_radiator",
+            "label": "BUS RADIATOR INTAKE",
+            "rect": [
+              427,
+              137,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "rhea_fit",
+            "label": "RHEA RESPIRATORY FIT",
+            "rect": [
+              107,
+              132,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "goggles",
+            "rect": [
+              79,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "light",
+            "rect": [
+              214,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "water",
+            "rect": [
+              334,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          50,
+          175,
+          12,
+          12,
+          56,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Rhea",
+            "rect": [
+              115,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              121,
+              146
+            ]
+          }
+        ]
+      },
+      "after": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            60,
+            85,
+            60
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "bus_radiator",
+            "label": "BUS RADIATOR INTAKE",
+            "rect": [
+              427,
+              137,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "rhea_fit",
+            "label": "RHEA RESPIRATORY FIT",
+            "rect": [
+              107,
+              132,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "goggles",
+            "rect": [
+              79,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "light",
+            "rect": [
+              214,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "water",
+            "rect": [
+              334,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          50,
+          175,
+          12,
+          12,
+          56,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Rhea",
+            "rect": [
+              115,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              121,
+              146
+            ]
+          }
+        ]
+      }
+    },
+    "chapter_5/level_3_flash_fire": {
+      "before": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            60,
+            90,
+            70
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "airlock_override",
+            "label": "AIRLOCK OVERRIDE",
+            "rect": [
+              432,
+              137,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "firebreak",
+            "label": "FIREBREAK LINE",
+            "rect": [
+              232,
+              160,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "blanket",
+            "rect": [
+              354,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "extinguisher",
+            "rect": [
+              79,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "shovel",
+            "rect": [
+              204,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          50,
+          175,
+          12,
+          12,
+          56,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Engr. Paolo Santos",
+            "rect": [
+              115,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              121,
+              146
+            ]
+          }
+        ]
+      },
+      "after": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            60,
+            90,
+            70
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "airlock_override",
+            "label": "AIRLOCK OVERRIDE",
+            "rect": [
+              432,
+              137,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "firebreak",
+            "label": "FIREBREAK LINE",
+            "rect": [
+              232,
+              160,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "blanket",
+            "rect": [
+              354,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "extinguisher",
+            "rect": [
+              79,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "shovel",
+            "rect": [
+              204,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          50,
+          175,
+          12,
+          12,
+          56,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Engr. Paolo Santos",
+            "rect": [
+              115,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              121,
+              146
+            ]
+          }
+        ]
+      }
+    },
+    "chapter_5/level_4_typhoon_severe_flood": {
+      "before": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            60,
+            85,
+            60
+          ],
+          [
+            160,
+            0,
+            90,
+            160
+          ],
+          [
+            160,
+            200,
+            90,
+            160
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "canyon_stairs",
+            "label": "CANYON RIDGE ASCENT",
+            "rect": [
+              292,
+              142,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "siren_console",
+            "label": "ACOUSTIC SIREN",
+            "rect": [
+              352,
+              127,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "harness",
+            "rect": [
+              239,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "radio",
+            "rect": [
+              119,
+              209,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "siren_key",
+            "rect": [
+              79,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          49,
+          175,
+          12,
+          12,
+          55,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Mayor Cruz",
+            "rect": [
+              360,
+              135,
+              12,
+              12
+            ],
+            "center": [
+              366,
+              141
+            ]
+          }
+        ]
+      },
+      "after": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            60,
+            85,
+            60
+          ],
+          [
+            160,
+            0,
+            90,
+            160
+          ],
+          [
+            160,
+            200,
+            90,
+            160
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "canyon_stairs",
+            "label": "CANYON RIDGE ASCENT",
+            "rect": [
+              292,
+              142,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "siren_console",
+            "label": "ACOUSTIC SIREN",
+            "rect": [
+              352,
+              127,
+              16,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "harness",
+            "rect": [
+              239,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "radio",
+            "rect": [
+              119,
+              209,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "siren_key",
+            "rect": [
+              79,
+              129,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          }
+        ],
+        "player_spawn": [
+          49,
+          175,
+          12,
+          12,
+          55,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Mayor Cruz",
+            "rect": [
+              360,
+              135,
+              12,
+              12
+            ],
+            "center": [
+              366,
+              141
+            ]
+          }
+        ]
+      }
+    },
+    "final_mission/shutdown_machine": {
+      "before": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            60,
+            95,
+            75
+          ],
+          [
+            180,
+            60,
+            95,
+            75
+          ],
+          [
+            500,
+            50,
+            90,
+            75
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "manifold",
+            "label": "MANIFOLD",
+            "rect": [
+              205,
+              140,
+              30,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "scram",
+            "label": "SCRAM",
+            "rect": [
+              440,
+              146,
+              36,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "surge",
+            "rect": [
+              216,
+              232,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "key",
+            "rect": [
+              100,
+              140,
+              10,
+              10
+            ],
+            "source": "map_item"
+          }
+        ],
+        "player_spawn": [
+          60,
+          175,
+          12,
+          12,
+          66,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Dr. Elias Voss",
+            "rect": [
+              380,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              386,
+              146
+            ]
+          }
+        ]
+      },
+      "after": {
+        "collisions": [
+          [
+            0,
+            0,
+            16,
+            360
+          ],
+          [
+            0,
+            0,
+            640,
+            16
+          ],
+          [
+            0,
+            344,
+            640,
+            16
+          ],
+          [
+            60,
+            60,
+            95,
+            75
+          ],
+          [
+            180,
+            60,
+            95,
+            75
+          ],
+          [
+            500,
+            50,
+            90,
+            75
+          ],
+          [
+            624,
+            0,
+            16,
+            360
+          ]
+        ],
+        "interactables": [
+          {
+            "key": "manifold",
+            "label": "MANIFOLD",
+            "rect": [
+              205,
+              140,
+              30,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          },
+          {
+            "key": "scram",
+            "label": "SCRAM",
+            "rect": [
+              440,
+              146,
+              36,
+              16
+            ],
+            "near_inflate": [
+              24,
+              24
+            ],
+            "prompt": true
+          }
+        ],
+        "pickups": [
+          {
+            "key": "surge",
+            "rect": [
+              216,
+              232,
+              12,
+              12
+            ],
+            "source": "level_pickup"
+          },
+          {
+            "key": "key",
+            "rect": [
+              100,
+              140,
+              10,
+              10
+            ],
+            "source": "map_item"
+          }
+        ],
+        "player_spawn": [
+          60,
+          175,
+          12,
+          12,
+          66,
+          181
+        ],
+        "npc_spawns": [
+          {
+            "name": "Dr. Elias Voss",
+            "rect": [
+              380,
+              140,
+              12,
+              12
+            ],
+            "center": [
+              386,
+              146
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "hazard_reactions": {
+    "final_mission/shutdown_machine": {
+      "ok": true,
+      "details": {
+        "ambience_enabled": true,
+        "flags": {
+          "earthquake": true,
+          "fire": false,
+          "typhoon": false,
+          "flood": false,
+          "completed": false,
+          "wind_dir": 1.0,
+          "water_rect": null,
+          "shaking": true
+        },
+        "animated": true,
+        "unique_hashes": 30,
+        "has_terminals": true,
+        "flood_flag": false,
+        "fire_flag": false,
+        "earthquake_flag": true,
+        "typhoon_flag": false
+      }
+    },
+    "prologue/level_3_severe_flooding": {
+      "ok": true,
+      "details": {
+        "ambience_enabled": true,
+        "flags": {
+          "earthquake": false,
+          "fire": false,
+          "typhoon": false,
+          "flood": true,
+          "completed": false,
+          "wind_dir": 1.0,
+          "water_rect": null,
+          "shaking": false
+        },
+        "animated": true,
+        "unique_hashes": 30,
+        "flood_flag": true,
+        "fire_flag": false,
+        "earthquake_flag": false,
+        "typhoon_flag": false
+      }
+    },
+    "chapter_2/level_1_fire": {
+      "ok": true,
+      "details": {
+        "ambience_enabled": true,
+        "flags": {
+          "earthquake": false,
+          "fire": true,
+          "typhoon": false,
+          "flood": false,
+          "completed": false,
+          "wind_dir": 1.0,
+          "water_rect": null,
+          "shaking": false,
+          "fire_active": true
+        },
+        "animated": true,
+        "unique_hashes": 30,
+        "flood_flag": false,
+        "fire_flag": true,
+        "earthquake_flag": false,
+        "typhoon_flag": false
+      }
+    },
+    "chapter_1/level_1_earthquake": {
+      "ok": true,
+      "details": {
+        "ambience_enabled": true,
+        "flags": {
+          "earthquake": true,
+          "fire": false,
+          "typhoon": false,
+          "flood": false,
+          "completed": false,
+          "wind_dir": 1.0,
+          "water_rect": null,
+          "shaking": true
+        },
+        "animated": true,
+        "unique_hashes": 30,
+        "flood_flag": false,
+        "fire_flag": false,
+        "earthquake_flag": true,
+        "typhoon_flag": false
+      }
+    },
+    "prologue/level_1_typhoon": {
+      "ok": true,
+      "details": {
+        "ambience_enabled": true,
+        "flags": {
+          "earthquake": false,
+          "fire": false,
+          "typhoon": true,
+          "flood": false,
+          "completed": false,
+          "wind_dir": -1.0,
+          "water_rect": null,
+          "shaking": false
+        },
+        "animated": true,
+        "unique_hashes": 30,
+        "flood_flag": false,
+        "fire_flag": false,
+        "earthquake_flag": false,
+        "typhoon_flag": true
+      }
+    }
+  }
+}

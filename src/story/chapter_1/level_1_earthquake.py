@@ -89,6 +89,7 @@ class Chapter1Level1Earthquake(BaseLevel):
         ]
         self.show_hint("EARTHQUAKE! Reach the SCHOOL DESK and press SPACE!", 6.0)
         self.start_countdown(SHAKE_SECONDS, "SHAKING", self._on_shake_timeout)
+        self.enable_world_ambience()
 
     # ------------------------------------------------------------------
     # World

@@ -133,6 +133,7 @@ class PrologueLevel3SevereFlooding(BaseLevel):
         ]
         self.show_hint("Grab the MED PACK, then avoid the DEEP WATER road!", 6.0)
         self.start_countdown(RISING_SECONDS, "WATER RISING", self._on_too_slow)
+        self.enable_world_ambience()
 
     # ------------------------------------------------------------------
     # World

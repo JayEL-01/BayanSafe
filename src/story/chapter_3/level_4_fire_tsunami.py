@@ -130,6 +130,7 @@ class Chapter3Level4FireTsunami(BaseLevel):
         ])
 
         self.show_hint("Ruptured fuel lines burning while a tsunami bears down! Hurry!", 5.0)
+        self.enable_world_ambience()
 
     # ------------------------------------------------------------------
     # World Layout

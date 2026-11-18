@@ -173,6 +173,7 @@ class FinalMissionShutdownMachine(BaseLevel):
         self.set_meter("resonance", "RESONANCE", 0.0, good_high=False)
         self.start_countdown(self.OVERLOAD_SECONDS, "CORE OVERLOAD", on_expire=self._overload)
         self.show_hint(self.STEP_HINTS[0], 6.0)
+        self.enable_world_ambience()
 
     # ------------------------------------------------------------------
     # World

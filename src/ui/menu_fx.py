@@ -320,13 +320,7 @@ class MenuFX:
                 pygame.draw.ellipse(surface, shade, (int(x + w * 0.2), int(y - h * 0.4), int(w * 0.5), h))
                 pygame.draw.ellipse(surface, shade, (int(x + w * 0.45), int(y + h * 0.1), int(w * 0.5), h))
         self._plume(surface)
-        if self.level < 0.4:                              # birds go home when danger rises
-            for bx, by, speed, ph in self.birds:
-                x = int((bx + t * speed) % (W + 20) - 10)
-                y = int(by + math.sin(t + ph) * 3)
-                flap = 2 if math.sin(t * 8 + ph) > 0 else -1
-                pygame.draw.line(surface, (40, 40, 60), (x - 3, y + flap), (x, y))
-                pygame.draw.line(surface, (40, 40, 60), (x + 3, y + flap), (x, y))
+        # birds disabled (removed stray moving dark artifact)
 
     def _plume(self, surface):
         if self.hazard != "volcano" or self.level < 0.12:

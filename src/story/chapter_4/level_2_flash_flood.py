@@ -127,6 +127,7 @@ class Chapter4Level2FlashFlood(BaseLevel):
         ])
 
         self.show_hint("Canal dike ruptured! Obscured roadside ditches are extremely dangerous.", 5.0)
+        self.enable_world_ambience()
 
     # ------------------------------------------------------------------
     # World Layout

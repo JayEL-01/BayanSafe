@@ -140,14 +140,16 @@ class PauseMenu:
         w, h = surface.get_size()
         theme.fade(surface, 215)
 
-        # Dynamic sizing: measure the widest option label
-        font = theme.get_font("tiny")
+        # Same wooden-plank buttons and icons as the home menu. Measure with
+        # the button font so nothing clips once the icon and arrows are added.
+        font = theme.get_font("button")
+        icons = ("clip", "gear", "book", "light", "house")
         max_label_w = 0
         for label, _ in self.MENU_OPTIONS:
             lw, _ = font.size(label)
             max_label_w = max(max_label_w, lw)
 
-        btn_w = max(130, max_label_w + 24)   # text + padding
+        btn_w = max(150, max_label_w + 46)   # icon + text + padding
         btn_h = 16
         gap = 4
 
@@ -155,7 +157,7 @@ class PauseMenu:
         title_h = 20
         footer_h = 12
 
-        panel_w = btn_w + 16
+        panel_w = btn_w + 24
         panel_h = title_h + len(self.MENU_OPTIONS) * (btn_h + gap) + footer_h + 16
         panel_x = (w - panel_w) // 2
         panel_y = (h - panel_h) // 2
@@ -174,25 +176,15 @@ class PauseMenu:
         )
 
         start_y = panel_y + 24
-        for idx, (label, _) in enumerate(self.MENU_OPTIONS):
+        for idx, ((label, _), icon) in enumerate(zip(self.MENU_OPTIONS, icons)):
             by = start_y + idx * (btn_h + gap)
             bx = (w - btn_w) // 2
             is_sel = idx == self.selection
             b_rect = pygame.Rect(bx, by, btn_w, btn_h)
 
-            theme.draw_option_row(surface, b_rect, selected=is_sel, accent=theme.HONEY)
-
-            text_col = theme.HONEY if is_sel else theme.CREAM
-            prefix = "> " if is_sel else "  "
-            theme.draw_text(
-                surface,
-                f"{prefix}{label}",
-                (bx + 8, by + 3),
-                size="tiny",
-                color=text_col,
-                anchor="topleft",
-                shadow=False,
-            )
+            # Identical plank/grain/brass treatment to the main menu buttons.
+            theme.draw_button(surface, b_rect, label, selected=is_sel,
+                              font="button", icon=icon)
 
         theme.draw_text(
             surface,

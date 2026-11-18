@@ -79,6 +79,7 @@ class Chapter2Level3Typhoon(BaseLevel):
         ]
         self.set_checkpoint(self.CHECKPOINT)
         self.show_hint("Blackout! Find the FLASHLIGHT, then reach Nurse Joy.", 6.0)
+        self.enable_world_ambience()
 
     # ------------------------------------------------------------------
     # World

@@ -106,6 +106,7 @@ class PrologueLevel2FlashFlood(BaseLevel):
             (530, 110),
         ]
         self.show_hint("Move with ARROW KEYS / WASD. Read the WARNING board.", 6.0)
+        self.enable_world_ambience()
 
     # ------------------------------------------------------------------
     # World

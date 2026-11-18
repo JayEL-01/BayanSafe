@@ -107,6 +107,7 @@ class Chapter1Level4Tsunami(BaseLevel):
         ]
         self.show_hint("Grab the BATTERY BANK, then climb away from the valley!", 6.0)
         self.start_countdown(WAVE_SECONDS, "NEXT WAVE", self._on_wave)
+        self.enable_world_ambience()
 
     # ------------------------------------------------------------------
     # World

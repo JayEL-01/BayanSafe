@@ -118,6 +118,7 @@ class Chapter4Level1Typhoon(BaseLevel):
         ])
 
         self.show_hint("Heavy typhoon gale over the plains! Check on farm animals and dikes.", 5.0)
+        self.enable_world_ambience()
 
     # ------------------------------------------------------------------
     # World Layout

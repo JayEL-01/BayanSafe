@@ -301,7 +301,7 @@ class BlockMap:
     def update(self, dt: float):
         self.anim_timer += dt
 
-    def draw(self, surface: pygame.Surface, camera=None):
+    def draw(self, surface: pygame.Surface, camera=None, ambience=None):
         surface.fill(self.ground_color)
 
         def to_screen(r: pygame.Rect) -> pygame.Rect:
@@ -314,6 +314,13 @@ class BlockMap:
                 pygame.draw.rect(surface, elem.color, s_rect)
                 if elem.elem_type == "bridge":
                     pygame.draw.rect(surface, (80, 55, 35), s_rect, 1)
+
+        # Ambient ground details (opt-in, no-op for existing levels)
+        if ambience is not None:
+            try:
+                ambience.draw_ground(surface, camera)
+            except Exception:
+                pass
 
         # Hazard danger zones
         pulse = 0.5 + 0.5 * math.sin(self.anim_timer * 4.0)

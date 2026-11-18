@@ -199,12 +199,7 @@ class SelectBackdrop:
         if CLOUDS and not INDOOR:
             for x, y, s in self.clouds:
                 self._cloud(surface, x, y, s)
-        if BIRDS and not INDOOR:
-            for x, y, _, phase in self.birds:
-                f = 2 if int(self.t * 6 + phase) % 2 else 0
-                by = int(y + math.sin(self.t * 1.5 + phase) * 2)
-                pygame.draw.line(surface, (30, 40, 50), (int(x) - 3, by - 1 + f), (int(x), by))
-                pygame.draw.line(surface, (30, 40, 50), (int(x), by), (int(x) + 3, by - 1 + f))
+        # birds disabled (removed stray moving dark artifact)
 
         surface.fill(self.tint, special_flags=pygame.BLEND_RGB_MULT)   # morning/day/evening/night
         self._night_extras(surface)

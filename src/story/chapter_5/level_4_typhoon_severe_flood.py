@@ -131,6 +131,7 @@ class Chapter5Level4TyphoonSevereFlood(BaseLevel):
         ])
 
         self.show_hint("Heavy typhoon rain over volcanic ash deposits! Lahar mudflow cresting upstream!", 5.0)
+        self.enable_world_ambience()
 
     # ------------------------------------------------------------------
     # World Layout

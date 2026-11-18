@@ -104,6 +104,7 @@ class Chapter1Level2Landslide(BaseLevel):
             (520, 100),
         ]
         self.show_hint("Look for cracks and leaning poles. Press SPACE to inspect.", 6.0)
+        self.enable_world_ambience()
 
     # ------------------------------------------------------------------
     # World

@@ -352,6 +352,7 @@ class Chapter3Level2Typhoon(BaseLevel):
         ]
         self.set_meter("safe", "SAFETY", 1.0, good_high=True)
         self.show_hint("Gale warning! Check the mooring lines at the boat shed.", 5.0)
+        self.enable_world_ambience()
 
     # ------------------------------------------------------------------
     # World

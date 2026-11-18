@@ -98,6 +98,7 @@ class Chapter1Level3CalmWave(BaseLevel):
             self.guide_interactable("siren"),
         ]
         self.show_hint("Something is wrong with the sea. Check the VIEWPOINT!", 6.0)
+        self.enable_world_ambience()
 
     # ------------------------------------------------------------------
     # World

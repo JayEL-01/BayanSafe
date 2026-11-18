@@ -117,6 +117,7 @@ class Chapter5Level3FlashFire(BaseLevel):
         ])
 
         self.show_hint("Volcanic ballistic bombs crashing down! Wildfire threatens perimeter fuel tanks.", 5.0)
+        self.enable_world_ambience()
 
     # ------------------------------------------------------------------
     # World Layout

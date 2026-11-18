@@ -115,6 +115,7 @@ class Chapter5Level2Volcano(BaseLevel):
         ])
 
         self.show_hint("Alert Level 5 eruption! Total daytime darkness from dense volcanic ashfall.", 5.0)
+        self.enable_world_ambience()
 
     # ------------------------------------------------------------------
     # World Layout

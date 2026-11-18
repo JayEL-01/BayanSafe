@@ -79,6 +79,7 @@ class Chapter2Level1Fire(BaseLevel):
         self.set_meter("smoke", "SMOKE", 0.0, good_high=False)
         self.start_countdown(self.FIRE_SECONDS, "FIRE SPREADS", on_expire=self._fire_spread)
         self.show_hint("Smoke everywhere! Grab the DAMP CLOTH to cover your nose.", 6.0)
+        self.enable_world_ambience()
 
     # ------------------------------------------------------------------
     # World

@@ -117,6 +117,7 @@ class Chapter4Level4EarthquakeVolcano(BaseLevel):
         ])
 
         self.show_hint("Volcanic harmonic tremors shaking the plains gateway! Toxic gas venting ahead.", 5.0)
+        self.enable_world_ambience()
 
     # ------------------------------------------------------------------
     # World Layout

@@ -119,6 +119,7 @@ class Chapter5Level1EarthquakeLandslide(BaseLevel):
         ])
 
         self.show_hint("Violent Intensity VII caldera tremors! Watch for falling rocks and ground fissures.", 5.0)
+        self.enable_world_ambience()
 
     # ------------------------------------------------------------------
     # World Layout

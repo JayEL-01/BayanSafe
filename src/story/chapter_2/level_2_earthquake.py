@@ -94,6 +94,7 @@ class Chapter2Level2Earthquake(BaseLevel):
         ]
         self.set_checkpoint(self.PLAYER_START)
         self.show_hint("The Town Hall is cracked! Reach the green assembly courtyard.", 6.0)
+        self.enable_world_ambience()
 
     # ------------------------------------------------------------------
     # World

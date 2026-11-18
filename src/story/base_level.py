@@ -5,6 +5,7 @@ active environmental Hazards, Decision prompts, and HUD rendering with zero
 environment image dependencies.
 """
 
+import inspect
 import math
 import random
 import re
@@ -17,6 +18,10 @@ from src.entities.player import Player
 from src.entities.npc import NPC
 from src.maps.block_map import BlockMap
 from src.hazards.base_hazard import BaseHazard
+from src.hazards.earthquake import EarthquakeHazard
+from src.hazards.flash_flood import FlashFloodHazard, SevereFloodingHazard
+from src.hazards.typhoon import TyphoonHazard
+from src.hazards.landslide import LandslideHazard, TsunamiHazard, FlashFireHazard, VolcanicEruptionHazard
 from src.core.decision_system import DecisionSystem, Decision
 from src.core.score_system import ScoreSystem
 from src.ui.legend_screen import LegendScreen
@@ -29,6 +34,8 @@ from src.config.palette import (
     COLOR_UI_ACCENT,
     COLOR_UI_DANGER,
     COLOR_UI_SAFE,
+    COLOR_TREE_FOLIAGE,
+    COLOR_TREE_TRUNK,
 )
 from src.ui.text_utils import (
     measure_text,
@@ -59,6 +66,32 @@ from src.entities.world_art import (
 # Pixel-game toolkit (icons, effects, mini-games). Everything is drawn in
 # code, so no image files or extra modules are needed.
 # ======================================================================
+
+# World ambience tuning (set False to disable a feature on slower machines).
+# Buildings render as plain blocks: all decorative house art is off.
+AMBIENCE = {
+    "enabled": True,
+    "windows": False,
+    "smoke": False,
+    "doors": False,
+    "roof_details": False,
+    "sign_glow": True,
+    "terminals": True,
+    "ground_variants": True,
+    "tufts": True,
+    "sway": True,
+    "water": True,
+    "sky": True,
+    "street_furniture": True,
+    "lamps": True,
+    "item_fx": True,
+    "interactable_fx": True,
+    "hazard_react": True,
+    "birds": True,
+    "clouds": True,
+    "leaves": True,
+    "fireflies": True,
+}
 
 # The icon grids, the palette and the sprite helpers now live in
 # src/entities/world_art.py and are imported at the top of this file.
@@ -753,6 +786,1215 @@ class RadioTuning(MiniGame):
         )
 
 
+# ----------------------------------------------------------------------
+# World ambience helpers (WORLD art only). Cached, seeded, camera-aware.
+# ----------------------------------------------------------------------
+_AMBIENCE_CACHE = {}
+_AMBIENCE_BUDGET = 150  # max animated overlay draws per frame
+
+
+def _amb_cache(key, builder):
+    surf = _AMBIENCE_CACHE.get(key)
+    if surf is None:
+        surf = builder()
+        _AMBIENCE_CACHE[key] = surf
+    return surf
+
+
+def _rect_on_screen(camera, rect, w, h, pad=24):
+    if camera is None:
+        sr = rect
+    else:
+        sr = camera.apply(rect)
+    return sr.right >= -pad and sr.left <= w + pad and sr.bottom >= -pad and sr.top <= h + pad
+
+
+def _seed_for(level, salt=""):
+    base = f"{getattr(level, 'chapter_id', '')}:{getattr(level, 'level_id', '')}:{salt}"
+    return hash(base) & 0xFFFFFFFF
+
+
+def _level_mood(level):
+    lid = f"{getattr(level, 'chapter_id', '')} {getattr(level, 'level_id', '')} {getattr(level, 'disaster_type', '')}".lower()
+    if "final" in getattr(level, "chapter_id", "") or "shutdown" in getattr(level, "level_id", ""):
+        return "night"
+    if "typhoon" in lid or "severe_flood" in lid or "storm" in lid or "lahar" in lid:
+        return "storm"
+    if "fire" in lid or "volcano" in lid or "ash" in lid:
+        return "evening"
+    if "earthquake" in lid and "volcano" not in lid:
+        return "day"
+    if "flood" in lid or "tsunami" in lid:
+        return "storm" if "severe" in lid or "chapter_3" in lid else "evening"
+    if "calm" in lid:
+        return "day"
+    return "day"
+
+
+def _is_calm_level(level):
+    lid = f"{getattr(level, 'level_id', '')} {getattr(level, 'disaster_type', '')}".lower()
+    return "calm" in lid or "tutorial" in getattr(level, "level_id", "")
+
+
+def _is_night_level(level):
+    return _level_mood(level) == "night" or "final" in getattr(level, "chapter_id", "")
+
+
+def _hazard_flags(level):
+    flags = {
+        "earthquake": False, "fire": False, "typhoon": False, "flood": False,
+        "completed": bool(getattr(level, "completed", False)),
+        "wind_dir": 1.0, "water_rect": None, "shaking": False,
+    }
+    text = f"{getattr(level, 'disaster_type', '')} {getattr(level, 'title', '')}".lower()
+    if "earthquake" in text or "tremor" in text or "seismic" in text or "caldera" in text:
+        flags["earthquake"] = True
+    if "fire" in text or "inferno" in text or "ember" in text or "volcano" in text or "ash" in text:
+        flags["fire"] = True
+    if "typhoon" in text or "gale" in text or "wind" in text or "storm" in text or "cyclone" in text:
+        flags["typhoon"] = True
+    if "flood" in text or "tsunami" in text or "inundation" in text or "surge" in text or "lahar" in text or "water" in text:
+        flags["flood"] = True
+    for hz in getattr(level, "hazards", []) or []:
+        name = getattr(hz, "name", "").lower()
+        if isinstance(hz, EarthquakeHazard) or "earthquake" in name:
+            flags["earthquake"] = True
+            flags["shaking"] = bool(getattr(hz, "shaking", True)) and getattr(hz, "timer", 0) < getattr(hz, "shake_duration", 99)
+        if "fire" in name or isinstance(hz, FlashFireHazard):
+            flags["fire"] = True
+        if isinstance(hz, TyphoonHazard) or "typhoon" in name:
+            flags["typhoon"] = True
+            wd = getattr(hz, "wind_dir", None)
+            if wd is not None:
+                flags["wind_dir"] = -1.0 if getattr(wd, "x", -1) < 0 else 1.0
+        if isinstance(hz, (FlashFloodHazard, SevereFloodingHazard, TsunamiHazard)) or "flood" in name or "tsunami" in name:
+            flags["flood"] = True
+            if hasattr(hz, "get_water_rect"):
+                try:
+                    flags["water_rect"] = hz.get_water_rect()
+                except Exception:
+                    pass
+        if isinstance(hz, VolcanicEruptionHazard):
+            flags["fire"] = True
+    # level-specific dynamic flags
+    if hasattr(level, "fire_out"):
+        flags["fire"] = flags["fire"] and not bool(getattr(level, "fire_out", False))
+        flags["fire_active"] = not bool(getattr(level, "fire_out", False))
+    if hasattr(level, "_fire_out"):
+        flags["fire_active"] = not bool(getattr(level, "_fire_out", False))
+    if flags["completed"]:
+        flags["earthquake"] = False
+        flags["shaking"] = False
+        # relax but keep mood indicators softly; handled in ambience
+    return flags
+
+
+# --- small drawing helpers (overlay pixels only) ---
+
+def draw_lit_window(surface, rect, lit=True, flicker=0.0, boarded=False, warm=True, t=0.0):
+    r = pygame.Rect(rect)
+    if r.w <= 0 or r.h <= 0:
+        return
+    if boarded:
+        col = (45, 36, 28)
+        surface.fill(col, r)
+        for i in range(0, r.w, 3):
+            surface.fill((30, 24, 18), (r.x + i, r.y, 1, r.h))
+        return
+    if not lit:
+        surface.fill((18, 22, 34), r)
+        surface.fill((40, 46, 60), (r.x, r.y + r.h // 2, r.w, 1))
+        surface.fill((40, 46, 60), (r.x + r.w // 2, r.y, 1, r.h))
+        return
+    base = (245, 220, 120) if warm else (180, 220, 255)
+    dim = max(0.55, min(1.0, 0.85 + 0.15 * math.sin(flicker * 6.0 + t * (2.0 + flicker))))
+    col = (int(base[0] * dim), int(base[1] * dim), int(base[2] * dim))
+    surface.fill(col, r)
+    # panes
+    surface.fill((90, 70, 40), (r.x, r.y + r.h // 2, r.w, 1))
+    surface.fill((90, 70, 40), (r.x + r.w // 2, r.y, 1, r.h))
+    # tiny highlight
+    if r.w >= 4 and r.h >= 4:
+        surface.fill((255, 245, 200), (r.x + 1, r.y + 1, 1, 1))
+
+
+def draw_chimney_smoke(surface, x, y, t, wind=0.0, strength=1.0, seed=0, occluders=None):
+    # a few pixel puffs rising slowly and drifting with wind
+    occluders = occluders or []
+    n = 3
+    for i in range(n):
+        phase = (t * (0.35 + 0.05 * ((seed + i) % 3)) + i * 0.9 + (seed % 7) * 0.13) % 3.2
+        if phase < 0 or phase > 2.8:
+            continue
+        py = int(y - phase * 5)
+        drift = int(wind * phase * 4 + math.sin(t * 0.7 + i + seed) * 1.2)
+        px = int(x + drift + (i - 1))
+        a = int(140 * (1.0 - phase / 3.0) * strength)
+        if a <= 10:
+            continue
+        s = 2 if i == 1 else 1
+        # draw as hard-edged pixels approximating alpha by dithering/dimming
+        col = (170, 170, 175) if a > 80 else (130, 130, 138)
+        rect = pygame.Rect(px, py, s, s)
+        if not any(rect.colliderect(o) for o in occluders):
+            surface.fill(col, rect)
+        if a > 100:
+            top = pygame.Rect(px, py - 1, 1, 1)
+            if not any(top.colliderect(o) for o in occluders):
+                surface.fill(col, top)
+
+
+def draw_sway_tree(surface, camera, trunk_rect, foliage_rect, t, seed=0, shadow=True):
+    tr = pygame.Rect(trunk_rect)
+    fr = pygame.Rect(foliage_rect)
+    sway = int(round(math.sin(t * 0.8 + seed * 0.73) * 1.5))
+    # shadow under tree
+    if shadow:
+        sh = camera.apply(pygame.Rect(tr.x - 1, tr.bottom - 1, tr.w + 6, 3))
+        pygame.draw.ellipse(surface, (20, 18, 16), sh)
+    strunk = camera.apply(tr)
+    sfol = camera.apply(fr.move(sway, 0))
+    # trunk with slight lean implied by offset foliage
+    pygame.draw.rect(surface, COLOR_TREE_TRUNK, strunk)
+    # foliage as chunky pixels/rect
+    pygame.draw.rect(surface, COLOR_TREE_FOLIAGE, sfol)
+    # highlight pixels
+    hx = sfol.x + max(1, sfol.w // 3)
+    hy = sfol.y + max(1, sfol.h // 3)
+    surface.fill((max(0, COLOR_TREE_FOLIAGE[0]-10), min(255, COLOR_TREE_FOLIAGE[1]+18), max(0, COLOR_TREE_FOLIAGE[2]-8)), (hx, hy, 2, 2))
+    surface.fill((max(0, COLOR_TREE_FOLIAGE[0]-20), max(0, COLOR_TREE_FOLIAGE[1]-10), max(0, COLOR_TREE_FOLIAGE[2]-10)), (sfol.right - 3, sfol.bottom - 3, 2, 2))
+
+
+def draw_lamp_glow(surface, x, y, t, seed=0, broken=False, color=(255, 230, 150)):
+    # x,y in screen coords (top of post glow area)
+    if broken:
+        if int(t * 7 + seed) % 9 == 0:
+            c = (90, 80, 50)
+            pygame.draw.rect(surface, c, (x - 1, y - 1, 3, 3))
+        return
+    flicker = 0.85 + 0.15 * (0.5 + 0.5 * math.sin(t * 9.0 + seed * 2.1)) * (1.0 if (int(t * 3 + seed) % 23) else 0.5)
+    r = 4
+    col = (int(color[0] * flicker), int(color[1] * flicker), int(color[2] * flicker))
+    # stepped pixel glow
+    for dx in range(-r, r + 1):
+        for dy in range(-r, r + 1):
+            if abs(dx) + abs(dy) <= r:
+                a = 1.0 - (abs(dx) + abs(dy)) / (r + 1)
+                c = (int(col[0] * a), int(col[1] * a), int(col[2] * a * 0.6))
+                # blend-ish by drawing dimmer outer pixels
+                if abs(dx) + abs(dy) <= 1:
+                    surface.fill(col, (x + dx, y + dy, 1, 1))
+                elif abs(dx) + abs(dy) <= 2:
+                    surface.fill((col[0]//2, col[1]//2, col[2]//3), (x + dx, y + dy, 1, 1))
+                else:
+                    surface.fill((col[0]//4, col[1]//4, col[2]//5), (x + dx, y + dy, 1, 1))
+
+
+def draw_flag(surface, x, y, t, seed=0, color=(200, 60, 60), pole_h=14, wind=0.0):
+    # x,y screen base of pole bottom
+    pygame.draw.rect(surface, (80, 80, 90), (x, y - pole_h, 1, pole_h))
+    wv = int(round(math.sin(t * (4.0 + abs(wind) * 2.0) + seed) * (2 + abs(wind) * 2)))
+    wv2 = int(round(math.sin(t * (4.0 + abs(wind) * 2.0) + seed + 1.2) * (1 + abs(wind))))
+    fy = y - pole_h + 1
+    pts = [(x + 1, fy), (x + 7 + wv, fy + 2 + wv2 // 2), (x + 6 + wv2, fy + 5), (x + 1, fy + 6)]
+    pygame.draw.polygon(surface, color, pts)
+    pygame.draw.polygon(surface, (30, 28, 36), pts, 1)
+
+
+def draw_item_twinkle(surface, cx, cy, t, phase=0.0, strong=False):
+    if int(t * 1.2 + phase) % 4 != 0:
+        # sparkle every ~3-4 seconds
+        if not (strong and int(t * 2.0 + phase) % 3 == 0):
+            return
+    ox = int(math.sin(t * 2.0 + phase) * 5)
+    oy = int(math.cos(t * 1.7 + phase * 1.3) * 3) - 4
+    draw_sparkle(surface, cx + ox, cy + oy, (255, 255, 220) if strong else (255, 245, 170))
+
+
+def draw_pulsing_outline(surface, rect, t, phase=0.0, color=(250, 220, 120), strong=False):
+    r = pygame.Rect(rect)
+    base = 0.5 + 0.5 * math.sin(t * (3.5 if strong else 2.2) + phase)
+    if not strong and base < 0.35:
+        return
+    if strong:
+        c = color if base > 0.4 else (200, 170, 80)
+    else:
+        c = (180, 160, 90) if base > 0.5 else (120, 110, 70)
+    pygame.draw.rect(surface, c, r.inflate(2, 2), 1)
+
+
+class WorldAmbience:
+    """Seeded, cached world overlay system (WORLD art only). Opt-in per level."""
+
+    def __init__(self, level, **opts):
+        self.level = level
+        self.opts = dict(AMBIENCE)
+        self.opts.update(opts or {})
+        self._rnd = random.Random(_seed_for(level, "amb"))
+        self._t = 0.0
+        self._draw_count = 0
+        self._static_ready = False
+        self._mood = opts.get("mood") or _level_mood(level)
+        self._wind = float(opts.get("wind", 0.0))
+        self._night = self._mood == "night" or _is_night_level(level)
+        self._storm = self._mood == "storm" or "typhoon" in getattr(level, "disaster_type", "").lower()
+        self._calm = _is_calm_level(level)
+        # derived state
+        self._windows = []
+        self._smokes = []
+        self._trees = []
+        self._lamps = []
+        self._flags = []
+        self._doors = []
+        self._signs = []
+        self._furniture = []
+        self._tufts = []
+        self._ground_patches = []
+        self._birds = []
+        self._clouds = []
+        self._leaves = []
+        self._fireflies = []
+        self._terminals = []
+        self._ground_surf_key = None
+        self._ground_surf = None
+        self._tint_surface = None
+        self._tint_key = None
+        self._road_marks = []
+        self._puddle_specs = []
+        self._quake_cracks = []
+        self._init_static()
+
+    def enabled(self, key):
+        return bool(self.opts.get("enabled", True)) and bool(self.opts.get(key, False))
+
+    def _budget_ok(self):
+        if self._draw_count >= _AMBIENCE_BUDGET:
+            return False
+        self._draw_count += 1
+        return True
+
+    def _init_static(self):
+        bm = getattr(self.level, "block_map", None)
+        if bm is None:
+            self._static_ready = True
+            return
+        rnd = self._rnd
+        mood = self._mood
+        chapter = getattr(self.level, "chapter_id", "")
+        lid = getattr(self.level, "level_id", "")
+        # classify buildings
+        for e in getattr(bm, "elements", []):
+            et = getattr(e, "elem_type", "")
+            r = getattr(e, "rect", None)
+            label = getattr(e, "label", "") or ""
+            if r is None:
+                continue
+            if et in ("house", "damaged_house", "shelter", "clinic", "research", "commercial", "warehouse"):
+                self._init_building(e, rnd, mood, chapter, lid)
+            elif et == "tree":
+                # find matching trunk nearby
+                tr = None
+                for t in getattr(bm, "elements", []):
+                    if getattr(t, "elem_type", "") == "tree_trunk" and abs(t.rect.centerx - r.centerx) <= 8 and abs(t.rect.top - r.bottom) <= 10:
+                        tr = t.rect
+                        break
+                if tr is None:
+                    tr = pygame.Rect(r.x + 4, r.bottom - 2, 4, 6)
+                self._trees.append({"trunk": tr, "foliage": r, "seed": rnd.randint(0, 999)})
+            elif et == "bridge":
+                self._furniture.append({"kind": "bridge", "rect": r, "seed": rnd.randint(0, 999)})
+            elif et in ("road", "path"):
+                # possible lamp posts along roads (sparse)
+                if rnd.random() < 0.18 and r.w + r.h > 60:
+                    self._maybe_add_lamps_along(r, rnd)
+        # ground variants / tufts / pebbles
+        self._init_ground(bm, rnd)
+        # ambient creatures/particles agents
+        self._init_sky_agents(bm, rnd)
+        # interactable sign glows
+        for it in getattr(self.level, "interactables", []) or []:
+            key = (it.get("key") or "").lower()
+            lab = (it.get("label") or "").lower()
+            if "board" in key or "sign" in key or "registry" in key or "advisory" in key or "warning" in key or "notice" in key or "evac" in lab or "sign" in lab:
+                self._signs.append({"ref": it, "seed": rnd.randint(0, 999)})
+            if "terminal" in key or "console" in key or "scram" in key or "manifold" in key or "panel" in key or "breaker" in key or "radio" in key:
+                self._terminals.append({"ref": it, "seed": rnd.randint(0, 999)})
+        # street furniture scattered off roads/buildings (visual only)
+        self._init_furniture(bm, rnd)
+        self._init_road_extras(bm)
+        self._static_ready = True
+
+    def _init_building(self, e, rnd, mood, chapter, lid):
+        et = getattr(e, "elem_type", "")
+        r = e.rect
+        label = getattr(e, "label", "") or ""
+        # windows: a couple per building depending on size
+        if self.enabled("windows") and r.w >= 30 and r.h >= 30:
+            cols = max(1, min(3, r.w // 22))
+            rows = max(1, min(2, (r.h - 16) // 14))
+            # evening/storm -> warm lit, day -> dark; typhoon -> boarded in typhoon levels
+            disaster = f"{getattr(self.level, 'disaster_type', '')} {lid}".lower()
+            boarded = "typhoon" in disaster or "gale" in disaster or "storm" in disaster and "severe" in disaster
+            # not all typhoon-tagged levels should be fully boarded, bias
+            boarded = boarded and ("prologue" in chapter or "chapter_4" in chapter or "chapter_5" in chapter or rnd.random() < 0.5)
+            lit_mood = mood in ("evening", "storm", "night")
+            for row in range(rows):
+                for col in range(cols):
+                    wx = r.x + 6 + col * max(10, (r.w - 12) // max(1, cols))
+                    wy = r.y + 6 + row * 10
+                    if wx + 5 >= r.right - 3 or wy + 5 >= r.bottom - 8:
+                        continue
+                    lit = lit_mood and rnd.random() < (0.75 if mood != "day" else 0.2)
+                    if mood == "day":
+                        lit = rnd.random() < 0.15
+                    self._windows.append({
+                        "rect": pygame.Rect(int(wx), int(wy), 4, 4),
+                        "lit": lit,
+                        "flicker": rnd.random() * 10.0,
+                        "boarded": boarded and rnd.random() < 0.6,
+                        "warm": et != "research",
+                        "seed": rnd.randint(0, 999),
+                    })
+        # chimney smoke on houses
+        if self.enabled("smoke") and et in ("house", "damaged_house") and rnd.random() < 0.55 and mood != "storm":
+            cx = r.right - 6 - rnd.randint(0, 4)
+            cy = r.top - 1
+            self._smokes.append({"x": cx, "y": cy, "seed": rnd.randint(0, 999), "strength": 0.6 + rnd.random() * 0.5})
+        # doors (visual)
+        if self.enabled("doors"):
+            dx = r.centerx - 3
+            dy = r.bottom - 8
+            if r.h >= 24 and r.w >= 24:
+                self._doors.append({"rect": pygame.Rect(dx, dy, 6, 8), "seed": rnd.randint(0, 999), "mat": rnd.random() < 0.5})
+        # roof details
+        if self.enabled("roof_details"):
+            label_u = label.upper()
+            if et == "shelter" or "CIVIC" in label_u or "CENTER" in label_u or "EVAC" in label_u or "PLAZA" in label_u:
+                self._flags.append({"x": r.x + 4, "y": r.top, "seed": rnd.randint(0, 999), "color": (60, 140, 90)})
+            if et == "research" or "TERMINAL" in label_u or "CORE" in label_u or "LAB" in label_u or "FACILITY" in label_u:
+                self._flags.append({"x": r.right - 5, "y": r.top, "seed": rnd.randint(0, 999), "kind": "antenna"})
+            if "LIGHTHOUSE" in label_u or "BEACON" in label_u:
+                self._flags.append({"x": r.centerx, "y": r.top, "seed": rnd.randint(0, 999), "kind": "beacon"})
+
+    def _maybe_add_lamps_along(self, road_rect, rnd):
+        r = road_rect
+        # place 1 lamp at intervals, sparse
+        if r.w >= r.h:  # horizontal
+            step = 80
+            for x in range(r.left + 20, r.right - 10, step):
+                if rnd.random() < 0.35:
+                    self._lamps.append({"x": x, "y": r.top - 6, "seed": rnd.randint(0, 999)})
+        else:
+            step = 80
+            for y in range(r.top + 20, r.bottom - 10, step):
+                if rnd.random() < 0.35:
+                    self._lamps.append({"x": r.left - 4, "y": y - 6, "seed": rnd.randint(0, 999)})
+
+    def _init_ground(self, bm, rnd):
+        w, h = bm.width, bm.height
+        # variant ground patches (2-3 types) as small rect specs, drawn as overlays
+        for _ in range(max(40, (w * h) // 5000)):
+            x = rnd.randint(8, max(9, w - 8))
+            y = rnd.randint(8, max(9, h - 8))
+            kind = rnd.choice(("light", "dark", "speck"))
+            self._ground_patches.append((x, y, kind, rnd.randint(0, 2)))
+        # tufts and pebbles/flowers off roads/paths/buildings mostly (we filter cheap at draw by sampling? or pre-filter)
+        # pre-filter: avoid roads, water, buildings footprints roughly by checking elements
+        blockers = [e.rect.inflate(4, 4) for e in getattr(bm, "elements", []) if getattr(e, "elem_type", "") in ("road", "path", "water", "bridge", "wall", "safe_zone") or getattr(e, "solid", False) or e.elem_type.startswith("hazard_")]
+        # sample candidates
+        tries = 0
+        count = 0
+        target = min(140, max(30, (w * h) // 3500))
+        while count < target and tries < target * 12:
+            tries += 1
+            x = rnd.randint(10, max(11, w - 10))
+            y = rnd.randint(10, max(11, h - 10))
+            p = pygame.Rect(x, y, 2, 2)
+            if any(p.colliderect(b) for b in blockers):
+                continue
+            kind = rnd.choices(("tuft", "pebble", "flower"), weights=(0.55, 0.3, 0.15))[0]
+            self._tufts.append({"x": x, "y": y, "kind": kind, "seed": rnd.randint(0, 999), "phase": rnd.random() * 6.28})
+            count += 1
+
+    def _init_furniture(self, bm, rnd):
+        # add a few benches/crates/barrels/hydrants off main paths (visual only)
+        blockers = [e.rect.inflate(6, 6) for e in getattr(bm, "elements", []) if getattr(e, "elem_type", "") in ("road", "path", "water", "bridge", "wall") or getattr(e, "solid", False) or e.elem_type.startswith("hazard_") or e.elem_type == "safe_zone"]
+        kinds = ["hydrant", "bench", "crate", "barrel"]
+        placed = 0
+        tries = 0
+        while placed < 8 and tries < 120:
+            tries += 1
+            x = rnd.randint(20, max(21, bm.width - 20))
+            y = rnd.randint(20, max(21, bm.height - 20))
+            kind = rnd.choice(kinds)
+            size = (6, 6) if kind == "hydrant" else (10, 5) if kind == "bench" else (6, 6)
+            r = pygame.Rect(x, y, *size)
+            if any(r.colliderect(b) for b in blockers):
+                continue
+            self._furniture.append({"kind": kind, "rect": r, "seed": rnd.randint(0, 999)})
+            blockers.append(r.inflate(10, 10))
+            placed += 1
+
+    def _init_sky_agents(self, bm, rnd):
+        w, h = 320, 180  # screen-space agents
+        for _ in range(4):
+            self._clouds.append({"x": rnd.uniform(-40, w), "y": rnd.uniform(8, 60), "w": rnd.randint(18, 36), "speed": rnd.uniform(2.0, 5.0), "seed": rnd.randint(0, 999)})
+        for _ in range(3):
+            self._birds.append({"x": rnd.uniform(-20, w), "y": rnd.uniform(10, 70), "speed": rnd.uniform(18, 30), "phase": rnd.random() * 6.28, "seed": rnd.randint(0, 999)})
+        for _ in range(8):
+            self._leaves.append({"x": rnd.uniform(0, w), "y": rnd.uniform(-20, h), "speed": rnd.uniform(8, 18), "phase": rnd.random() * 6.28, "seed": rnd.randint(0, 999)})
+        for _ in range(10):
+            self._fireflies.append({"x": rnd.uniform(0, w), "y": rnd.uniform(40, h), "phase": rnd.random() * 6.28, "seed": rnd.randint(0, 999)})
+
+    def _init_road_extras(self, bm):
+        marks = []
+        puddles = []
+        cracks = []
+        # road edge markings (static, deterministic from geometry)
+        for e in getattr(bm, "elements", []):
+            et = getattr(e, "elem_type", "")
+            r = getattr(e, "rect", None)
+            if r is None:
+                continue
+            if et == "road":
+                if r.w >= r.h and r.w > 30:
+                    for x in range(r.left + 8, r.right - 8, 14):
+                        if (x // 14 + r.y) % 3 == 0:
+                            marks.append((x, r.centery, 4, 1))
+                elif r.h > 30:
+                    for y in range(r.top + 8, r.bottom - 8, 14):
+                        if (y // 14 + r.x) % 3 == 0:
+                            marks.append((r.centerx, y, 1, 4))
+        # puddle patches that ripple (positions precomputed; visibility/animation at draw)
+        prnd = random.Random(_seed_for(self.level, "puddles"))
+        for e in getattr(bm, "elements", []):
+            et = getattr(e, "elem_type", "")
+            r = getattr(e, "rect", None)
+            if r is None:
+                continue
+            if et in ("road", "path") and r.w * r.h >= 400 and prnd.random() < 0.25:
+                px = r.x + prnd.randint(4, max(5, r.w - 8))
+                py = r.y + prnd.randint(3, max(4, r.h - 6))
+                puddles.append(pygame.Rect(px, py, 6, 3))
+        # quake cracks (positions precomputed; drawn only when quake active)
+        crnd = random.Random(_seed_for(self.level, "cracks"))
+        maxx = max(21, (bm.width if bm else 320) - 20)
+        maxy = max(41, (bm.height if bm else 180) - 20)
+        for _ in range(8):
+            bx = crnd.randint(20, maxx)
+            by = crnd.randint(40, maxy)
+            cracks.append([(bx, by), (bx + 4, by + 2), (bx + 8, by - 1), (bx + 12, by + 2)])
+        self._road_marks = marks
+        self._puddle_specs = puddles
+        self._quake_cracks = cracks
+
+
+    def update(self, dt):
+        # driven by level._anim_t primarily, but keep local accumulators if needed
+        self._t = getattr(self.level, "_anim_t", self._t + dt)
+        self._draw_count = 0
+        w, h = 320, 180
+        # screen-space agents drift
+        wind = self._current_wind()
+        for c in self._clouds:
+            c["x"] += (c["speed"] + wind * 2.0) * dt
+            if c["x"] > w + 50:
+                c["x"] = -c["w"] - 10
+        for b in self._birds:
+            b["x"] += b["speed"] * dt
+            if b["x"] > w + 20:
+                b["x"] = -20
+                b["y"] = 10 + (b["seed"] % 50)
+        for lf in self._leaves:
+            lf["x"] += (wind * 12 + math.sin(self._t + lf["phase"]) * 6) * dt
+            lf["y"] += (lf["speed"] + abs(wind) * 6) * dt * 0.4
+            if lf["y"] > h + 10 or lf["x"] < -20 or lf["x"] > w + 20:
+                lf["y"] = -10
+                lf["x"] = (lf["seed"] % w)
+        for ff in self._fireflies:
+            ff["x"] += math.sin(self._t * 0.7 + ff["phase"]) * 4 * dt
+            ff["y"] += math.cos(self._t * 0.6 + ff["phase"] * 1.3) * 3 * dt
+
+    def _current_wind(self):
+        flags = _hazard_flags(self.level)
+        w = self._wind
+        if flags["typhoon"]:
+            w = flags.get("wind_dir", -1.0) * (2.5 if not flags["completed"] else 0.8)
+        elif self._storm:
+            w = -1.0 if not flags["completed"] else -0.3
+        elif self._calm:
+            w = 0.2
+        return w
+
+    def _tint_color_alpha(self):
+        mood = self._mood
+        flags = _hazard_flags(self.level)
+        if flags["completed"]:
+            if mood == "night":
+                return (10, 16, 30, 30)
+            if mood == "evening":
+                return (30, 20, 10, 18)
+            return None
+        if mood == "night":
+            return (8, 12, 28, 55)
+        if mood == "evening":
+            return (40, 24, 12, 28)
+        if mood == "storm":
+            return (20, 28, 40, 35)
+        return None
+
+    # ---- draw phases ----
+    def draw_ground(self, surface, camera):
+        if not self._static_ready:
+            return
+        if not (self.enabled("ground_variants") or self.enabled("tufts")):
+            return
+        w, h = surface.get_size()
+        vis = camera.visible_world_rect() if camera else pygame.Rect(0, 0, w, h)
+        vis = vis.inflate(24, 24)
+        # variant ground patches
+        if self.enabled("ground_variants"):
+            base = getattr(self.level.block_map, "ground_color", (60, 80, 50)) if getattr(self.level, "block_map", None) else (60, 80, 50)
+            for (x, y, kind, sz) in self._ground_patches:
+                r = pygame.Rect(x, y, 3 + sz, 2 + sz)
+                if not r.colliderect(vis) or not _rect_on_screen(camera, r, w, h):
+                    continue
+                if kind == "light":
+                    col = (min(255, base[0]+10), min(255, base[1]+10), min(255, base[2]+8))
+                elif kind == "dark":
+                    col = (max(0, base[0]-8), max(0, base[1]-8), max(0, base[2]-6))
+                else:
+                    col = (min(255, base[0]+6), min(255, base[1]+4), base[2])
+                sr = camera.apply(r) if camera else r
+                surface.fill(col, sr)
+        # tufts/pebbles/flowers (tufts sway a pixel or two)
+        if self.enabled("tufts"):
+            t = self._t
+            wind = self._current_wind()
+            for it in self._tufts:
+                r = pygame.Rect(it["x"], it["y"], 3, 3)
+                if not r.colliderect(vis):
+                    continue
+                sr = camera.apply(r) if camera else r
+                if sr.right < 0 or sr.left > w or sr.bottom < 0 or sr.top > h:
+                    continue
+                kind = it["kind"]
+                if kind == "tuft":
+                    sway = int(round(math.sin(t * 1.2 + it["phase"]) * 1.2 + wind * 0.6))
+                    x, y = sr.x, sr.y
+                    surface.fill((50, 95, 45), (x, y, 1, 2))
+                    surface.fill((70, 120, 55), (x + 1 + sway, y - 1, 1, 3))
+                    surface.fill((45, 85, 40), (x + 2, y, 1, 2))
+                elif kind == "pebble":
+                    surface.fill((120, 115, 105), (sr.x, sr.y + 1, 2, 1))
+                else:  # flower
+                    surface.fill((60, 110, 50), (sr.x + 1, sr.y, 1, 2))
+                    fc = [(220, 200, 80), (230, 150, 180), (200, 220, 240)][it["seed"] % 3]
+                    surface.fill(fc, (sr.x + 1, sr.y - 1, 1, 1))
+
+    def draw_under(self, surface, camera):
+        """Building overlays, doors, lamps, signs, furniture, interactable/item fx, water extras."""
+        if not self._static_ready or not self.enabled("enabled"):
+            return
+        self._draw_count = 0
+        w, h = surface.get_size()
+        t = self._t
+        flags = _hazard_flags(self.level)
+        wind = self._current_wind()
+        bm = getattr(self.level, "block_map", None)
+
+        # street furniture (visual only)
+        if self.enabled("street_furniture"):
+            for f in self._furniture:
+                r = f["rect"]
+                if not _rect_on_screen(camera, r, w, h):
+                    continue
+                sr = camera.apply(r) if camera else r
+                kind = f["kind"]
+                if kind == "hydrant":
+                    pygame.draw.rect(surface, (190, 60, 50), (sr.x + 1, sr.y + 1, 4, 5))
+                    pygame.draw.rect(surface, (220, 220, 220), (sr.x, sr.y + 2, 6, 1))
+                elif kind == "bench":
+                    pygame.draw.rect(surface, (120, 85, 50), sr)
+                    pygame.draw.rect(surface, (90, 60, 35), (sr.x, sr.bottom - 2, 2, 2))
+                    pygame.draw.rect(surface, (90, 60, 35), (sr.right - 2, sr.bottom - 2, 2, 2))
+                elif kind == "crate":
+                    pygame.draw.rect(surface, (150, 110, 60), sr)
+                    pygame.draw.rect(surface, (110, 80, 40), sr, 1)
+                elif kind == "barrel":
+                    pygame.draw.ellipse(surface, (90, 100, 120), sr)
+                    pygame.draw.rect(surface, (130, 140, 160), (sr.x, sr.centery - 1, sr.w, 1))
+                elif kind == "bridge":
+                    # railing posts
+                    for px in range(sr.left + 2, sr.right - 2, 8):
+                        surface.fill((90, 70, 45), (px, sr.top - 2, 1, 3))
+                        surface.fill((90, 70, 45), (px, sr.bottom - 1, 1, 3))
+
+        # trees (sway) - draw animated version on top; static base already drawn by map, so we overdraw foliage/trunk area subtly
+        if self.enabled("sway"):
+            for tree in self._trees:
+                if not _rect_on_screen(camera, tree["foliage"].inflate(6, 6), w, h):
+                    continue
+                if not self._budget_ok():
+                    break
+                # overdraw with swaying foliage and shadow (repaints same area)
+                tr = camera.apply(tree["trunk"]) if camera else tree["trunk"]
+                fr0 = tree["foliage"]
+                sway = int(round(math.sin(t * 0.8 + tree["seed"] * 0.73 + (1.5 if flags["typhoon"] and not flags["completed"] else 0)) * (2 if flags["typhoon"] and not flags["completed"] else 1.5)))
+                fr = camera.apply(fr0.move(sway, 0)) if camera else fr0.move(sway, 0)
+                # shadow
+                sh = pygame.Rect(tr.x - 1, tr.bottom - 1, tr.w + 6, 3)
+                pygame.draw.ellipse(surface, (20, 18, 16), sh)
+                pygame.draw.rect(surface, COLOR_TREE_TRUNK, tr)
+                pygame.draw.rect(surface, COLOR_TREE_FOLIAGE, fr)
+                hx = fr.x + max(1, fr.w // 3)
+                hy = fr.y + max(1, fr.h // 3)
+                surface.fill((max(0, COLOR_TREE_FOLIAGE[0]-10), min(255, COLOR_TREE_FOLIAGE[1]+18), max(0, COLOR_TREE_FOLIAGE[2]-8)), (hx, hy, 2, 2))
+
+        # building overlays: windows, doors, roof details, signs glow, terminals
+        self._draw_building_overlays(surface, camera, flags, wind, w, h)
+
+        # water extras: shimmer/foam/ripples on block_map water
+        if self.enabled("water") and bm is not None:
+            self._draw_water_extras(surface, camera, bm, flags, w, h)
+
+        # road markings / cracks reactions
+        self._draw_road_and_crack_extras(surface, camera, bm, flags, w, h)
+
+        # lamps (posts + glow)
+        if self.enabled("lamps"):
+            for lamp in self._lamps:
+                lx, ly = lamp["x"], lamp["y"]
+                sr = camera.apply(pygame.Rect(lx, ly, 2, 10)) if camera else pygame.Rect(lx, ly, 2, 10)
+                if sr.right < -10 or sr.left > w + 10 or sr.bottom < -10 or sr.top > h + 10:
+                    continue
+                # post
+                surface.fill((70, 70, 80), (sr.x, sr.y, 2, 10))
+                # head
+                surface.fill((90, 90, 100), (sr.x - 1, sr.y - 1, 4, 2))
+                broken = flags["typhoon"] and not flags["completed"] and (lamp["seed"] % 5 == 0)
+                if self._budget_ok():
+                    draw_lamp_glow(surface, sr.x + 1, sr.y - 2, t, lamp["seed"], broken=broken)
+
+        # cloud shadows disabled (removed moving dark rectangle artifact)
+
+        # subtle day/evening/night tint applied under player/NPCs to preserve their pixels
+        tint = self._tint_color_alpha()
+        if tint is not None:
+            key = (w, h, tint)
+            if self._tint_surface is None or self._tint_key != key:
+                self._tint_surface = pygame.Surface((w, h), pygame.SRCALPHA)
+                self._tint_surface.fill(tint)
+                self._tint_key = key
+            surface.blit(self._tint_surface, (0, 0))
+
+        # interactable panel glow/blink until used
+        if self.enabled("interactable_fx"):
+            for it in getattr(self.level, "interactables", []) or []:
+                if it.get("done"):
+                    continue
+                r = it.get("rect")
+                if r is None or not _rect_on_screen(camera, r, w, h):
+                    continue
+                if not self._budget_ok():
+                    break
+                sr = camera.apply(r) if camera else r
+                pulse = 0.5 + 0.5 * math.sin(t * 3.0 + (hash(it.get("key","")) % 10))
+                # gentle blink/glow border pixels
+                if pulse > 0.4:
+                    c = (255, 240, 160) if pulse > 0.7 else (200, 180, 100)
+                    # corner glints
+                    for px, py in ((sr.left, sr.top), (sr.right-1, sr.top), (sr.left, sr.bottom-1), (sr.right-1, sr.bottom-1)):
+                        surface.fill(c, (px, py, 1, 1))
+
+        # pickup twinkle/outline enhancements drawn in addition to base pickup drawing?
+        # base draws bob+sparkle sometimes; we can add stronger pulse for needed items and extra twinkle
+        if self.enabled("item_fx"):
+            self._draw_pickup_fx(surface, camera, w, h, flags)
+
+    def _draw_building_overlays(self, surface, camera, flags, wind, w, h):
+        t = self._t
+        mood = self._mood
+        disaster = f"{getattr(self.level, 'disaster_type', '')}".lower()
+        calm_done = flags["completed"]
+        # windows
+        if self.enabled("windows"):
+            for win in self._windows:
+                if not _rect_on_screen(camera, win["rect"], w, h):
+                    continue
+                if not self._budget_ok():
+                    break
+                sr = camera.apply(win["rect"]) if camera else win["rect"]
+                lit = win["lit"]
+                # evening/storm/night lit warm; daytime dark except some
+                if mood == "day" and not self._night:
+                    lit = win.get("day_lit", False)
+                if mood in ("evening", "storm", "night"):
+                    lit = True if win["lit"] else (win["seed"] % 5 == 0)
+                # hazard reactions
+                if flags["fire"] and not calm_done and (win["seed"] % 3 == 0):
+                    # orange glow during fire near/any? make some windows orange
+                    r = sr
+                    col = (255, 170, 60) if int(t * 6 + win["seed"]) % 2 == 0 else (240, 120, 40)
+                    surface.fill(col, r)
+                    continue
+                if flags["flood"] and not calm_done:
+                    # upper floors only lit: approximate by window being in upper half of its building? stored y is top area usually
+                    pass
+                if flags["earthquake"] and flags.get("shaking") and not calm_done:
+                    # flicker
+                    if int(t * 12 + win["seed"]) % 3 == 0:
+                        lit = not lit
+                if calm_done:
+                    # steady lights
+                    draw_lit_window(surface, sr, lit=lit and mood != "day", flicker=0.0, boarded=False, warm=win["warm"], t=t)
+                else:
+                    boarded = win["boarded"]
+                    draw_lit_window(surface, sr, lit=lit, flicker=win["flicker"] if (lit and (win["seed"] % 3 == 0)) else 0.0, boarded=boarded, warm=win["warm"], t=t)
+                # post-quake cracks on windows area subtly? (ground cracks handled elsewhere)
+        # doors
+        if self.enabled("doors"):
+            pr = getattr(getattr(self.level, "player", None), "rect", None)
+            for door in self._doors:
+                dr = door["rect"]
+                if not _rect_on_screen(camera, dr.inflate(4, 4), w, h):
+                    continue
+                if not self._budget_ok():
+                    break
+                sr = camera.apply(dr) if camera else dr
+                near = False
+                if pr is not None:
+                    # distance in world coords
+                    dx = pr.centerx - dr.centerx
+                    dy = pr.centery - dr.centery
+                    near = (dx*dx + dy*dy) <= (20*20)
+                # door frame/mat
+                if door.get("mat"):
+                    mr = camera.apply(pygame.Rect(dr.x - 1, dr.bottom, dr.w + 2, 2)) if camera else pygame.Rect(dr.x - 1, dr.bottom, dr.w + 2, 2)
+                    surface.fill((90, 70, 50), mr)
+                if near and not calm_done:
+                    # open: show dark interior slice
+                    surface.fill((30, 24, 20), sr)
+                    surface.fill((60, 45, 30), (sr.x, sr.y, 1, sr.h))
+                else:
+                    # closed door
+                    surface.fill((110, 75, 45), sr)
+                    surface.fill((80, 55, 35), (sr.right - 2, sr.y + 3, 1, 1))
+                    # small door-light at night/evening
+                    if mood in ("evening", "night", "storm") and (door["seed"] % 2 == 0):
+                        surface.fill((240, 210, 120), (sr.x + 1, sr.y + 1, 1, 1))
+
+        # roof details: flags, antenna, beacon
+        if self.enabled("roof_details"):
+            for fl in self._flags:
+                fr = pygame.Rect(fl["x"], fl["y"], 8, 14)
+                if not _rect_on_screen(camera, fr, w, h):
+                    continue
+                if not self._budget_ok():
+                    break
+                sr_pt = camera.apply(pygame.Rect(fl["x"], fl["y"], 1, 1)) if camera else pygame.Rect(fl["x"], fl["y"], 1, 1)
+                sx, sy = sr_pt.x, sr_pt.y
+                kind = fl.get("kind")
+                if kind == "antenna":
+                    # pole + blinking light
+                    pygame.draw.rect(surface, (120, 120, 130), (sx, sy - 10, 1, 10))
+                    blink = int(t * 2.5 + fl["seed"]) % 2 == 0
+                    col = (255, 60, 60) if blink else (120, 30, 30)
+                    surface.fill(col, (sx - 1, sy - 11, 3, 2))
+                elif kind == "beacon":
+                    # slow rotating beam approximation: sweeping highlight
+                    pygame.draw.rect(surface, (140, 140, 150), (sx, sy - 12, 2, 12))
+                    ang = (t * 0.8 + fl["seed"]) % 6.283
+                    dx = int(round(math.cos(ang) * 6))
+                    dy = int(round(math.sin(ang) * 3)) - 10
+                    col = (255, 255, 200) if int(t * 4) % 2 == 0 else (220, 220, 160)
+                    surface.fill(col, (sx + dx, sy + dy, 2, 1))
+                    surface.fill(col, (sx + dx + (1 if dx >= 0 else -1), sy + dy, 1, 1))
+                else:
+                    wind_sway = wind * (2.0 if (flags["typhoon"] and not calm_done) else 1.0)
+                    draw_flag(surface, sx, sy, t, fl["seed"], fl.get("color", (200, 60, 60)), wind=wind_sway)
+
+        # signs glow
+        if self.enabled("sign_glow"):
+            for sgn in self._signs:
+                it = sgn["ref"]
+                r = it.get("rect")
+                if r is None or not _rect_on_screen(camera, r, w, h):
+                    continue
+                if not self._budget_ok():
+                    break
+                sr = camera.apply(r) if camera else r
+                pulse = 0.6 + 0.4 * math.sin(t * 2.0 + sgn["seed"])
+                if calm_done:
+                    pulse = 0.7
+                # faint lamp glow under sign
+                gy = sr.bottom - 1
+                for dx in range(sr.left + 1, sr.right - 1, 2):
+                    c = (int(120 * pulse), int(110 * pulse), int(60 * pulse))
+                    surface.fill(c, (dx, gy, 1, 1))
+
+        # terminals: blinking LEDs, scrolling data lines, pulsing core
+        if self.enabled("terminals") or ("final" in getattr(self.level, "chapter_id", "")):
+            for term in self._terminals:
+                it = term["ref"]
+                r = it.get("rect")
+                if r is None or not _rect_on_screen(camera, r, w, h):
+                    continue
+                if not self._budget_ok():
+                    break
+                sr = camera.apply(r) if camera else r
+                # blinking LEDs
+                for i in range(min(3, max(1, sr.w // 6))):
+                    on = int(t * (4.0 + (term["seed"] % 3)) + i * 1.7) % 3 != 0
+                    col = (80, 240, 120) if on else (20, 60, 30)
+                    if flags.get("shaking") and int(t * 10 + i) % 2 == 0:
+                        col = (240, 90, 70)
+                    surface.fill(col, (sr.x + 2 + i * 5, sr.y + 2, 2, 1))
+                # scrolling data line
+                if sr.h >= 8 and sr.w >= 10:
+                    off = int(t * 10 + term["seed"]) % max(1, sr.w - 4)
+                    surface.fill((80, 180, 220), (sr.x + 2 + off % (sr.w - 4), sr.y + sr.h - 3, 3, 1))
+                # pulsing core-ish highlight for scram/core panels
+                if it.get("key") in ("scram", "core", "scram_console") or "core" in (it.get("label","" )).lower():
+                    pulse = 0.5 + 0.5 * math.sin(t * 3.0)
+                    c = (int(80 + 120 * pulse), int(180 + 40 * pulse), int(255 * pulse))
+                    surface.fill(c, (sr.centerx - 1, sr.centery - 1, 2, 2))
+
+    def _draw_pickup_fx(self, surface, camera, w, h, flags):
+        t = self._t
+        level = self.level
+        needed_keys = set()
+        # heuristic for currently needed item: pickups referenced by guide target or step hints
+        try:
+            idx = getattr(level, "current_objective_idx", 0)
+            steps = getattr(level, "_steps", None) or []
+            if steps and 0 <= idx < len(steps):
+                target = steps[idx].get("target")
+                # not easy to resolve key; fall back to uncollected pickups matching guide_pickup usage patterns not directly stored
+        except Exception:
+            pass
+        # stronger pulse for first uncollected pickup (common "next" item) as approximation
+        first_uncollected = None
+        for it in getattr(level, "pickups", []) or []:
+            if not it.get("got"):
+                first_uncollected = it.get("key")
+                break
+        for it in getattr(level, "pickups", []) or []:
+            if it.get("got"):
+                continue
+            r = it.get("rect")
+            if r is None or not _rect_on_screen(camera, r, w, h):
+                continue
+            if not self._budget_ok():
+                break
+            sr = camera.apply(r) if camera else r
+            strong = (it.get("key") == first_uncollected)
+            draw_pulsing_outline(surface, sr, t, it.get("phase", 0.0), strong=strong)
+            draw_item_twinkle(surface, sr.centerx, sr.centery, t, it.get("phase", 0.0), strong=strong)
+        # map items
+        bm = getattr(level, "block_map", None)
+        if bm is not None:
+            for item in getattr(bm, "items", []) or []:
+                if getattr(item, "collected", False):
+                    continue
+                r = item.rect
+                if not _rect_on_screen(camera, r, w, h):
+                    continue
+                if not self._budget_ok():
+                    break
+                sr = camera.apply(r) if camera else r
+                phase = (hash(getattr(item, "item_id", "")) % 10)
+                strong = False
+                draw_pulsing_outline(surface, sr, t, phase, strong=strong)
+                draw_item_twinkle(surface, sr.centerx, sr.centery, t, phase, strong=strong)
+
+    def _draw_water_extras(self, surface, camera, bm, flags, w, h):
+        t = self._t
+        calm_done = flags["completed"]
+        for e in getattr(bm, "elements", []):
+            if getattr(e, "elem_type", "") == "water":
+                r = e.rect
+                if not _rect_on_screen(camera, r, w, h):
+                    continue
+                sr = camera.apply(r) if camera else r
+                # shimmer highlight pixels
+                for i in range(0, min(sr.w, 120), 12):
+                    if not self._budget_ok():
+                        return
+                    x = sr.left + (i + int(t * 10)) % max(1, sr.w)
+                    y = sr.top + 2 + (i // 12 % 3) * 3
+                    if sr.left <= x < sr.right and sr.top <= y < sr.bottom:
+                        surface.fill((180, 220, 245), (x, y, 3, 1))
+                # foamy shoreline (top edge of water block)
+                for x in range(sr.left, sr.right, 6):
+                    if not self._budget_ok():
+                        return
+                    fy = sr.top + int(math.sin(x * 0.2 + t * 2.0) * 1)
+                    surface.fill((230, 245, 255), (x, fy, 2, 1))
+            elif getattr(e, "elem_type", "") == "bridge":
+                # water shimmer under bridge hint: a few blue glints below
+                r = e.rect
+                if not _rect_on_screen(camera, r, w, h):
+                    continue
+                sr = camera.apply(r) if camera else r
+                for i in range(0, min(sr.w, 60), 10):
+                    if not self._budget_ok():
+                        return
+                    x = sr.left + (i + int(t * 8)) % max(1, sr.w)
+                    surface.fill((120, 170, 210), (x, sr.bottom + 1, 3, 1))
+
+    def _draw_road_and_crack_extras(self, surface, camera, bm, flags, w, h):
+        if bm is None:
+            return
+        t = self._t
+        # road edge markings (precomputed static positions)
+        if self.enabled("ground_variants") and self._road_marks:
+            for (x, y, mw, mh) in self._road_marks:
+                r = pygame.Rect(x, y, mw, mh)
+                if not _rect_on_screen(camera, r, w, h):
+                    continue
+                sr = camera.apply(r) if camera else r
+                surface.fill((200, 190, 150), sr)
+        # puddle patches that ripple (on roads/paths) in flood/storm or when completed/calm wet scenes
+        if self.enabled("water") and self._puddle_specs and (flags.get("flood") or flags.get("typhoon") or flags.get("completed")):
+            for pr in self._puddle_specs:
+                if not _rect_on_screen(camera, pr, w, h):
+                    continue
+                if not self._budget_ok():
+                    return
+                sr = camera.apply(pr) if camera else pr
+                pygame.draw.ellipse(surface, (70, 110, 140), sr)
+                if int(t * 2 + pr.x) % 2 == 0:
+                    inner = sr.inflate(-2, -1)
+                    if inner.w > 0 and inner.h > 0:
+                        pygame.draw.ellipse(surface, (140, 180, 210), inner, 1)
+        # earthquake cracks appear/grow on ground during quakes
+        if self.enabled("hazard_react") and self._quake_cracks and flags.get("earthquake") and not flags.get("completed"):
+            for i, pts in enumerate(self._quake_cracks):
+                if i >= 5:
+                    break
+                if not self._budget_ok():
+                    break
+                # simple visibility check based on bounding area of crack
+                xs = [p[0] for p in pts]
+                ys = [p[1] for p in pts]
+                r = pygame.Rect(min(xs), min(ys), max(1, max(xs) - min(xs) + 1), max(1, max(ys) - min(ys) + 1))
+                if not _rect_on_screen(camera, r, w, h):
+                    continue
+                sp = [camera.apply(pygame.Rect(x, y, 1, 1)).topleft if camera else (x, y) for x, y in pts]
+                if len(sp) >= 2:
+                    pygame.draw.lines(surface, (30, 24, 20), False, sp, 1)
+
+    def _character_screen_rects(self, camera, w, h):
+        rects = []
+        level = self.level
+        player = getattr(level, "player", None)
+        if player is not None and hasattr(player, "sprite_screen_rect"):
+            try:
+                rects.append(player.sprite_screen_rect(camera).inflate(2, 2))
+            except Exception:
+                pass
+        elif player is not None and hasattr(player, "rect"):
+            try:
+                rects.append(camera.apply(player.rect).inflate(4, 4))
+            except Exception:
+                pass
+        for npc in getattr(level, "npcs", []) or []:
+            try:
+                if hasattr(npc, "sprite_screen_rect"):
+                    rects.append(npc.sprite_screen_rect(camera).inflate(2, 2))
+                elif hasattr(npc, "rect"):
+                    rects.append(camera.apply(npc.rect).inflate(4, 4))
+            except Exception:
+                pass
+        out = []
+        for r in rects:
+            rr = pygame.Rect(r)
+            if rr.right >= 0 and rr.left <= w and rr.bottom >= 0 and rr.top <= h:
+                out.append(rr)
+        return out
+
+    def _point_occluded(self, x, y, occluders):
+        for r in occluders:
+            if r.left <= x < r.right and r.top <= y < r.bottom:
+                return True
+        return False
+
+    def _rect_occluded(self, rect, occluders):
+        for r in occluders:
+            if rect.colliderect(r):
+                return True
+        return False
+
+    def draw_over(self, surface, camera):
+        """Over-world overlays (smoke/sky agents/hazard reactions) while preserving player/NPC pixels."""
+        if not self._static_ready or not self.enabled("enabled"):
+            return
+        w, h = surface.get_size()
+        t = self._t
+        flags = _hazard_flags(self.level)
+        wind = self._current_wind()
+        calm_done = flags["completed"]
+        occluders = self._character_screen_rects(camera, w, h)
+
+        # chimney smoke
+        if self.enabled("smoke"):
+            for sm in self._smokes:
+                pt = camera.apply(pygame.Rect(sm["x"], sm["y"], 1, 1)) if camera else pygame.Rect(sm["x"], sm["y"], 1, 1)
+                if pt.x < -20 or pt.x > w + 20 or pt.y < -30 or pt.y > h + 20:
+                    continue
+                if not self._budget_ok():
+                    break
+                strength = sm["strength"] * (0.4 if calm_done else 1.0)
+                extra_wind = wind * (2.0 if flags["typhoon"] and not calm_done else 1.0)
+                draw_chimney_smoke(surface, pt.x, pt.y, t, wind=extra_wind, strength=strength, seed=sm["seed"], occluders=occluders)
+            # fire thickens smoke above burning buildings
+            if flags["fire"] and not calm_done and self.enabled("hazard_react"):
+                bm = getattr(self.level, "block_map", None)
+                count = 0
+                for e in getattr(bm, "elements", []) if bm else []:
+                    if getattr(e, "elem_type", "").startswith("hazard_fire") or (hasattr(e, "hazard_type") and e.hazard_type == "fire"):
+                        r = e.rect
+                        if not _rect_on_screen(camera, r, w, h):
+                            continue
+                        for k in range(2):
+                            if not self._budget_ok():
+                                break
+                            sx = r.x + 10 + k * 14
+                            sy = r.top - 2
+                            sp = camera.apply(pygame.Rect(sx, sy, 1, 1)) if camera else pygame.Rect(sx, sy, 1, 1)
+                            draw_chimney_smoke(surface, sp.x, sp.y, t * 1.3 + k, wind=wind, strength=1.2, seed=k + 99, occluders=occluders)
+                        count += 1
+                        if count >= 3:
+                            break
+
+        # birds/insects disabled (removed stray moving dark pixel artifact)
+
+        if self.enabled("fireflies") and self._night:
+            for ff in self._fireflies:
+                if not self._budget_ok():
+                    break
+                x = int(ff["x"]) % w
+                y = int(ff["y"]) % h
+                if int(t * 2.0 + ff["phase"]) % 3 != 0:
+                    continue
+                if not self._point_occluded(x, y, occluders):
+                    surface.fill((220, 255, 150), (x, y, 1, 1))
+
+        # falling leaves in calm levels
+        if self.enabled("leaves") and (self._calm or calm_done):
+            for lf in self._leaves[:8]:
+                if not self._budget_ok():
+                    break
+                x = int(lf["x"]) % (w + 20) - 10
+                y = int(lf["y"]) % (h + 20) - 10
+                col = (120, 160, 70) if (lf["seed"] % 2 == 0) else (170, 140, 60)
+                if not self._point_occluded(x, y, occluders):
+                    surface.fill(col, (x, y, 2, 1))
+                if int(t * 3 + lf["phase"]) % 2 == 0 and not self._point_occluded(x + 1, y + 1, occluders):
+                    surface.fill(col, (x + 1, y + 1, 1, 1))
+
+        # hazard reaction overlays (world-level, subtle), avoiding character pixels
+        self._draw_hazard_reactions(surface, camera, flags, w, h, occluders=occluders)
+
+    def _draw_hazard_reactions(self, surface, camera, flags, w, h, occluders=None):
+        if not self.enabled("hazard_react"):
+            return
+        if occluders is None:
+            occluders = []
+        t = self._t
+        calm_done = flags["completed"]
+        bm = getattr(self.level, "block_map", None)
+        # earthquake: jitter dust from rooftops
+        if flags["earthquake"] and flags.get("shaking") and not calm_done:
+            if bm:
+                count = 0
+                for e in getattr(bm, "elements", []):
+                    if getattr(e, "elem_type", "") in ("house", "damaged_house", "shelter", "commercial", "research", "warehouse", "clinic"):
+                        if count > 12 or not self._budget_ok():
+                            break
+                        r = e.rect
+                        if not _rect_on_screen(camera, r, w, h):
+                            continue
+                        sx = r.x + (int(t * 20 + count * 7) % max(1, r.w))
+                        sy = r.top + 1 + (int(t * 30 + count * 11) % 6)
+                        sp = camera.apply(pygame.Rect(sx, sy, 1, 1)) if camera else pygame.Rect(sx, sy, 1, 1)
+                        if not self._point_occluded(sp.x, sp.y, occluders):
+                            surface.fill((180, 170, 150), (sp.x, sp.y, 1, 1))
+                        count += 1
+        # fire: embers drift (complement existing; subtle extra)
+        if flags["fire"] and not calm_done:
+            for i in range(6):
+                if not self._budget_ok():
+                    break
+                x = (int(t * 18 + i * 53) % max(1, w))
+                y = h - (int(t * 25 + i * 37) % max(1, h))
+                if not self._point_occluded(x, y, occluders):
+                    surface.fill((255, 160, 60) if i % 2 == 0 else (255, 220, 120), (x, y, 1, 1))
+        # typhoon: debris sheets flying across, rain streaks angled
+        if flags["typhoon"] and not calm_done:
+            wind = self._current_wind()
+            for i in range(10):
+                if not self._budget_ok():
+                    break
+                x = int((i * 37 + t * (60 + 20 * abs(wind)) * (1 if wind >= 0 else -1))) % max(1, w)
+                y = int((i * 53 + t * 90)) % max(1, h)
+                ex = x + int(3 * (-1 if wind < 0 else 1))
+                ey = y - 4
+                # draw stepped pixels to avoid crossing character sprites
+                dx = ex - x
+                dy = ey - y
+                steps = max(abs(dx), abs(dy), 1)
+                for s in range(steps + 1):
+                    px = int(round(x + dx * s / steps))
+                    py = int(round(y + dy * s / steps))
+                    if 0 <= px < w and 0 <= py < h and not self._point_occluded(px, py, occluders):
+                        surface.fill((170, 195, 230), (px, py, 1, 1))
+        # flood: reflections/ripples around building bases, floating debris
+        if flags["flood"] and not calm_done and bm:
+            water_rect = flags.get("water_rect")
+            for e in getattr(bm, "elements", []):
+                if getattr(e, "elem_type", "") in ("house", "damaged_house", "shelter", "commercial"):
+                    r = e.rect
+                    if water_rect and r.bottom < water_rect.top:
+                        continue
+                    if not _rect_on_screen(camera, r, w, h):
+                        continue
+                    if not self._budget_ok():
+                        break
+                    sr = camera.apply(r) if camera else r
+                    ry = sr.bottom + 1
+                    for dx in range(0, sr.w, 4):
+                        if (dx // 4 + int(t * 3)) % 2 == 0:
+                            px = sr.left + dx
+                            if not self._point_occluded(px, ry, occluders):
+                                surface.fill((120, 160, 200), (px, ry, 2, 1))
+            if water_rect:
+                for i in range(5):
+                    if not self._budget_ok():
+                        break
+                    x = (water_rect.left + int(t * 12 + i * 40)) % max(1, water_rect.w) + water_rect.left
+                    y = water_rect.top + 4 + (i * 7) % max(1, max(1, water_rect.h - 6))
+                    sp = camera.apply(pygame.Rect(x, y, 3, 2)) if camera else pygame.Rect(x, y, 3, 2)
+                    if 0 <= sp.x < w and 0 <= sp.y < h and not self._rect_occluded(sp, occluders):
+                        surface.fill((120, 90, 55), sp)
+        # safe zones/shelters: calm warm glow
+        if bm:
+            for sz in getattr(bm, "safe_zones", []) or []:
+                r = getattr(sz, "rect", None)
+                if r is None or not _rect_on_screen(camera, r, w, h):
+                    continue
+                if not self._budget_ok():
+                    break
+                sr = camera.apply(r) if camera else r
+                pulse = 0.6 + 0.4 * math.sin(t * 1.5)
+                c = (int(80 * pulse), int(120 * pulse), int(70 * pulse))
+                for x in range(sr.left, sr.right, 6):
+                    if not self._point_occluded(x, sr.top, occluders):
+                        surface.fill(c, (x, sr.top, 2, 1))
+                    if not self._point_occluded(x, sr.bottom - 1, occluders):
+                        surface.fill(c, (x, sr.bottom - 1, 2, 1))
+
 class BaseLevel:
     def __init__(
         self,
@@ -868,6 +2110,30 @@ class BaseLevel:
         self.invuln: float = 0.0
         self.setbacks: int = 0
         self._jolt: float = 0.0
+
+        # World ambience (opt-in). Keep None by default so existing levels render unchanged.
+        self.ambience: Optional[WorldAmbience] = None
+
+    def enable_world_ambience(self, **opts):
+        """Opt in to cached world ambience overlays (WORLD art only)."""
+        self.ambience = WorldAmbience(self, **opts)
+        return self.ambience
+
+    def update_ambience(self, dt: float) -> None:
+        if self.ambience is not None:
+            self.ambience.update(dt)
+
+    def draw_ambience_ground(self, surface: pygame.Surface, camera=None) -> None:
+        if self.ambience is not None:
+            self.ambience.draw_ground(surface, camera or self.camera)
+
+    def draw_ambience_under(self, surface: pygame.Surface, camera=None) -> None:
+        if self.ambience is not None:
+            self.ambience.draw_under(surface, camera or self.camera)
+
+    def draw_ambience_over(self, surface: pygame.Surface, camera=None) -> None:
+        if self.ambience is not None:
+            self.ambience.draw_over(surface, camera or self.camera)
 
     # ------------------------------------------------------------------
     # Reusable level helpers
@@ -1324,9 +2590,33 @@ class BaseLevel:
 
         for item in self.interactables:
             if item["prompt"] and item["on_interact"] and self._near_interactable(item):
-                item["on_interact"](item)
+                self._invoke_interactable(item)
                 return True
         return False
+
+    @staticmethod
+    def _invoke_interactable(item: Dict[str, Any]) -> None:
+        """Call an interactable callback, whether or not it accepts ``item``.
+
+        Older levels declare ``def _use_x(self, item)``, while newer chapters
+        use ``def _interact_x(self)``. Both are valid; inspect the callback so
+        one style cannot crash the game with an argument-count TypeError.
+        """
+        callback = item["on_interact"]
+        try:
+            params = list(inspect.signature(callback).parameters.values())
+        except (TypeError, ValueError):
+            # Builtins / unusual callables: assume the documented item form.
+            callback(item)
+            return
+        takes_item = any(
+            p.kind in (p.POSITIONAL_ONLY, p.POSITIONAL_OR_KEYWORD, p.VAR_POSITIONAL)
+            for p in params
+        )
+        if takes_item:
+            callback(item)
+        else:
+            callback()
 
     def on_npc_interacted(self, npc: NPC):
         pass
@@ -1427,6 +2717,7 @@ class BaseLevel:
         self.hurt_flash = max(0.0, self.hurt_flash - dt)
         self.invuln = max(0.0, self.invuln - dt)
         self._jolt = max(0.0, self._jolt - dt)
+        self.update_ambience(dt)
 
         # Mini-game: tick it, then fire the win/fail callback when it ends
         if self.minigame is not None:
@@ -1575,11 +2866,12 @@ class BaseLevel:
 
         # 1. Draw Code-Rendered BlockMap
         if self.block_map:
-            self.block_map.draw(world_surf, self.camera)
+            self.block_map.draw(world_surf, self.camera, ambience=self.ambience)
 
         # 1b. Draw interactable blocks and zones
         self._draw_interactables(world_surf)
         self._draw_pickups(world_surf)
+        self.draw_ambience_under(world_surf, self.camera)
         self.draw_under_player(world_surf)
 
         # 2. Draw NPCs (preserved character art)
@@ -1628,6 +2920,7 @@ class BaseLevel:
         for hz in self.hazards:
             hz.draw_effects(world_surf, self.camera)
 
+        self.draw_ambience_over(world_surf, self.camera)
         self.draw_over_world(world_surf)
         self._draw_quest_target_arrow(world_surf)
 
@@ -1690,6 +2983,17 @@ class BaseLevel:
     OBJ_IDLE_SHOW = 2.0   # seconds standing still before the board reopens
     OBJ_TAB_TEXT = "OBJ"  # label on the collapsed tab
     NAME_LABEL_GAP = 6
+
+    # Quest board / dialogue board colors
+    QUEST_PANEL_BG = (25, 38, 58)
+    QUEST_PANEL_BORDER = (70, 110, 160)
+    QUEST_PANEL_ACCENT = (120, 190, 255)
+    QUEST_PANEL_SHADOW = (8, 14, 22)
+    QUEST_PANEL_TEXT_BAND = (14, 24, 38)
+
+    # Dialogue box readability (bigger than the "tiny" HUD text)
+    DIALOGUE_FONT = "small"
+    DIALOGUE_MAX_LINES = 5
 
     def _update_objective_visibility(self, dt: float):
         """Track when the quest board should be open or collapsed."""
@@ -1938,27 +3242,27 @@ class BaseLevel:
         self._register_board(obj_rect)
         if not self._objective_expanded():
             # Collapsed tab: small, unobtrusive, still opaque.
-            pygame.draw.rect(surface, COLOR_UI_PANEL, obj_rect)
-            pygame.draw.rect(surface, COLOR_UI_BORDER, obj_rect, 1)
+            pygame.draw.rect(surface, self.QUEST_PANEL_BG, obj_rect)
+            pygame.draw.rect(surface, self.QUEST_PANEL_BORDER, obj_rect, 1)
             pygame.draw.rect(
-                surface, COLOR_UI_ACCENT,
+                surface, self.QUEST_PANEL_ACCENT,
                 pygame.Rect(obj_rect.x, obj_rect.y, 2, obj_rect.h),
             )
             theme.draw_text(
                 surface, self.OBJ_TAB_TEXT,
                 (obj_rect.centerx + 1, obj_rect.y + 2),
-                size="tiny", color=COLOR_UI_ACCENT, shadow=False,
+                size="tiny", color=self.QUEST_PANEL_ACCENT, shadow=False,
                 anchor="midtop",
             )
         else:
             PAD_Y = self.OBJ_PAD_Y
             # Soft drop shadow lifts the board off the busy world art.
-            pygame.draw.rect(surface, (12, 9, 6), obj_rect.move(1, 2))
-            pygame.draw.rect(surface, COLOR_UI_PANEL, obj_rect)  # fully opaque
-            pygame.draw.rect(surface, COLOR_UI_BORDER, obj_rect, 1)
+            pygame.draw.rect(surface, self.QUEST_PANEL_SHADOW, obj_rect.move(1, 2))
+            pygame.draw.rect(surface, self.QUEST_PANEL_BG, obj_rect)  # fully opaque
+            pygame.draw.rect(surface, self.QUEST_PANEL_BORDER, obj_rect, 1)
             # Accent stripe on the left edge reads as a "quest" marker.
             pygame.draw.rect(
-                surface, COLOR_UI_ACCENT,
+                surface, self.QUEST_PANEL_ACCENT,
                 pygame.Rect(obj_rect.x, obj_rect.y, 3, obj_rect.h),
             )
 
@@ -2269,8 +3573,8 @@ class BaseLevel:
 
     def _draw_portrait(self, surface: pygame.Surface, rect: pygame.Rect, speaker: str) -> None:
         """Draw a retro pixel RPG character badge/portrait in a small box."""
-        pygame.draw.rect(surface, (18, 22, 30), rect)
-        pygame.draw.rect(surface, COLOR_UI_BORDER, rect, 1)
+        pygame.draw.rect(surface, self.QUEST_PANEL_TEXT_BAND, rect)
+        pygame.draw.rect(surface, self.QUEST_PANEL_BORDER, rect, 1)
 
         sp = speaker.upper()
         if "RICO" in sp or "BEN" in sp or "JUAN" in sp:
@@ -2296,7 +3600,7 @@ class BaseLevel:
         else:
             init = (sp[:2] if len(sp) >= 2 else sp)
             theme.draw_text(surface, init, rect.center, size="small",
-                            color=COLOR_UI_ACCENT, shadow=True, anchor="center")
+                            color=self.QUEST_PANEL_ACCENT, shadow=True, anchor="center")
             return
 
         cx, cy = rect.centerx, rect.centery
@@ -2308,23 +3612,29 @@ class BaseLevel:
 
     def _dialogue_box_layout(self, w, h):
         """Return (rect, display_lines, line_height, pad) for dialogue box."""
-        PAD = 4
-        box_w = min(w - 16, 296)
+        PAD = 5
+        box_w = min(w - 12, 302)
         port_w = 26
         inner_w = box_w - PAD * 2 - port_w - 6
 
-        lh = line_height("tiny")
+        lh = line_height(self.DIALOGUE_FONT)
         current_line = self.active_dialogue[self.dialogue_idx]
 
-        lines = tu_wrap(current_line, "tiny", inner_w)
-        display_lines = lines[:4]
+        lines = tu_wrap(current_line, self.DIALOGUE_FONT, inner_w)
+        if len(lines) > self.DIALOGUE_MAX_LINES:
+            display_lines = lines[:self.DIALOGUE_MAX_LINES]
+            display_lines[-1] = ellipsize(
+                display_lines[-1] + "...", self.DIALOGUE_FONT, inner_w
+            )
+        else:
+            display_lines = lines
 
-        text_h = (lh + 1) * max(2, len(display_lines))
-        footer_h = lh + 1
-        box_h = PAD * 2 + text_h + footer_h + 2
+        text_h = (lh + 2) * max(2, len(display_lines))
+        footer_h = lh + 2
+        box_h = PAD * 2 + text_h + footer_h + 4
 
         box_x = (w - box_w) // 2
-        box_y = h - box_h - 6
+        box_y = h - box_h - 5
         rect = pygame.Rect(box_x, box_y, box_w, box_h)
         return rect, display_lines, lh, PAD
 
@@ -2344,25 +3654,35 @@ class BaseLevel:
         full_bound = box_rect.union(tab_rect)
         self._register_board(full_bound)
 
-        # Shared wood-and-brass panel styling.
-        theme.draw_panel(surface, box_rect, accent=theme.HONEY, alpha=238)
+        # Blue quest-board styling, shared with the objective panel.
+        pygame.draw.rect(surface, self.QUEST_PANEL_SHADOW, box_rect.move(1, 2))
+        pygame.draw.rect(surface, self.QUEST_PANEL_BG, box_rect)
+        pygame.draw.rect(surface, self.QUEST_PANEL_BORDER, box_rect, 1)
+        pygame.draw.line(surface, self.QUEST_PANEL_ACCENT,
+                         (box_x + 1, box_y + 1), (box_rect.right - 2, box_y + 1))
 
         # Speaker tab
-        pygame.draw.rect(surface, theme.SHADOW, tab_rect.move(1, 1))
-        theme.draw_panel(surface, tab_rect, accent=theme.BRASS, alpha=238)
+        pygame.draw.rect(surface, self.QUEST_PANEL_SHADOW, tab_rect.move(1, 1))
+        pygame.draw.rect(surface, self.QUEST_PANEL_BG, tab_rect)
+        pygame.draw.rect(surface, self.QUEST_PANEL_ACCENT, tab_rect, 1)
         theme.draw_text(
             surface, speaker,
             (tab_rect.x + tab_pad + 2, tab_rect.y + 1),
-            size="tiny", color=COLOR_UI_ACCENT, shadow=True, anchor="topleft",
+            size="tiny", color=self.QUEST_PANEL_ACCENT, shadow=False, anchor="topleft",
         )
 
         # Portrait slot
         port_rect = pygame.Rect(box_x + PAD + 2, box_y + PAD + 2, 22, 22)
         self._draw_portrait(surface, port_rect, self.dialogue_speaker)
 
-        # Typewriter text reveal
+        # Typewriter text reveal, on a darker inner band for extra contrast.
         text_x = box_x + PAD + 28
         curr_y = box_y + PAD + 2
+        band = pygame.Rect(text_x - 2, curr_y - 1,
+                           box_rect.right - PAD - 2 - (text_x - 2),
+                           (lh + 2) * len(display_lines) + 1)
+        pygame.draw.rect(surface, self.QUEST_PANEL_TEXT_BAND, band)
+
         cur_line = self.active_dialogue[self.dialogue_idx]
         rev_count = int(self._dialogue_chars)
 
@@ -2378,23 +3698,23 @@ class BaseLevel:
             theme.draw_text(
                 surface, shown,
                 (text_x, curr_y),
-                size="tiny", color=COLOR_UI_TEXT, shadow=False, anchor="topleft",
+                size=self.DIALOGUE_FONT, color=theme.CREAM, shadow=True, anchor="topleft",
             )
-            curr_y += lh + 1
+            curr_y += lh + 2
 
         # Blinking continue prompt & triangle
         if self._dialogue_chars >= len(cur_line):
             blink = int(self.level_time * 3.5) % 2 == 0
-            prompt_color = COLOR_UI_ACCENT if blink else (160, 180, 200)
+            prompt_color = self.QUEST_PANEL_ACCENT if blink else theme.CREAM_DIM
             theme.draw_text(
                 surface, "[SPACE] Continue",
                 (box_x + box_w - PAD - 12, box_y + box_h - PAD - 1),
-                size="tiny", color=prompt_color, shadow=False, anchor="bottomright",
+                size="tiny", color=prompt_color, shadow=True, anchor="bottomright",
             )
             if blink:
                 tri_x = box_x + box_w - PAD - 5
                 tri_y = box_y + box_h - PAD - 4
-                pygame.draw.polygon(surface, COLOR_UI_ACCENT, [
+                pygame.draw.polygon(surface, self.QUEST_PANEL_ACCENT, [
                     (tri_x - 3, tri_y - 4), (tri_x + 3, tri_y - 4), (tri_x, tri_y)
                 ])
 

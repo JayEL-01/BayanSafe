@@ -122,6 +122,7 @@ class Chapter3Level1FlashFlood(BaseLevel):
         ]
         self.set_meter("tide", "TIDE", 0.0, good_high=False)
         self.show_hint("Wet planks are slippery. Wear a life vest first!", 5.0)
+        self.enable_world_ambience()
 
     # ------------------------------------------------------------------
     # World

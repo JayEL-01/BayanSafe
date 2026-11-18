@@ -108,6 +108,7 @@ class PrologueLevel1Typhoon(BaseLevel):
             (530, 90),
         ]
         self.show_hint("Move with ARROW KEYS / WASD. Find Lola Teresa's MEDS.", 6.0)
+        self.enable_world_ambience()
 
     # ------------------------------------------------------------------
     # World

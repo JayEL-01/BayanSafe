@@ -115,6 +115,7 @@ class Chapter4Level3Landslide(BaseLevel):
         ])
 
         self.show_hint("Fresh slope failure uncovered strange industrial cables in the mud!", 5.0)
+        self.enable_world_ambience()
 
     # ------------------------------------------------------------------
     # World Layout

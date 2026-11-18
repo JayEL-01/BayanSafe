@@ -8,10 +8,16 @@ Pixel-game layer:
   * Pickups: HEAT HOOD, FOAM EXTINGUISHER, VALVE KEY.
   * Mini-games: Fuel Line Isolation (TimingMeter), Cliff Stairs Sprint (Mash).
   * Pressure: Tsunami wave arrival countdown & surge meter, flash fire spread, burning oil setbacks.
-  * Dual visual hazards: code-drawn raging oil flames + embers, approaching tsunami surge water with foam crest.
+  * Dual visual hazards: code-drawn raging oil flames + embers, approaching tsunami surge water
+    with foam crest.
+
+Quest flow (each step unlocks the next, and none can soft-lock):
+  1. Talk to Tito  -> answer the safety question          (checkpoint near Tito)
+  2. Fuel valve    -> TimingMeter mini-game               (checkpoint at valve)
+  3. Cliff stairs  -> Mash mini-game                      (checkpoint on the cliff path; tsunami timer stops)
+  4. High cliff    -> completes the level
 """
 
-from typing import Optional
 import pygame
 
 from src.story.base_level import (
@@ -26,19 +32,20 @@ from src.story.base_level import (
 )
 from src.maps.block_map import BlockMap
 from src.hazards.landslide import FlashFireHazard, TsunamiHazard
-from src.config.palette import (
-    COLOR_GROUND_HARBOR,
-    COLOR_UI_BORDER,
-    COLOR_UI_TEXT,
-    COLOR_UI_ACCENT,
-    COLOR_UI_DANGER,
-    COLOR_UI_SAFE,
-)
+from src.config.palette import COLOR_GROUND_HARBOR
 
 
 class SilentCompoundHazards(FlashFireHazard):
-    """Custom wrapper allowing BaseLevel to draw high-fidelity code-rendered
-    flames, floating embers, and cascading tsunami surge without duplicate flat boxes."""
+    """Fire hazard logic without default flat block drawing; BaseLevel draws the
+    code-rendered flames, embers and water itself."""
+
+    def draw_effects(self, surface, camera):
+        pass
+
+
+class SilentTsunamiHazard(TsunamiHazard):
+    """Tsunami hazard logic without its default drawing (custom surge water is
+    drawn in draw_under_player, so there are no duplicate flat boxes)."""
 
     def draw_effects(self, surface, camera):
         pass
@@ -49,18 +56,31 @@ class Chapter3Level4FireTsunami(BaseLevel):
     PLAYER_START = (50, 175)
     PIER_ROAD = (30, 160, 580, 40)
     SEAWARD_OCEAN = (0, 240, 640, 120)
-    FIRE_ZONE = (160, 150, 100, 60)
+
+    # The fire now burns only the SOUTH half of the pier road. The north half
+    # (y 130-172) stays clear so the player can always bypass the flames to reach
+    # the valve and the stairs, as the objective text says ("bypass burning fuel line").
+    FIRE_ZONE = (160, 172, 100, 38)
+
     VALVE_POS = (280, 145)
     TITO_POS = (115, 140)
     CLIFF_STAIRS = (420, 70, 40, 100)
-    CLIFF_SAFE_ZONE = (460, 40, 120, 80)
+
+    # Safe zone sits ON the cliff path (walkable), not inside the lookout building.
+    CLIFF_SAFE_ZONE = (425, 40, 45, 40)
+    CLIFF_ARRIVAL = (430, 110)  # where the stairs sprint drops the player
+
+    # Checkpoints (kept just off interactables/NPCs)
+    CHECKPOINT_TITO = (118, 154)
+    CHECKPOINT_VALVE = (280, 158)
 
     # Pickups
     HOOD_POS = (85, 135)
     EXTINGUISHER_POS = (135, 215)
     KEY_POS = (240, 135)
 
-    TSUNAMI_TIME = 100.0   # seconds until tsunami reaches pier
+    TSUNAMI_TIME = 100.0     # seconds until tsunami first reaches the pier
+    TSUNAMI_RESURGE = 60.0   # seconds between later surges if the player is still low
 
     def __init__(self, game):
         super().__init__(
@@ -86,6 +106,11 @@ class Chapter3Level4FireTsunami(BaseLevel):
         self._fire_quenched: bool = False
         self._tsunami_progress: float = 0.15
 
+        # Length of the countdown currently running (for a smooth surge meter)
+        self._countdown_total: float = self.TSUNAMI_TIME
+        # Throttle for the "climb the stairs first" nag at the shelter
+        self._shelter_nag_cooldown: float = 0.0
+
         # Atmospheric particle effects
         self.embers = ParticleField("embers", seed=23, count=24)
         self.smoke = ParticleField("smoke", seed=7, count=16)
@@ -94,12 +119,12 @@ class Chapter3Level4FireTsunami(BaseLevel):
         # Build world
         self._build_world()
         self.hazards.append(SilentCompoundHazards())
-        self.hazards.append(TsunamiHazard())
+        self.hazards.append(SilentTsunamiHazard())
 
         # Checkpoints & meters
         self.set_checkpoint(self.PLAYER_START)
         self.set_meter("tsunami", "TSUNAMI SURGE", 0.15, good_high=False)
-        self.start_countdown(self.TSUNAMI_TIME, "TSUNAMI INCOMING", on_expire=self._tsunami_hit)
+        self._start_tsunami_countdown(self.TSUNAMI_TIME, "TSUNAMI INCOMING")
 
         # Structured linear quest steps with bobbing gold arrow
         self.set_steps([
@@ -112,11 +137,11 @@ class Chapter3Level4FireTsunami(BaseLevel):
             {
                 "text": "Shut off the master fuel cut-off valve to starve the fire",
                 "done": lambda: self._valve_shut,
-                "hint": "Grab the valve key and interact with the yellow shutoff wheel.",
+                "hint": "Skirt the flames along the north edge and use the yellow shutoff wheel.",
                 "target": self.VALVE_POS,
             },
             {
-                "text": "Sprint past the burning barrier to the rocky cliff stairs",
+                "text": "Sprint to the rocky cliff stairs",
                 "done": lambda: self._stairs_climbed,
                 "hint": "The ocean is drawing back! Run east toward the cliff stairs!",
                 "target": (430, 150),
@@ -125,12 +150,19 @@ class Chapter3Level4FireTsunami(BaseLevel):
                 "text": "Flee to the high cliff lookout assembly zone",
                 "done": lambda: self.completed,
                 "hint": "Climb up to the High Harbor Lookout to clear the inundation zone!",
-                "target": (520, 80),
+                "target": (447, 55),
             },
         ])
 
         self.show_hint("Ruptured fuel lines burning while a tsunami bears down! Hurry!", 5.0)
         self.enable_world_ambience()
+
+    # ------------------------------------------------------------------
+    # Helpers
+    # ------------------------------------------------------------------
+    def _start_tsunami_countdown(self, seconds: float, label: str):
+        self._countdown_total = seconds
+        self.start_countdown(seconds, label, on_expire=self._tsunami_hit)
 
     # ------------------------------------------------------------------
     # World Layout
@@ -200,24 +232,25 @@ class Chapter3Level4FireTsunami(BaseLevel):
             self.hurt("Ouch! Burning fuel slick! Do not walk through raw oil flames.", penalty=5.0, respawn=True)
 
     def _tsunami_hit(self):
+        # Once the player is up the cliff they are above the inundation line.
+        if self._stairs_climbed or self.completed:
+            return
         self.hurt("The tsunami wave washed over the low pier! Vertical evacuation is mandatory!", penalty=8.0, respawn=True)
-        self.start_countdown(45.0, "TSUNAMI RE-SURGE", on_expire=self._tsunami_hit)
+        self._start_tsunami_countdown(self.TSUNAMI_RESURGE, "TSUNAMI RE-SURGE")
 
     # ------------------------------------------------------------------
     # NPC & Decision Handling
     # ------------------------------------------------------------------
     def on_npc_interacted(self, npc):
-        if npc.name != "Tito Ramon" or self.is_busy():
+        # NOTE: BaseLevel._try_interact() has ALREADY opened Tito's dialogue before
+        # calling this hook, so is_busy() is always True here. Do not guard on it,
+        # or the quiz below would never be queued. ask() queues the decision and
+        # BaseLevel opens it automatically once the dialogue box is closed.
+        if npc.name != "Tito Ramon":
             return
 
-        if not self._valve_shut:
-            self.start_dialogue(
-                "Tito Ramon",
-                [
-                    "Look at the horizon! The ocean water is receding rapidly—a massive tsunami is seconds away!",
-                    "Meanwhile oil is spraying all over the pier! How do we handle both threats?",
-                ],
-            )
+        if not self._tito_assisted:
+            # Tito's intro lines are already playing; the quiz opens right after.
             self.ask(
                 decision_id="compound_hazard_choice",
                 prompt="Flames are licking the pipe while the ocean is roaring toward the pier. What is your action?",
@@ -236,12 +269,20 @@ class Chapter3Level4FireTsunami(BaseLevel):
                 on_safe=self._on_decision_safe,
                 retry_hint="Never fight oil fires with water or delay evacuation when a tsunami approaches!",
             )
+        elif not self._valve_shut:
+            self.start_dialogue(
+                "Tito Ramon",
+                [
+                    "Good call! The yellow cut-off wheel is just east of here, past the flames.",
+                    "Keep to the north edge of the pier road - stay out of the burning oil!",
+                ],
+            )
         elif not self._stairs_climbed:
             self.start_dialogue(
                 "Tito Ramon",
                 [
                     "The fuel feed is cut! Sprint to the cliff stairs at the east end of the pier!",
-                    "Don't look back—every second counts before the crest slams ashore!",
+                    "Don't look back - every second counts before the crest slams ashore!",
                 ],
             )
         else:
@@ -253,12 +294,15 @@ class Chapter3Level4FireTsunami(BaseLevel):
             )
 
     def _on_decision_safe(self):
-        if not self._tito_assisted:
-            self._tito_assisted = True
-            self.score_system.assist_resident("Tito Ramon")
-            self.record_score("warnings_followed", 1)
+        if self._tito_assisted:
+            return
 
-        self.show_hint("Head past the bunker to the yellow VALVE wheel to cut fuel lines!", 5.0)
+        self._tito_assisted = True
+        self.score_system.assist_resident("Tito Ramon")
+        self.record_score("warnings_followed", 1)
+        # Respawn near Tito rather than back at the start of the pier.
+        self.set_checkpoint(self.CHECKPOINT_TITO)
+        self.show_hint("Skirt the flames along the north edge to the yellow VALVE wheel!", 5.0)
 
     # ------------------------------------------------------------------
     # Mini-games: Valve Isolation & Stairs Sprint
@@ -270,6 +314,9 @@ class Chapter3Level4FireTsunami(BaseLevel):
 
         if not self._tito_assisted:
             self.show_hint("Talk to Tito Ramon to confirm shutdown sequence first.", 3.5)
+            return
+
+        if self.is_busy():
             return
 
         self.start_minigame(
@@ -289,9 +336,11 @@ class Chapter3Level4FireTsunami(BaseLevel):
         )
 
     def _valve_success(self):
+        if self._valve_shut:
+            return
         self._valve_shut = True
         self._fire_quenched = True
-        self.set_checkpoint(self.VALVE_POS)
+        self.set_checkpoint(self.CHECKPOINT_VALVE)
         self.record_score("supplies_secured", 1)
         self.show_hint("Fuel line sealed! Now sprint east to the CLIFF STAIRS before the wave hits!", 5.0)
 
@@ -302,6 +351,9 @@ class Chapter3Level4FireTsunami(BaseLevel):
 
         if self._stairs_climbed:
             self.show_hint("You already scaled the stairs! Reach the High Cliff assembly area.", 2.5)
+            return
+
+        if self.is_busy():
             return
 
         self.start_minigame(
@@ -320,25 +372,39 @@ class Chapter3Level4FireTsunami(BaseLevel):
         )
 
     def _stairs_success(self):
+        if self._stairs_climbed:
+            return
         self._stairs_climbed = True
-        self.set_checkpoint((430, 80))
-        # Move player onto the high cliff path
-        self.player.pos = pygame.Vector2(430, 80)
-        self.player.rect.topleft = (430, 80)
-        self.show_hint("You made it up the cliff! Proceed into the HIGH CLIFF shelter zone!", 5.0)
+        # Above the inundation line now: the wave can no longer set the player back.
+        self.stop_countdown()
+        self.set_checkpoint(self.CLIFF_ARRIVAL)
+        # Move player onto the high cliff path, a short walk below the safe zone.
+        self.player.pos = pygame.Vector2(*self.CLIFF_ARRIVAL)
+        self.player.rect.topleft = self.CLIFF_ARRIVAL
+        self.show_hint("You made it up the cliff! Walk north into the HIGH CLIFF safe zone!", 5.0)
 
     # ------------------------------------------------------------------
     # Evacuation Trigger
     # ------------------------------------------------------------------
-    def on_trigger_activated(self, trigger_id: str):
-        if trigger_id == "cliff_safe" and not self.completed:
-            if not self._stairs_climbed:
-                self.show_hint("Scale the cliff stairs before entering the shelter area!", 3.5)
-                return
+    def _try_finish_level(self) -> bool:
+        """Complete the level if the cliff stairs have been climbed."""
+        if self.completed:
+            return False
 
-            self.stop_countdown()
-            self.score_system.complete_evacuation("ch3_4")
-            self.complete_level()
+        if not self._stairs_climbed:
+            if self._shelter_nag_cooldown <= 0.0:
+                self.show_hint("Scale the cliff stairs before entering the shelter area!", 3.5)
+                self._shelter_nag_cooldown = 4.0
+            return False
+
+        self.stop_countdown()
+        self.score_system.complete_evacuation("ch3_4")
+        self.complete_level()
+        return True
+
+    def on_trigger_activated(self, trigger_id: str):
+        if trigger_id == "cliff_safe":
+            self._try_finish_level()
 
     # ------------------------------------------------------------------
     # Frame Updates & Visual Rendering
@@ -347,34 +413,59 @@ class Chapter3Level4FireTsunami(BaseLevel):
         self.embers.update(dt)
         self.smoke.update(dt)
 
-        # Simulate approaching tsunami wave water rise
-        time_elapsed = max(0.0, self.TSUNAMI_TIME - self.countdown_time) if self.countdown_active else self.level_time
-        self._tsunami_progress = min(0.95, 0.15 + (time_elapsed / self.TSUNAMI_TIME) * 0.80)
+        if self._shelter_nag_cooldown > 0.0:
+            self._shelter_nag_cooldown -= dt
+
+        # Tsunami surge meter: follows the running countdown, and drops once the
+        # player is safely above the inundation line (no sudden jump when it stops).
+        if self._stairs_climbed:
+            target = 0.10
+            self._tsunami_progress += (target - self._tsunami_progress) * min(1.0, dt * 2.0)
+        elif self.countdown_active and self._countdown_total > 0:
+            elapsed = self._countdown_total - self.countdown_time
+            frac = max(0.0, min(1.0, elapsed / self._countdown_total))
+            self._tsunami_progress = min(0.95, 0.15 + frac * 0.80)
         self.set_meter("tsunami", "TSUNAMI SURGE", self._tsunami_progress, good_high=False)
 
+        # Safety net: if the shelter trigger already fired once, still finish.
+        if (
+            self._stairs_climbed
+            and not self.completed
+            and not self.is_busy()
+            and self.player.rect.inflate(12, 12).colliderect(pygame.Rect(self.CLIFF_SAFE_ZONE))
+        ):
+            self._try_finish_level()
+
     def draw_under_player(self, surface: pygame.Surface):
+        t = self._anim_t
+        view = surface.get_rect()
+
         # 1. Harbor ocean water with depth & surging wave edge
         ocean_rect = pygame.Rect(self.SEAWARD_OCEAN)
         # Water encroaches northward as tsunami progress rises
         encroach_y = int(self._tsunami_progress * 40)
         surging_ocean = pygame.Rect(ocean_rect.x, ocean_rect.y - encroach_y, ocean_rect.w, ocean_rect.h + encroach_y)
-        draw_water(surface, self.camera.apply(surging_ocean), self._anim_t, alpha=135, color=(25, 80, 145), foam=True, depth=True)
+        ocean_screen = self.camera.apply(surging_ocean)
+        if ocean_screen.colliderect(view):
+            draw_water(surface, ocean_screen, t, alpha=135, color=(25, 80, 145), foam=True, depth=True)
 
         # 2. Pier road water puddles if wave encroaches
         if encroach_y > 10:
             puddle_rect = pygame.Rect(30, 180, 580, 20)
-            draw_water(surface, self.camera.apply(puddle_rect), self._anim_t, alpha=70, color=(40, 100, 170), foam=False)
+            puddle_screen = self.camera.apply(puddle_rect)
+            if puddle_screen.colliderect(view):
+                draw_water(surface, puddle_screen, t, alpha=70, color=(40, 100, 170), foam=False)
             if self.player.rect.colliderect(puddle_rect):
-                draw_wading_ripples(surface, self.camera, self.player.rect, self._anim_t)
+                draw_wading_ripples(surface, self.camera, self.player.rect, t)
 
         # 3. Code-drawn burning fuel slick if not quenched
         if not self._fire_quenched:
             fire_screen = self.camera.apply(pygame.Rect(self.FIRE_ZONE))
-            # Black oil slick base
-            slick_rect = fire_screen.inflate(4, 2)
-            pygame.draw.rect(surface, (28, 24, 20), slick_rect)
-            # Animated pixel flames
-            draw_flames(surface, fire_screen, self._anim_t)
+            if fire_screen.colliderect(view):
+                # Black oil slick base
+                pygame.draw.rect(surface, (28, 24, 20), fire_screen.inflate(4, 2))
+                # Animated pixel flames
+                draw_flames(surface, fire_screen, t)
 
     def draw_over_world(self, surface: pygame.Surface):
         # Embers and smoke rising from burning fuel

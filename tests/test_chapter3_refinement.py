@@ -52,7 +52,8 @@ class TestChapter3Refinement(unittest.TestCase):
 
         # Talk to Rico -> starts dialogue and queues decision
         rico = next(n for n in lvl.npcs if n.name == "Rico dela Cruz")
-        lvl.on_npc_interacted(rico)
+        lvl.player.rect.center = rico.rect.center
+        lvl.handle_input("confirm")
         self.assertIsNotNone(lvl.active_dialogue)
 
         # Advance through typewriter dialogue lines (two presses per line)
@@ -89,6 +90,7 @@ class TestChapter3Refinement(unittest.TestCase):
         self.assertIsNotNone(lvl.minigame)
         self.assertIsInstance(lvl.minigame, TimingMeter)
         lvl._breaker_success()
+        lvl.minigame = None
         self.assertTrue(lvl._breaker_off)
 
         # Radio tuning mini-game
@@ -96,6 +98,7 @@ class TestChapter3Refinement(unittest.TestCase):
         self.assertIsNotNone(lvl.minigame)
         self.assertIsInstance(lvl.minigame, RadioTuning)
         lvl._radio_success()
+        lvl.minigame = None
         self.assertTrue(lvl._radio_tuned)
 
         # Evacuate to Lighthouse
@@ -116,7 +119,8 @@ class TestChapter3Refinement(unittest.TestCase):
 
         # Talk to Tito Ramon -> starts dialogue and queues decision
         tito = next(n for n in lvl.npcs if n.name == "Tito Ramon")
-        lvl.on_npc_interacted(tito)
+        lvl.player.rect.center = tito.rect.center
+        lvl.handle_input("confirm")
         self.assertIsNotNone(lvl.active_dialogue)
 
         # Advance through dialogue
@@ -151,6 +155,7 @@ class TestChapter3Refinement(unittest.TestCase):
         lvl._interact_valve()
         self.assertIsNotNone(lvl.minigame)
         lvl._valve_success()
+        lvl.minigame = None
         self.assertTrue(lvl._valve_shut)
         self.assertTrue(lvl._fire_quenched)
 
@@ -159,6 +164,7 @@ class TestChapter3Refinement(unittest.TestCase):
         self.assertIsNotNone(lvl.minigame)
         self.assertIsInstance(lvl.minigame, Mash)
         lvl._stairs_success()
+        lvl.minigame = None
         self.assertTrue(lvl._stairs_climbed)
 
         # Evacuate to Cliff Lookout

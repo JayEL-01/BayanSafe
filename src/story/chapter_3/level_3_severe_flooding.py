@@ -8,11 +8,16 @@ Pixel-game layer:
   * Pickups: DRY BAG, SPARE BATTERY, WATERPROOF FLASHLIGHT.
   * Mini-games: Breaker Isolation (TimingMeter), Radio Frequency Lock (RadioTuning).
   * Pressure: Saltwater flood surge meter, electrocution / submerged obstacle setbacks.
-  * Realistic water rendering: multi-layered saltwater with wave highlights, shoreline foam, and player wading ripples.
+  * Realistic water rendering: multi-layered saltwater with wave highlights, shoreline foam,
+    and player wading ripples.
+
+Quest flow (each step unlocks the next, and none can soft-lock):
+  1. Talk to Rico  -> answer the safety question          (sets checkpoint near Rico)
+  2. Breaker panel -> TimingMeter mini-game               (sets checkpoint at radio bench)
+  3. Radio bench   -> RadioTuning mini-game
+  4. Lighthouse    -> completes the level
 """
 
-import math
-from typing import Optional
 import pygame
 
 from src.story.base_level import (
@@ -27,15 +32,7 @@ from src.story.base_level import (
 )
 from src.maps.block_map import BlockMap
 from src.hazards.flash_flood import SevereFloodingHazard
-from src.config.palette import (
-    COLOR_GROUND_HARBOR,
-    COLOR_HAZARD_FLOOD,
-    COLOR_UI_BORDER,
-    COLOR_UI_TEXT,
-    COLOR_UI_ACCENT,
-    COLOR_UI_DANGER,
-)
-from src.ui import theme
+from src.config.palette import COLOR_GROUND_HARBOR
 
 
 class SilentSevereFloodingHazard(SevereFloodingHazard):
@@ -56,14 +53,23 @@ class Chapter3Level3SevereFlooding(BaseLevel):
     RICO_POS = (235, 140)
     LIGHTHOUSE_ZONE = (460, 45, 120, 90)
 
-    # Submerged forklift hazard areas (standing saltwater obstacles)
-    FORKLIFT_1 = (145, 165, 34, 26)
-    FORKLIFT_2 = (325, 168, 34, 26)
+    # Checkpoints (kept just off the interactables so respawns never overlap them)
+    CHECKPOINT_RICO = (232, 154)
+    CHECKPOINT_RADIO = (212, 154)
+
+    # Submerged forklift hazards. Staggered (top lane / bottom lane) so there is
+    # always a wide gap to wade around each one instead of a pinch point.
+    FORKLIFT_1 = (145, 158, 34, 22)
+    FORKLIFT_2 = (325, 186, 34, 22)
 
     # Pickup coordinates
     DRYBAG_POS = (76, 134)
     BATTERY_POS = (275, 134)
     FLASHLIGHT_POS = (385, 138)
+
+    SURGE_START = 0.25
+    SURGE_MAX = 0.85
+    SURGE_DURATION = 160.0  # seconds of *active* play to reach SURGE_MAX
 
     def __init__(self, game):
         super().__init__(
@@ -87,7 +93,14 @@ class Chapter3Level3SevereFlooding(BaseLevel):
         self._breaker_off: bool = False
         self._radio_tuned: bool = False
         self._radio_packed: bool = False
-        self._surge_level: float = 0.25
+
+        # Surge only advances while the player is actually playing (not during
+        # dialogue / mini-games), so reading or puzzles never cost the player time.
+        self._surge_time: float = 0.0
+        self._surge_level: float = self.SURGE_START
+
+        # Throttle for the "you need the radio" nag at the lighthouse
+        self._lighthouse_nag_cooldown: float = 0.0
 
         # Visual atmospheric effects
         self.rain = ParticleField("rain", seed=14, count=28)
@@ -96,11 +109,13 @@ class Chapter3Level3SevereFlooding(BaseLevel):
 
         # Build world and add hazards
         self._build_world()
-        self.hazards.append(SilentSevereFloodingHazard(shallow_rects=[self.FLOOD_LANE], deep_rects=[self.DEEP_BASIN]))
+        self.hazards.append(
+            SilentSevereFloodingHazard(shallow_rects=[self.FLOOD_LANE], deep_rects=[self.DEEP_BASIN])
+        )
 
         # Checkpoints & meters
         self.set_checkpoint(self.PLAYER_START)
-        self.set_meter("surge", "SALT SURGE", 0.25, good_high=False)
+        self.set_meter("surge", "SALT SURGE", self.SURGE_START, good_high=False)
 
         # Structured linear quest steps with bobbing target arrow
         self.set_steps([
@@ -132,6 +147,13 @@ class Chapter3Level3SevereFlooding(BaseLevel):
 
         self.show_hint("Heavy saltwater flood! Watch out for submerged industrial equipment.", 5.0)
         self.enable_world_ambience()
+
+    # ------------------------------------------------------------------
+    # Helpers
+    # ------------------------------------------------------------------
+    def _anim_time(self) -> float:
+        """Animation clock for water, with a fallback if the base class lacks it."""
+        return getattr(self, "_anim_t", getattr(self, "level_time", 0.0))
 
     # ------------------------------------------------------------------
     # World Layout
@@ -206,21 +228,25 @@ class Chapter3Level3SevereFlooding(BaseLevel):
     # NPC & Decision Handling
     # ------------------------------------------------------------------
     def on_npc_interacted(self, npc):
-        if npc.name != "Rico dela Cruz" or self.is_busy():
+        # NOTE: BaseLevel._try_interact() has ALREADY opened Rico's dialogue before
+        # calling this hook, so is_busy() is always True here. Do not guard on it,
+        # or the quiz below would never be queued. ask() queues the decision and
+        # BaseLevel opens it automatically once the dialogue box is closed.
+        if npc.name != "Rico dela Cruz":
             return
 
-        if not self._breaker_off:
-            # First interaction: ask safe electrical disconnect decision
-            self.start_dialogue(
-                "Rico dela Cruz",
-                [
-                    "Watch out! The radio power cable is dipping straight into the puddle!",
-                    "Conductive saltwater makes touching live lines lethal. What should we do?",
-                ],
-            )
+        if not self._rico_assisted:
+            # First interaction: ask the safe electrical disconnect decision (only once
+            # it has been answered correctly; afterwards Rico just gives reminders).
+            # Rico's intro lines are already playing (opened by BaseLevel); the quiz
+            # opens right after the player closes that dialogue.
             self.ask(
                 decision_id="radio_salvage_choice",
-                prompt="The radio is plugged into a flooded wall outlet. How do you safely disconnect it?",
+                prompt=(
+                    "Rico: \"Watch out! The radio cable is dipping into the saltwater - "
+                    "touching live lines in it is lethal!\"\n"
+                    "How do you safely disconnect the flooded radio?"
+                ),
                 options=[
                     {
                         "text": "Shut off the master circuit breaker from the dry panel before touching the plug",
@@ -236,6 +262,14 @@ class Chapter3Level3SevereFlooding(BaseLevel):
                 on_safe=self._on_decision_safe,
                 retry_hint="Touching live cords in saltwater is lethal. Isolate upstream power!",
             )
+        elif not self._breaker_off:
+            self.start_dialogue(
+                "Rico dela Cruz",
+                [
+                    "Right call. The master breaker is on the dry panel of Depot 1, to the west.",
+                    "Kill the power there first. Don't touch that cord until it's dead!",
+                ],
+            )
         elif not self._radio_tuned:
             self.start_dialogue(
                 "Rico dela Cruz",
@@ -249,16 +283,19 @@ class Chapter3Level3SevereFlooding(BaseLevel):
                 "Rico dela Cruz",
                 [
                     "Distress call broadcast confirmed! Carry the sealed unit to the Lighthouse Tower!",
-                    "Keep above the surge line—head up the concrete stairs immediately!",
+                    "Keep above the surge line - head up the concrete stairs immediately!",
                 ],
             )
 
     def _on_decision_safe(self):
-        if not self._rico_assisted:
-            self._rico_assisted = True
-            self.score_system.assist_resident("Rico dela Cruz")
-            self.record_score("warnings_followed", 1)
+        if self._rico_assisted:
+            return
 
+        self._rico_assisted = True
+        self.score_system.assist_resident("Rico dela Cruz")
+        self.record_score("warnings_followed", 1)
+        # Respawn near Rico rather than back at the start of the flooded lane.
+        self.set_checkpoint(self.CHECKPOINT_RICO)
         self.show_hint("Head to the yellow breaker switch on Depot 1 platform to kill the power!", 5.0)
 
     # ------------------------------------------------------------------
@@ -271,6 +308,9 @@ class Chapter3Level3SevereFlooding(BaseLevel):
 
         if not self._rico_assisted:
             self.show_hint("Consult with Rico dela Cruz at Depot 2 before switching master feeds.", 3.5)
+            return
+
+        if self.is_busy():
             return
 
         self.start_minigame(
@@ -290,8 +330,10 @@ class Chapter3Level3SevereFlooding(BaseLevel):
         )
 
     def _breaker_success(self):
+        if self._breaker_off:
+            return
         self._breaker_off = True
-        self.set_checkpoint(self.RADIO_BENCH)
+        self.set_checkpoint(self.CHECKPOINT_RADIO)
         self.show_hint("Power safely killed! Interact with the radio bench to pack and tune VHF Ch 16.", 5.0)
 
     def _interact_radio(self):
@@ -301,6 +343,9 @@ class Chapter3Level3SevereFlooding(BaseLevel):
 
         if self._radio_tuned:
             self.show_hint("Radio locked to VHF Ch 16. Carry it to the Lighthouse Tower!", 3.0)
+            return
+
+        if self.is_busy():
             return
 
         self.start_minigame(
@@ -318,6 +363,8 @@ class Chapter3Level3SevereFlooding(BaseLevel):
         )
 
     def _radio_success(self):
+        if self._radio_tuned:
+            return
         self._radio_tuned = True
         self._radio_packed = True
         self.record_score("supplies_secured", 1)
@@ -326,14 +373,24 @@ class Chapter3Level3SevereFlooding(BaseLevel):
     # ------------------------------------------------------------------
     # Evacuation & Trigger
     # ------------------------------------------------------------------
-    def on_trigger_activated(self, trigger_id: str):
-        if trigger_id == "lighthouse_safe" and not self.completed:
-            if not self._radio_tuned:
-                self.show_hint("You cannot evacuate without securing the VHF emergency transceiver!", 3.5)
-                return
+    def _try_finish_level(self) -> bool:
+        """Complete the level if the player has the tuned radio. Returns True on completion."""
+        if self.completed:
+            return False
 
-            self.score_system.complete_evacuation("ch3_3")
-            self.complete_level()
+        if not self._radio_tuned:
+            if self._lighthouse_nag_cooldown <= 0.0:
+                self.show_hint("You cannot evacuate without securing the VHF emergency transceiver!", 3.5)
+                self._lighthouse_nag_cooldown = 4.0
+            return False
+
+        self.score_system.complete_evacuation("ch3_3")
+        self.complete_level()
+        return True
+
+    def on_trigger_activated(self, trigger_id: str):
+        if trigger_id == "lighthouse_safe":
+            self._try_finish_level()
 
     # ------------------------------------------------------------------
     # Frame Updates & Visual Rendering
@@ -342,30 +399,53 @@ class Chapter3Level3SevereFlooding(BaseLevel):
         self.rain.update(dt)
         self.lightning.update(dt)
 
-        # Gradual surge rise simulation
-        self._surge_level = min(0.85, 0.25 + (self.level_time / 160.0) * 0.6)
+        if self._lighthouse_nag_cooldown > 0.0:
+            self._lighthouse_nag_cooldown -= dt
+
+        # Gradual surge rise: paused during dialogue / mini-games so they never cost time.
+        if not self.is_busy():
+            self._surge_time += dt
+        progress = min(1.0, self._surge_time / self.SURGE_DURATION)
+        self._surge_level = self.SURGE_START + (self.SURGE_MAX - self.SURGE_START) * progress
         self.set_meter("surge", "SALT SURGE", self._surge_level, good_high=False)
 
+        # Safety net: if the player reached the lighthouse BEFORE the radio was tuned
+        # (so the one-shot trigger already fired), finish as soon as they return with it.
+        if (
+            self._radio_tuned
+            and not self.completed
+            and not self.is_busy()
+            and self.player.rect.colliderect(pygame.Rect(self.LIGHTHOUSE_ZONE))
+        ):
+            self._try_finish_level()
+
     def draw_under_player(self, surface: pygame.Surface):
+        t = self._anim_time()
+        view = surface.get_rect()
+
         # 1. Main saltwater flood across alleyway with depth & foam shoreline
         flood_screen = self.camera.apply(pygame.Rect(self.FLOOD_LANE))
-        draw_water(surface, flood_screen, self._anim_t, alpha=115, color=(35, 95, 160), foam=True, depth=True)
+        if flood_screen.colliderect(view):
+            draw_water(surface, flood_screen, t, alpha=115, color=(35, 95, 160), foam=True, depth=True)
 
         # 2. Deep harbor basin water
         deep_screen = self.camera.apply(pygame.Rect(self.DEEP_BASIN))
-        draw_water(surface, deep_screen, self._anim_t, alpha=140, color=(20, 60, 120), foam=True, depth=True)
+        if deep_screen.colliderect(view):
+            draw_water(surface, deep_screen, t, alpha=140, color=(20, 60, 120), foam=True, depth=True)
 
         # 3. Submerged forklift obstacles (rusty iron pixel blocks under water)
         for fk_rect in (self.FORKLIFT_1, self.FORKLIFT_2):
             s_fk = self.camera.apply(pygame.Rect(fk_rect))
+            if not s_fk.colliderect(view):
+                continue
             pygame.draw.rect(surface, (70, 75, 82), s_fk)
             pygame.draw.rect(surface, (140, 85, 45), s_fk, 1)  # rust edges
             # Water ripples washing over submerged chassis
-            draw_water(surface, s_fk, self._anim_t, alpha=65, color=(40, 110, 180))
+            draw_water(surface, s_fk, t, alpha=65, color=(40, 110, 180))
 
         # 4. Player wading ripples when walking in the flood lane
         if self.player.rect.colliderect(pygame.Rect(self.FLOOD_LANE)):
-            draw_wading_ripples(surface, self.camera, self.player.rect, self._anim_t)
+            draw_wading_ripples(surface, self.camera, self.player.rect, t)
 
     def draw_over_world(self, surface: pygame.Surface):
         # Draw weather atmospheric overlays
